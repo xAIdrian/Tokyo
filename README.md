@@ -1,8 +1,5 @@
 ## Ticket to Tokyo - Yonni AI Ghostwriter
-
-## Demo
-
-![Image chateo 3](https://i.ibb.co/hXHy1mh/chateo2.png)
+![Japan-tokyo-skyline-landscape-japan-tours-travel](https://github.com/xAIdrian/Tokyo/assets/7444521/6ed5be18-eefb-4a93-bc70-7418be9cfa0e)
 
 
 ## Tech Stack
@@ -11,18 +8,18 @@
 - Expo: An open-source platform for building React Native applications, providing tools and services to streamline the development process.
 
 ## Getting Started
-To run Chateo on your local machine, follow these steps:
+To run Tokyo on your local machine, follow these steps:
 
 Install dependencies: 
 
 ```
-npm install or yarn install
+yarn install
 ```
 
 Start the development server: 
 
 ```
-expo start or npm start or yarn start
+expo start or yarn start
 ```
 
 Use the Expo Go app on your Android or iOS device to scan the QR code displayed in the Expo developer tools to launch Chateo on your device.
