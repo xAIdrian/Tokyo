@@ -6,6 +6,7 @@ import Interviews from './Interviews'
 import Chats from './Chats'
 import PersonalChat from './PersonalChat'
 import More from './More'
+import Home from './Home'
 export {
     Walkthrough,
     PhoneNumber,
@@ -15,4 +16,5 @@ export {
     Chats,
     PersonalChat,
     More,
+    Home
 }
