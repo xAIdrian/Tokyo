@@ -1,10 +1,7 @@
-## Chateo - Complete React Native Chat App UI
-Chateo is a cross-platform chat application UI built using React Native.It is designed to provide a seamless chat experience with an intuitive and user-friendly interface.
+## Ticket to Tokyo - Yonni AI Ghostwriter
 
 ## Demo
 
-![Image chateo 1](https://i.ibb.co/7GDb1JW/chateo.png)
-![Image chateo 2](https://i.ibb.co/QFpZXvW/chateo1.png)
 ![Image chateo 3](https://i.ibb.co/hXHy1mh/chateo2.png)
 
 
@@ -15,18 +12,6 @@ Chateo is a cross-platform chat application UI built using React Native.It is de
 
 ## Getting Started
 To run Chateo on your local machine, follow these steps:
-
-Clone the repository from GitHub: 
-
-```
-git clone https://github.com/Thomas-Max99/Chateo.git
-```
-
-Navigate to the project directory: 
-
-```
-cd chateo
-```
 
 Install dependencies: 
 
@@ -43,18 +28,8 @@ expo start or npm start or yarn start
 Use the Expo Go app on your Android or iOS device to scan the QR code displayed in the Expo developer tools to launch Chateo on your device.
 Note: Make sure you have the latest version of Node.js, Expo CLI, and Expo Go app installed on your local machine and device, respectively.
 
-## Contributing
-We welcome contributions to Chateo! If you'd like to contribute, please follow these steps:
-
-- Fork the repository.
-- Create a new branch for your feature or bug fix.
-- Make your changes and commit them with descriptive commit messages.
-- Push your changes to your forked repository.
-- Create a pull request to the main repository, explaining your changes and why they should be merged.
-- Please ensure that your contributions adhere to the project's coding standards, and include appropriate tests and documentation.
-
 ## License
-Chateo is open-source software licensed under the MIT License. Feel free to use, modify, and distribute it as per the terms of the license.
+Sharing as learning but this is secret shit and we will sue you if you use it.
 
 ## Contact
-If you have any questions or feedback about Chateo, please feel free to contact us at devland.contact@gmail.com. We appreciate your input and would be happy to assist you with any concerns or inquiries.
+Don't contact us

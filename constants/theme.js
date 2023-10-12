@@ -56,6 +56,29 @@ export const FONTS = {
     body4: { fontFamily: 'regular', fontSize: SIZES.body4, lineHeight: 20 },
 }
 
+export const SHADOWS = {
+    small: {
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 2,
+    },
+    medium: {
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 5.84,
+      elevation: 5,
+    },
+  };
+
 const appTheme = { COLORS, SIZES, FONTS }
 
 export default appTheme
