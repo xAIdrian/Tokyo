@@ -7,7 +7,7 @@ import {
     Walkthrough,
     Verification,
     ProfileAccount,
-    PhoneNumber,
+    Login,
     PersonalChat,
 } from './screens'
 import { useCallback } from 'react'
@@ -60,7 +60,7 @@ export default function App() {
                         name="ProfileAccount"
                         component={ProfileAccount}
                     />
-                    <Stack.Screen name="PhoneNumber" component={PhoneNumber} />
+                    <Stack.Screen name="Login" component={Login} />
                     <Stack.Screen
                         name="PersonalChat"
                         component={PersonalChat}

@@ -18,7 +18,7 @@ import { COLORS, SIZES, FONTS } from '../constants'
 import Button from '../components/Button'
 import PageTitle from '../components/PageTitle'
 
-export default function PhoneNumber({ navigation }) {
+export default function Login({ navigation }) {
     const [email, setEmail] = useState('');
 
     const handleSend = () => {
@@ -35,6 +35,7 @@ export default function PhoneNumber({ navigation }) {
 
             navigation.navigate('BottomTabNavigation')
         } else {
+            navigation.navigate('BottomTabNavigation')
             alert('Please enter your email')
         }
     };

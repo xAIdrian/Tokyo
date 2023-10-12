@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { COLORS, FONTS } from '../constants'
-import { Chats, Interviews, More, Home } from '../screens'
+import { Chats, Interviews, More, Home, WriterFinder } from '../screens'
 import { FontAwesome, Feather, Ionicons } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator()
@@ -77,8 +77,8 @@ const BottomTabNavigation = () => {
                 }}
             />
             <Tab.Screen
-                name="Interviews"
-                component={Interviews}
+                name="Writers"
+                component={WriterFinder}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (

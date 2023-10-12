@@ -20,7 +20,7 @@ const Verification = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <PageContainer>
-                <PageTitle onPress={() => navigation.navigate('PhoneNumber')} />
+                <PageTitle onPress={() => navigation.navigate('Login')} />
                 <View
                     style={{
                         flex: 1,
