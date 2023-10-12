@@ -10,20 +10,9 @@ const FrameworkCard = () => {
   };
 
   return (
-    <TouchableOpacity 
-      style={{
-        width: 300,
-        height: 200,
-        padding: SIZES.body5,
-        margin: SIZES.body5,
-        backgroundColor: "#F2E9D3",
-        borderRadius: SIZES.body3,
-        ...SHADOWS.medium,
-        shadowColor: COLORS.black,
-      }}
+    <View 
+      style={ styles.container }
     >
-      <TouchableOpacity style={ styles.logoContainer }>
-      </TouchableOpacity>
       <Text 
         style={ styles.title }
         numberOfLines={ 1 }
@@ -40,17 +29,21 @@ const FrameworkCard = () => {
         <Text style={ styles.info }>
           60% complete
         </Text>
-
         <Slider
           minimumValue={0}
           maximumValue={100}
           step={1}
           enabled={false}
-          value={60} // Initial value
-          onChange={handleChange}
+          value={60} 
+          thumbTintColor={ COLORS.primary }
         />
+        <TouchableOpacity>
+          <Text style={ styles.selecter }>
+            Continue Interview
+          </Text>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 

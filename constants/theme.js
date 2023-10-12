@@ -2,16 +2,17 @@ import { Dimensions } from 'react-native'
 const { height, width } = Dimensions.get('window')
 
 export const COLORS = {
-    primary: '#3A3967',
-    secondary: '#FF9800',
-    white: '#FFFFFF',
-    secondaryWhite: '#F7F7FC',
-    tertiaryWhite: '#fafafa',
-    green: '#2CC069',
-    black: '#000000',
-    secondaryBlack: '#5D4037',
-    gray: '#CCCCCC',
-    secondaryGray: '#808080',
+  primary: '#3A3967',
+  secondary: '#FF9800',
+  white: '#FFFFFF',
+  secondaryWhite: '#F7F7FC',
+  tertiaryWhite: '#fafafa',
+  green: '#2CC069',
+  black: '#000000',
+  secondaryBlack: '#5D4037',
+  gray: '#CCCCCC',
+  secondaryGray: '#808080',
+  secondaryBackground: '#F2E9D3',
 }
 
 export const SIZES = {
@@ -58,26 +59,26 @@ export const FONTS = {
 
 export const SHADOWS = {
     small: {
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 2,
     },
     medium: {
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 5.84,
-      elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 5.84,
+        elevation: 5,
     },
-  };
+}
 
 const appTheme = { COLORS, SIZES, FONTS }
 

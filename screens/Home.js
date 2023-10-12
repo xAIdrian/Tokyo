@@ -15,19 +15,39 @@ import {
     Image,
     TextInput,
     FlatList,
+    ScrollView,
 } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
 import { MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons'
-import FrameworkCard from '../components/home/frameworkcard/FrameworkCard'
+import FrameworkCard from '../components/home/FrameworkCard/FrameworkCard'
+import TileCard from '../components/home/TileCard/TileCard'
 
 const Home = ({ navigation }) => {
+    const jumpInItems = [
+        {
+            title: 'Truth vs Trend',
+            subtitle: 'Addressing alternatives to the status quo',
+            value: 60
+        }
+    ];
+    const scratchItems = [
+        {
+            title: 'Writer Finder',
+            icon: 'pen-tool',
+        },
+        {
+            title: 'Pick From List',
+            icon: 'list'
+        }
+    ];
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <PageContainer>
-                <View
+                <ScrollView
                     style={{
                         flex: 1,
                         flexDirection: 'column',
@@ -60,13 +80,28 @@ const Home = ({ navigation }) => {
                         Jump back in
                     </Text>
                     <FlatList
-                        data= { [1] }
-                        renderItem={ ({ item }) => <FrameworkCard /> }
+                        data={[1]}
+                        renderItem={({ item }) => <FrameworkCard />}
                         // keyExtractor={ item => item?.job_id }
                         contentContainerStyle={{ columnGap: SIZES.body3 }}
                         horizontal
                     />
-                </View>
+                    <Text
+                        style={{
+                            ...FONTS.h2,
+                            color: COLORS.black,
+                            marginTop: 12,
+                        }}
+                    >
+                        Start from scratch
+                    </Text>
+                    <FlatList
+                        data={ scratchItems}
+                        renderItem={({ item }) => <TileCard item={ item }/>}
+                        keyExtractor={ item => item?.title }
+                        horizontal
+                    />
+                </ScrollView>
             </PageContainer>
         </SafeAreaView>
     )
