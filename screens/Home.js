@@ -43,15 +43,32 @@ const Home = ({ navigation }) => {
             icon: 'list'
         }
     ];
+    const popularItems = [
+        {
+            title: 'The Challenger',
+            icon: 'shield'
+        },
+        {
+            title: 'Soul Sync',
+            icon: 'lock',
+        },
+        {
+            title: 'The Mythbuster',
+            icon: 'lock'
+        },
+    ];
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{
+            flex: 1,
+            marginBottom: 10
+        }}>
             <PageContainer>
                 <ScrollView
                     style={{
                         flex: 1,
                         flexDirection: 'column',
-                        marginHorizontal: 22,
+                        marginHorizontal: 22
                     }}
                 >
                     <Text
@@ -97,6 +114,21 @@ const Home = ({ navigation }) => {
                     </Text>
                     <FlatList
                         data={ scratchItems}
+                        renderItem={({ item }) => <TileCard item={ item }/>}
+                        keyExtractor={ item => item?.title }
+                        horizontal
+                    />
+                    <Text
+                        style={{
+                            ...FONTS.h2,
+                            color: COLORS.black,
+                            marginTop: 12,
+                        }}
+                    >
+                        Trending today
+                    </Text>
+                    <FlatList
+                        data={ popularItems}
                         renderItem={({ item }) => <TileCard item={ item }/>}
                         keyExtractor={ item => item?.title }
                         horizontal

@@ -24,7 +24,7 @@ const More = () => {
                         marginVertical: 22,
                     }}
                 >
-                    <Text style={{ ...FONTS.h4 }}>More</Text>
+                    <Text style={{ ...FONTS.h4 }}>Your Settings</Text>
                 </View>
                 <View
                     style={{
@@ -53,11 +53,7 @@ const More = () => {
                         }}
                     >
                         <Text style={{ ...FONTS.h4, marginVertical: 6 }}>
-                            Almayra Zamzamy
-                        </Text>
-                        <Text style={{ ...FONTS.body3, color: COLORS.gray }}>
-                            {' '}
-                            + 62 - 1300 - 0000- 0000
+                            Edit your profile
                         </Text>
                     </View>
                     <TouchableOpacity
