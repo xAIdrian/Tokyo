@@ -9,7 +9,7 @@ import {
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
-import { COLORS, FONTS } from '../constants'
+import { COLORS, FONTS, SIZES } from '../constants'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import { contacts } from '../constants/data'
 
@@ -51,26 +51,10 @@ const Interviews = ({ navigation }) => {
         >
             <View
                 style={{
-                    paddingVertical: 15,
+                    paddingVertical: 28,
                     marginRight: 22,
                 }}
             >
-                {item.isOnline && item.isOnline == true && (
-                    <View
-                        style={{
-                            height: 14,
-                            width: 14,
-                            borderRadius: 7,
-                            backgroundColor: COLORS.green,
-                            borderColor: COLORS.white,
-                            borderWidth: 2,
-                            position: 'absolute',
-                            top: 14,
-                            right: 2,
-                            zIndex: 1000,
-                        }}
-                    ></View>
-                )}
 
                 <Image
                     source={item.userImg}
@@ -85,10 +69,14 @@ const Interviews = ({ navigation }) => {
             <View
                 style={{
                     flexDirection: 'column',
+                    width: '80%',
                 }}
             >
                 <Text style={{ ...FONTS.h4, marginBottom: 4 }}>
                     {item.userName}
+                </Text>
+                <Text style={{ fontSize: 16, marginBottom: 4 }}>
+                    {item.lastMessage}
                 </Text>
                 <Text style={{ fontSize: 14, color: COLORS.secondaryGray }}>
                     {item.lastSeen}
@@ -109,16 +97,7 @@ const Interviews = ({ navigation }) => {
                             marginTop: 22,
                         }}
                     >
-                        <Text style={{ ...FONTS.h4 }}>Contacts</Text>
-                        <TouchableOpacity
-                            onPress={() => console.log('Add contacts')}
-                        >
-                            <AntDesign
-                                name="plus"
-                                size={20}
-                                color={COLORS.secondaryBlack}
-                            />
-                        </TouchableOpacity>
+                        <Text style={{ ...FONTS.h4 }}>Your Writers</Text>
                     </View>
                     <View
                         style={{

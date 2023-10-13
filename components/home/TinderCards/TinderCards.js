@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { SIZES, COLORS, SHADOWS, FONTS } from '../../../constants/theme'
 import styles from './tindercards.style.js'
 import TinderCard from 'react-tinder-card'
+import images from '../../../constants/images'
 
-const TinderCards = ({ item }) => {
+const TinderCards = ({ item, onCardAction }) => {
     const swipeItems = [
         {
             name: 'Tinder Card 1',
@@ -37,26 +38,25 @@ const TinderCards = ({ item }) => {
 
     const onCardLeftScreen = (myIdentifier) => {
       console.log(myIdentifier + ' left the screen')
+      navigator.navigate('PersonalChat')
     }
   
     return (
       <View>
-          <Text
-              style={{
-                  ...FONTS.h2,
-                  color: COLORS.black,
-                  marginTop: 12,
-              }}
-          >
-            Swipe to start your interview
-        </Text>
         <TinderCard
           onSwipe={onSwipe}
-          onCardLeftScreen={() => onCardLeftScreen('fooBar')}
+          onCardLeftScreen={ onCardAction }
           preventSwipe={['up', 'down']}
         >
           <View style={styles.container}>
-            <Text style={styles.subtitle}> Sample Name </Text>
+            <Text style={styles.title}>The Myth Buster</Text>
+            <Image source={images.user1} style={ styles.image } />
+            <Text style={styles.subtitle}>The misconception, limiting belief, or myth cracker </Text>
+            <Text style={styles.description}>Think about a common misconception (that you’d like to debunk)
+              that your audience tends to have. Something that is holding them back, 
+              and hurting them. 
+            </Text>
+            <Text style={styles.subdescription}>Best for: Education, Rapport, & Growth</Text>
           </View>
         </TinderCard>
       </View>

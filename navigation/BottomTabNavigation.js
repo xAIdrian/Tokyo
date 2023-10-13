@@ -16,7 +16,7 @@ const BottomTabNavigation = () => {
                 tabBarHideOnKeyboard: true,
                 tabBarStyle: {
                     position: 'absolute',
-                    backgroundColor: COLORS.white,
+                    backgroundColor: COLORS.tertiaryWhite,
                     bottom: 0,
                     right: 0,
                     left: 0,

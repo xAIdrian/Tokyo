@@ -78,7 +78,7 @@ const PersonalChat = ({ navigation }) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingHorizontal: 22,
-                    backgroundColor: COLORS.white,
+                    backgroundColor: COLORS.tertiaryWhite,
                     height: 60,
                 }}
             >
@@ -89,7 +89,7 @@ const PersonalChat = ({ navigation }) => {
                     }}
                 >
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Contacts')}
+                        onPress={() => navigation.navigate('BottomTabNavigation')}
                     >
                         <MaterialIcons
                             name="keyboard-arrow-left"
@@ -98,7 +98,7 @@ const PersonalChat = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                     <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                        Athalia Muri
+                        The Myth Buster
                     </Text>
                 </View>
 

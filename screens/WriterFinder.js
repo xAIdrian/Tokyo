@@ -18,13 +18,13 @@
  */
 
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  FlatList,
-  ScrollView,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    TextInput,
+    FlatList,
+    ScrollView,
 } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -32,17 +32,32 @@ import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
 import TinderCards from '../components/home/TinderCards/TinderCards'
 
-const WriterFinder = ({ route }) => {
-
-  return (
-      <SafeAreaView style={{
-          flex: 1
-      }}>
-        <PageContainer>
-          <TinderCards />
-        </PageContainer>
-      </SafeAreaView>
-  )
+const WriterFinder = ({ navigation }) => {
+    return (
+        <SafeAreaView
+            style={{
+                flex: 1,
+            }}
+        >
+            <PageContainer>
+                <Text
+                    style={{
+                        ...FONTS.h2,
+                        color: COLORS.black,
+                        padding: 12,
+                    }}
+                >
+                  Swipe right to start your interview
+                </Text>
+                <TinderCards onCardAction={
+                    () => {
+                        console.log('Card action')
+                        navigation.navigate('PersonalChat')
+                    }
+                } />
+            </PageContainer>
+        </SafeAreaView>
+    )
 }
 
 export default WriterFinder
