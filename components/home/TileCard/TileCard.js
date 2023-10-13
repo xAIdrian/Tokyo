@@ -3,12 +3,13 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { SIZES, COLORS, SHADOWS } from '../../../constants/theme'
 import styles from './tilecard.style.js'
 import { Feather } from '@expo/vector-icons'
-
-const TileCard = ({ item }) => {
+// navigation.navigate('Login')
+const TileCard = ({ item, onHandlePress }) => {
     return (
         <View>
             <TouchableOpacity
-                style={ styles.container }
+              style={styles.container}
+              onPress={onHandlePress}
             >
           <Feather
             name={item.icon}

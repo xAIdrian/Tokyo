@@ -21,7 +21,6 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
-import { MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons'
 import FrameworkCard from '../components/home/FrameworkCard/FrameworkCard'
 import TileCard from '../components/home/TileCard/TileCard'
 
@@ -114,7 +113,16 @@ const Home = ({ navigation }) => {
                     </Text>
                     <FlatList
                         data={ scratchItems}
-                        renderItem={({ item }) => <TileCard item={ item }/>}
+                        renderItem={({ item }) => <TileCard
+                            item={item}
+                            onHandlePress={() => {
+                                if (item.title === 'Writer Finder') {
+                                    navigation.jumpTo('WriterFinder')
+                                } else {
+                                    navigation.jumpTo('Interviews')
+                                }
+                            }}
+                        />}
                         keyExtractor={ item => item?.title }
                         horizontal
                     />

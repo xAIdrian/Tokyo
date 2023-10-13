@@ -32,7 +32,7 @@ import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
 import TinderCards from '../components/home/TinderCards/TinderCards'
 
-const WriterFinder = ({ navigation }) => {
+const WriterFinder = ({ route }) => {
 
   return (
       <SafeAreaView style={{

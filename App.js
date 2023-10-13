@@ -9,6 +9,9 @@ import {
     ProfileAccount,
     Login,
     PersonalChat,
+    WriterFinder,
+    Chats,
+    Interviews
 } from './screens'
 import { useCallback } from 'react'
 import BottomTabNavigation from './navigation/BottomTabNavigation'
@@ -47,24 +50,12 @@ export default function App() {
                     }}
                     initialRouteName="Walkthrough"
                 >
-                    <Stack.Screen
-                        name="BottomTabNavigation"
-                        component={BottomTabNavigation}
-                    />
-                    <Stack.Screen name="Walkthrough" component={Walkthrough} />
-                    <Stack.Screen
-                        name="Verification"
-                        component={Verification}
-                    />
-                    <Stack.Screen
-                        name="ProfileAccount"
-                        component={ProfileAccount}
-                    />
-                    <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen
-                        name="PersonalChat"
-                        component={PersonalChat}
-                    />
+                <Stack.Screen name="Walkthrough" component={Walkthrough} />
+                <Stack.Screen name="Verification" component={Verification} />
+                <Stack.Screen name="ProfileAccount" component={ProfileAccount}  />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="BottomTabNavigation" component={BottomTabNavigation} />
+                <Stack.Screen name="PersonalChat" component={PersonalChat} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

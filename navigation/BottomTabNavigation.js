@@ -28,7 +28,7 @@ const BottomTabNavigation = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={Home}
+                component={ Home }
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
@@ -77,7 +77,7 @@ const BottomTabNavigation = () => {
                 }}
             />
             <Tab.Screen
-                name="Writers"
+                name="WriterFinder"
                 component={WriterFinder}
                 options={{
                     tabBarIcon: ({ focused }) => {
@@ -120,11 +120,6 @@ const BottomTabNavigation = () => {
                                             Writers
                                         </Text>
                                     </>
-                                    // <Ionicons
-                                    //     name="chatbubble-outline"
-                                    //     size={24}
-                                    //     color={COLORS.black}
-                                    // />
                                 )}
                             </View>
                         )
@@ -134,7 +129,7 @@ const BottomTabNavigation = () => {
 
             <Tab.Screen
                 name="History"
-                component={Chats}
+                component={Interviews}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
