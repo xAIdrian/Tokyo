@@ -1,19 +1,36 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, SIZES, FONTS } from '../constants'
+import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
+import useFetch from '../hooks/useFetch'
+import axios from 'axios'
 
 const PersonalChat = ({ navigation }) => {
     const [messages, setMessages] = useState([])
+
+    const { data, isLoading, error, refetch } = useCallback(() => {
+        useFetch(
+            'writer',
+            {
+                messages: messages?.map((message) => {
+                    return {
+                        role: message.user._id === 1 ? 'user' : 'assistant',
+                        content: message.text,
+                    }
+                }),
+                framework: 'The Myth Buster'
+            }
+        )
+    });
 
     useEffect(() => {
         setMessages([
             {
                 _id: 1,
-                text: 'Hello developer',
+                text: 'Hey there, it\'s great to see you. Are you ready to create some awesome content?',
                 createdAt: new Date(),
                 user: {
                     _id: 2,
@@ -24,10 +41,35 @@ const PersonalChat = ({ navigation }) => {
         ])
     }, [])
 
-    const onSend = useCallback((messages = []) => {
-        setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, messages)
-        )
+    const onSend = useCallback(async (messages = []) => {
+        setMessages(async (previousMessages) => {
+            const history = [
+                ...previousMessages,
+                ...messages,
+            ]
+            // console.log("🚀 ~ file: PersonalChat.js:47 ~ onSend ~ previousMessages:", previousMessages)
+            // const url = 'http://localhost:3000/api/v3';
+            // const options = {
+            //     method: 'POST',
+            //     // headers: {
+            //     //   'X-RapidAPI-Key': rapidApiKey,
+            //     //   'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
+            //     // },
+            //     url: `http://localhost:3000/api/v3/writer`,
+            //     data: {
+            //         messages: history?.map((message) => {
+            //             console.log("🚀 ~ file: PersonalChat.js:62 ~ messages:previousMessages.push ~ message:", message)
+            //             return {
+            //                 role: message.user._id === 1 ? 'user' : 'assistant',
+            //                 content: message.text,
+            //             }
+            //         }),
+            //         framework: 'The Myth Buster'
+            //     },
+            //   };
+            // const response = await axios.request(options);
+            return GiftedChat.append(previousMessages, messages)
+        });
     }, [])
 
     // change button of send
