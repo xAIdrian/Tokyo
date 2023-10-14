@@ -1,7 +1,33 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const url = 'http://localhost:3000/api/v3';
+export const sendMessageToServer = async (messages, framework) => {
+  const url = 'http://localhost:3000/api/v3/writer';
+  const options = {
+    method: 'POST',
+    url: url,
+    data: {
+      messages: messages.map((message) => ({
+        role: message.user._id === 1 ? 'user' : 'assistant',
+        content: message.text,
+      })),
+      framework: framework,
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    if (response.data.message == 'success') {
+      
+      return response.data.result; 
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 const useFetch = (endpoint, query) => { 
   const [data, setData] = useState([]);
