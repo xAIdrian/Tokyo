@@ -1,20 +1,23 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, SIZES, FONTS } from '../constants'
+import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
+import { sendMessageToServer } from '../hooks/useFetch'
+import axios from 'axios'
 
 const PersonalChat = ({ navigation }) => {
     const [messages, setMessages] = useState([])
 
+    //TODO: temporary until we can fetch messages from server
     useEffect(() => {
         setMessages([
             {
                 _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
+                text: 'Hey there, it\'s great to see you. Are you ready to create some awesome content?',
+                // createdAt: new Date(),
                 user: {
                     _id: 2,
                     name: 'React Native',
@@ -24,11 +27,19 @@ const PersonalChat = ({ navigation }) => {
         ])
     }, [])
 
-    const onSend = useCallback((messages = []) => {
-        setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, messages)
+    const onSend = useCallback(async (newMessage = []) => {
+        let sendMessages = [];
+        setMessages(previousMessages => {
+            sendMessages = GiftedChat.append(previousMessages, newMessage);
+            return sendMessages;
+        });
+        console.log("🚀 ~ file: PersonalChat.js:33 ~ onSend ~ messages:", sendMessages)
+        const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
+        console.log("🚀 ~ file: PersonalChat.js:38 ~ onSend ~ responseResult:", responseResult)
+        setMessages( previousMessages =>
+            GiftedChat.append(previousMessages, responseResult[responseResult.length - 1]),
         )
-    }, [])
+    }, [setMessages])
 
     // change button of send
     const renderSend = (props) => {
@@ -78,7 +89,7 @@ const PersonalChat = ({ navigation }) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingHorizontal: 22,
-                    backgroundColor: COLORS.white,
+                    backgroundColor: COLORS.tertiaryWhite,
                     height: 60,
                 }}
             >
@@ -89,7 +100,7 @@ const PersonalChat = ({ navigation }) => {
                     }}
                 >
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Contacts')}
+                        onPress={() => navigation.navigate('BottomTabNavigation')}
                     >
                         <MaterialIcons
                             name="keyboard-arrow-left"
@@ -98,7 +109,7 @@ const PersonalChat = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                     <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                        Athalia Muri
+                        The Myth Buster
                     </Text>
                 </View>
 
@@ -137,7 +148,7 @@ const PersonalChat = ({ navigation }) => {
 
             <GiftedChat
                 messages={messages}
-                onSend={(messages) => onSend(messages)}
+                onSend={ messages => onSend(messages) }
                 user={{
                     _id: 1,
                 }}

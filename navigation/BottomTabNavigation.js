@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { COLORS, FONTS } from '../constants'
-import { Chats, Interviews, More, Home } from '../screens'
+import { Chats, Interviews, More, Home, WriterFinder } from '../screens'
 import { FontAwesome, Feather, Ionicons } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator()
@@ -16,7 +16,7 @@ const BottomTabNavigation = () => {
                 tabBarHideOnKeyboard: true,
                 tabBarStyle: {
                     position: 'absolute',
-                    backgroundColor: COLORS.white,
+                    backgroundColor: COLORS.tertiaryWhite,
                     bottom: 0,
                     right: 0,
                     left: 0,
@@ -28,7 +28,7 @@ const BottomTabNavigation = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={Home}
+                component={ Home }
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
@@ -77,8 +77,8 @@ const BottomTabNavigation = () => {
                 }}
             />
             <Tab.Screen
-                name="Interviews"
-                component={Interviews}
+                name="WriterFinder"
+                component={WriterFinder}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
@@ -120,11 +120,6 @@ const BottomTabNavigation = () => {
                                             Writers
                                         </Text>
                                     </>
-                                    // <Ionicons
-                                    //     name="chatbubble-outline"
-                                    //     size={24}
-                                    //     color={COLORS.black}
-                                    // />
                                 )}
                             </View>
                         )
@@ -134,7 +129,7 @@ const BottomTabNavigation = () => {
 
             <Tab.Screen
                 name="History"
-                component={Chats}
+                component={Interviews}
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (

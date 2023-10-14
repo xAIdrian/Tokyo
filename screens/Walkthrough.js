@@ -54,7 +54,7 @@ export default function Walkthrough({ navigation }) {
                             <Button
                                 title="Start Messaging"
                                 onPress={() =>
-                                    navigation.navigate('PhoneNumber')
+                                    navigation.navigate('Login')
                                 }
                                 style={{
                                     width: '100%',
