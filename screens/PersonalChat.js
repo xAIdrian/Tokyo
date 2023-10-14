@@ -10,7 +10,6 @@ import axios from 'axios'
 
 const PersonalChat = ({ navigation }) => {
     const [messages, setMessages] = useState([])
-    const [sessionStateId, setSessionStateId] = useState(null)
 
     //TODO: temporary until we can fetch messages from server
     useEffect(() => {
@@ -18,7 +17,7 @@ const PersonalChat = ({ navigation }) => {
             {
                 _id: 1,
                 text: 'Hey there, it\'s great to see you. Are you ready to create some awesome content?',
-                createdAt: new Date(),
+                // createdAt: new Date(),
                 user: {
                     _id: 2,
                     name: 'React Native',
@@ -28,22 +27,16 @@ const PersonalChat = ({ navigation }) => {
         ])
     }, [])
 
-    const onSend = useCallback(async (newMessages = []) => {
-        const history = [
-            ...messages,
-            ...newMessages,
-        ]
-        try {
-            const responseResult = await sendMessageToServer(history, 'The Myth Buster');
-            console.log("🚀 ~ file: PersonalChat.js:38 ~ onSend ~ responseResult:", responseResult)
-            setSessionStateId(responseResult.sessionStateId);
-            setMessages(GiftedChat.append(history, responseResult.messages[responseResult.messages.length - 1]))
-        } catch (error) {
-            console.log("🚀 ~ file: PersonalChat.js:39 ~ setMessages ~ error:", error)
-            alert('There is an error')
-        }
-        // return GiftedChat.append(previousMessages, messages)
-    }, [messages])
+    const onSend = useCallback(async (newMessage = []) => {
+        setMessages(previousMessages =>  GiftedChat.append(previousMessages, newMessage));
+        console.log("🚀 ~ file: PersonalChat.js:33 ~ onSend ~ messages:", messages)
+        console.log("\n🚀 ~ file: PersonalChat.js:31 ~ onSend ~ newMessage:", newMessage)
+        const responseResult = await sendMessageToServer(messages, 'The Myth Buster');
+        console.log("🚀 ~ file: PersonalChat.js:38 ~ onSend ~ responseResult:", responseResult)
+        setMessages( previousMessages =>
+            GiftedChat.append(previousMessages, responseResult[responseResult.length - 1]),
+        )
+    }, [setMessages])
 
     // change button of send
     const renderSend = (props) => {
@@ -152,7 +145,7 @@ const PersonalChat = ({ navigation }) => {
 
             <GiftedChat
                 messages={messages}
-                onSend={ onSend }
+                onSend={ messages => onSend(messages) }
                 user={{
                     _id: 1,
                 }}

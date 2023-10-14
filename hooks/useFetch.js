@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const sendMessageToServer = async (messages, framework) => {
+
   const url = 'http://localhost:3000/api/v3/writer';
   const options = {
     method: 'POST',
@@ -10,7 +11,7 @@ export const sendMessageToServer = async (messages, framework) => {
       messages: messages.map((message) => ({
         role: message.user._id === 1 ? 'user' : 'assistant',
         content: message.text,
-      })),
+      })).reverse(),
       framework: framework,
     },
   };
@@ -18,8 +19,17 @@ export const sendMessageToServer = async (messages, framework) => {
   try {
     const response = await axios.request(options);
     if (response.data.message == 'success') {
-      
-      return response.data.result; 
+      return response.data.result.messages.map((message) => {
+        return {
+          _id: response.data.result.sessionStateId,
+          text: message.content,
+          user: {
+            _id: message.role === 'user' ? 1 : 2,
+            // name: message.role === 'user' ? 'User' : 'Assistant',
+            // avatar: message.role === 'user' ? 'https://placeimg.com/140/140/any' : 'https://placeimg.com/140/140/any',
+          },
+        };
+      }); 
     } else {
       throw new Error(response.data.message);
     }
