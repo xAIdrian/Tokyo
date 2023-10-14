@@ -28,10 +28,13 @@ const PersonalChat = ({ navigation }) => {
     }, [])
 
     const onSend = useCallback(async (newMessage = []) => {
-        setMessages(previousMessages =>  GiftedChat.append(previousMessages, newMessage));
-        console.log("🚀 ~ file: PersonalChat.js:33 ~ onSend ~ messages:", messages)
-        console.log("\n🚀 ~ file: PersonalChat.js:31 ~ onSend ~ newMessage:", newMessage)
-        const responseResult = await sendMessageToServer(messages, 'The Myth Buster');
+        let sendMessages = [];
+        setMessages(previousMessages => {
+            sendMessages = GiftedChat.append(previousMessages, newMessage);
+            return sendMessages;
+        });
+        console.log("🚀 ~ file: PersonalChat.js:33 ~ onSend ~ messages:", sendMessages)
+        const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
         console.log("🚀 ~ file: PersonalChat.js:38 ~ onSend ~ responseResult:", responseResult)
         setMessages( previousMessages =>
             GiftedChat.append(previousMessages, responseResult[responseResult.length - 1]),
