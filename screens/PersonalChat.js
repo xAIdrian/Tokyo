@@ -12,7 +12,9 @@ import AudioBubble from '../components/AudioBubble/AudioBubble'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
-    const [messages, setMessages] = useState([])
+
+    const [messages, setMessages] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     //TODO: temporary until we can fetch messages from server
     useEffect(() => { setMessages(initMessage) }, [])
@@ -130,6 +132,7 @@ const PersonalChat = ({ navigation }) => {
             </>
         )
     }
+
     return (
         <SafeAreaView style={{ flex: 1, color: COLORS.secondaryWhite }}>
             <StatusBar style="light" backgroundColor={COLORS.white} />

@@ -13,7 +13,7 @@ const AudioBubble = ({ playFileLocation }) => {
 
   const playSound = useCallback(async () => {
     if (!isPlaying) {
-      setIsPlaying(isPlaying);
+      setIsPlaying(true);
       // This is for simply playing the sound back
       const playbackObject = new Audio.Sound();
       // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}` });
@@ -27,7 +27,7 @@ const AudioBubble = ({ playFileLocation }) => {
     } else {
       setIsPlaying(false);
     }
-  }, [isPlaying]);
+  }, []);
 
   return (
     <>
