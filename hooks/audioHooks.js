@@ -10,35 +10,27 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-export const sendMessageToServer = async (messages, framework) => {
-  const url = 'http://localhost:3000/api/v3/writer'
+export const sendAudioForTranscript = async (audioUri) => {
+  const pathSegments = audioUri.split('/');
+  const filename = pathSegments[pathSegments.length - 1];
+
+  const formData = new FormData()
+  formData.append('audio', audioUri)
+
+  const url = 'http://localhost:3000/api/v3/writer/transcript'
   const options = {
-      method: 'POST',
-      url: url,
-      data: {
-          messages: messages
-              .map((message) => ({
-                  role: message.user._id === 1 ? 'user' : 'assistant',
-                  content: message.text,
-              }))
-              .reverse(),
-          framework: framework,
-      },
+    method: 'POST',
+    url: url,
+    formData, 
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
   }
 
   try {
       const response = await axios.request(options)
       if (response.data.message == 'success') {
-          return response.data.result.messages.map((message) => {
-              return {
-                  _id: response.data.result.sessionStateId,
-                  text: message.content,
-                  user: {
-                      _id: message.role === 'user' ? 1 : 2,
-                      // avatar: message.role === 'user' ? 'https://placeimg.com/140/140/any' : 'https://placeimg.com/140/140/any',
-                }
-              }
-          })
+          // return response.data.result.messages
       } else {
           throw new Error(response.data.message)
       }

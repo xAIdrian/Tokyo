@@ -5,12 +5,16 @@ import { Feather } from '@expo/vector-icons';
 import styles from './audiorecorder.style.js';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import { sendAudioForTranscript } from '../../hooks/audioHooks';
 
 const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
   const [audioPermission, setAudioPermission] = useState(null);
   
   const [recordingStatus, setRecordingStatus] = useState('idle');
   const [recording, setRecording] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isDisabled = !audioPermission || isLoading;
 
   useEffect(() => {
 
@@ -58,29 +62,43 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
 
   async function stopRecording() {
     try {
-
       if (recordingStatus === 'recording') {
         console.log('Stopping Recording')
         await recording.stopAndUnloadAsync();
         const recordingUri = recording.getURI();
-        console.log("🚀 ~ file: AudioRecorder.js:66 ~ stopRecording ~ recordingUri:", recordingUri)
 
-        // Create a file name for the recording
-        const fileName = `recording-${Date.now()}.caf`;
+        FileSystem.uploadAsync(
+          'http://localhost:3000/api/v3/writer/transcript',
+          recordingUri,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            fieldName: 'audio',
+            httpMethod: 'POST',
+            uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          }
+        ).then(async (response) => {
+          console.log("🚀 ~ file: AudioRecorder.js:91 ~ stopRecording ~ response", response.body)
 
-        // Move the recording to the new directory with the new file name
-        const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
-        await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
-        await FileSystem.moveAsync({
-          from: recordingUri,
-          to: recordingPath
-        });
-        recordingConfirmed(recordingPath);
-
-        // This is for simply playing the sound back
-        // const playbackObject = new Audio.Sound();
-        // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}` });
-        // await playbackObject.playAsync();
+          // Move the recording to the new directory with the new file name
+          const fileName = `recording-${Date.now()}.caf`;
+          const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
+          await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
+          await FileSystem.moveAsync({
+            from: recordingUri,
+            to: recordingPath
+          });
+          // Send the recording to the server for transcription
+          // const recordingTranscript = await sendAudioForTranscript(recordingUri);
+          // recordingConfirmed({
+          //   transcript: recordingTranscript,
+          //   recording: recordingPath
+          // }); 
+        }).catch((error) => {
+          setIsLoading(false);
+          console.log("🚀 ~ file: AudioRecorder.js:93 ~ stopRecording ~ error", error)
+        })
 
         // resert our states to record again
         setRecording(null);
@@ -113,7 +131,8 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
               justifyContent: 'center',
               backgroundColor: recording ? COLORS.secondary : COLORS.primary,
             }}
-            onPress={ handleRecordButtonPress }
+        onPress={handleRecordButtonPress}
+        disabled={ isDisabled }
           >
             <Feather
               name="mic"
@@ -129,6 +148,7 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
               justifyContent: 'center',
             }}
             onPress={ moreOptionsClick }
+            disabled={ isDisabled }
           >
         <Text>
           More Options
