@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS, images } from '../constants'
@@ -34,16 +34,17 @@ const PersonalChat = ({ navigation }) => {
             'Redo Last Recording',
             'Skip This Question',
             'Remind Me Later',
+            'Speaker Notes',
             'Cancel'
         ];
-        const cancelButtonIndex = 3;
+        const cancelButtonIndex = 4;
       
         showActionSheetWithOptions(
           {
             options,
             cancelButtonIndex,
-            title: 'Choose an option',
-            message: 'Select an option from below:',
+            title: 'What would you like to do?',
+            // message: 'Select an option from below:',
             destructiveButtonIndex: 3, // Index of the destructive option (if needed)
             tintColor: 'red', // Color of the Cancel button text
           },
@@ -97,22 +98,62 @@ const PersonalChat = ({ navigation }) => {
     // customize sender messages
     const renderBubble = (props) => {
         return (
-            <Bubble
-                {...props}
-                wrapperStyle={{
-                    left: {
-                        backgroundColor: COLORS.tertiaryWhite,
-                    },
-                    right: {
-                        backgroundColor: COLORS.primary,
-                    },
-                }}
-                textStyle={{
-                    right: {
-                        color: COLORS.white,
-                    },
-                }}
-            />
+            <>
+                {
+                    props.currentMessage.user._id === 2 ? (
+                        <Bubble
+                            {...props}
+                            wrapperStyle={{
+                                left: {
+                                    backgroundColor: COLORS.tertiaryWhite,
+                                },
+                                right: {
+                                    backgroundColor: COLORS.primary,
+                                },
+                            }}
+                            textStyle={{
+                                right: {
+                                    color: COLORS.white,
+                                },
+                            }}
+                        />
+                    ): (
+                            <View
+                                style={{
+                                backgroundColor: COLORS.primary,
+                                minWidth: 150,
+                                borderRadius: 30,
+                                borderBottomRightRadius: 30,
+                                marginBottom: 10,
+                                padding: 8,
+                                right: 15,
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                                alignSelf: 'stretch',
+                                marginLeft: 0,
+                                alignSelf: "center",
+                                flexDirection: "row",
+                            }}>
+                                <FontAwesome name="play-circle" size={32} color={COLORS.white} />
+                                <Image
+                                    source={images.waveIcon}
+                                    style={{
+                                        width: 50,
+                                        height: 30,
+                                        marginLeft: 10,
+                                    }}
+                                />
+                                <Image
+                                    source={images.waveIcon}
+                                    style={{
+                                        width: 50,
+                                        height: 30,
+                                    }}
+                                />
+                            </View> 
+                    )
+                }
+            </>
         )
     }
     return (
@@ -186,8 +227,8 @@ const PersonalChat = ({ navigation }) => {
                 user={{
                     _id: 1,
                 }}
-                renderBubble={renderBubble}
-                renderSend={renderSend}
+                renderBubble={ renderBubble }
+                renderSend={ renderSend }
                 scrollToBottom
                 textInputStyle={{
                     borderRadius: 22,
