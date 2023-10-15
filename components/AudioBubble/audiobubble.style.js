@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 30,
         marginBottom: 10,
         padding: 8,
-        right: 15,
         justifyContent: 'flex-start',
         alignItems: 'center',
         alignSelf: 'stretch',

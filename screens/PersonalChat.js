@@ -110,7 +110,7 @@ const PersonalChat = ({ navigation }) => {
         return (
             <>
                 {
-                    props.currentMessage.user._id === 2 ? (
+                    props.currentMessage.user._id === 2 || props.currentMessage.text !== '' ? (
                         <Bubble
                             {...props}
                             wrapperStyle={{
@@ -206,10 +206,6 @@ const PersonalChat = ({ navigation }) => {
                 }}
                 renderBubble={ renderBubble }
                 renderSend={ renderSend } 
-                renderLoading={() => <ActivityIndicator size="small" color={COLORS.primary} />}
-                onLoadEarlier={() => {
-                    console.log('Old messages should be start loading');
-                  }}
                 scrollToBottom
                 textInputStyle={{
                     borderRadius: 22,

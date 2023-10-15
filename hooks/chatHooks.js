@@ -31,6 +31,7 @@ export const audioMessage = (audioFile) => {
             _id: generateUUID(),
             text: '',
             audioFileLocation: audioFile,
+            transcript: '',
             user: {
                 _id: 1,
             }
