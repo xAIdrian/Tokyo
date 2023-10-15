@@ -1,9 +1,8 @@
 import { React, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import { SIZES, COLORS, SHADOWS, FONTS } from '../../../constants/theme'
 import styles from './tindercards.style.js'
 import TinderCard from 'react-tinder-card'
-import images from '../../../constants/images'
+import images from '../../constants/images'
 
 const TinderCards = ({ item, onCardAction }) => {
     const swipeItems = [

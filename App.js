@@ -15,6 +15,8 @@ import {
 } from './screens'
 import { useCallback } from 'react'
 import BottomTabNavigation from './navigation/BottomTabNavigation'
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+
 SplashScreen.preventAutoHideAsync()
 
 const Stack = createNativeStackNavigator()
@@ -43,21 +45,38 @@ export default function App() {
 
     return (
         <SafeAreaProvider onLayout={onLayoutRootView}>
-            <NavigationContainer>
-                <Stack.Navigator
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                    initialRouteName="Walkthrough"
-                >
-                <Stack.Screen name="Walkthrough" component={Walkthrough} />
-                <Stack.Screen name="Verification" component={Verification} />
-                <Stack.Screen name="ProfileAccount" component={ProfileAccount}  />
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="BottomTabNavigation" component={BottomTabNavigation} />
-                <Stack.Screen name="PersonalChat" component={PersonalChat} />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <ActionSheetProvider>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                        initialRouteName="Walkthrough"
+                    >
+                        <Stack.Screen
+                            name="Walkthrough"
+                            component={Walkthrough}
+                        />
+                        <Stack.Screen
+                            name="Verification"
+                            component={Verification}
+                        />
+                        <Stack.Screen
+                            name="ProfileAccount"
+                            component={ProfileAccount}
+                        />
+                        <Stack.Screen name="Login" component={Login} />
+                        <Stack.Screen
+                            name="BottomTabNavigation"
+                            component={BottomTabNavigation}
+                        />
+                        <Stack.Screen
+                            name="PersonalChat"
+                            component={PersonalChat}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </ActionSheetProvider>
         </SafeAreaProvider>
     )
 }

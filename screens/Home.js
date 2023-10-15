@@ -21,8 +21,8 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
-import FrameworkCard from '../components/home/FrameworkCard/FrameworkCard'
-import TileCard from '../components/home/TileCard/TileCard'
+import FrameworkCard from '../components/FrameworkCard/FrameworkCard'
+import TileCard from '../components/TileCard/TileCard'
 
 const Home = ({ navigation }) => {
     const jumpInItems = [

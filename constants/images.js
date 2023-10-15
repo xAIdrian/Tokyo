@@ -11,6 +11,7 @@ const user6 = require('../assets/images/user6.jpg')
 const user7 = require('../assets/images/user7.jpg')
 const user8 = require('../assets/images/user8.jpg')
 const welcome = require('../assets/images/welcome.jpg')
+const icon = require('../assets/images/icon.png')
 
 export default {
     illustration,
@@ -25,5 +26,6 @@ export default {
     user7,
     user8,
     usFlag,
-    welcome
+    welcome,
+    icon
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Slider } from '@react-native-assets/slider'
-import { SIZES, COLORS, SHADOWS } from "../../../constants/theme";
+import { SIZES, COLORS, SHADOWS } from "../../constants/theme";
 import styles from './frameworkcard.style.js';
 
 const FrameworkCard = () => {

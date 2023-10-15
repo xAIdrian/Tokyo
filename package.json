@@ -13,6 +13,7 @@
         "lint:fix": "eslint --fix ."
     },
     "dependencies": {
+        "@expo/react-native-action-sheet": "^4.0.1",
         "@react-native-assets/slider": "^7.0.5",
         "@react-navigation/bottom-tabs": "^6.5.7",
         "@react-navigation/native": "^6.1.6",
@@ -20,6 +21,7 @@
         "@react-spring/native": "9.5.5",
         "axios": "^1.5.1",
         "expo": "~48.0.10",
+        "expo-av": "^13.6.0",
         "expo-constants": "^14.4.2",
         "expo-font": "~11.1.1",
         "expo-splash-screen": "~0.18.1",

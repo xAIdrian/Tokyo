@@ -30,7 +30,7 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
-import TinderCards from '../components/home/TinderCards/TinderCards'
+import TinderCards from '../components/TinderCards/TinderCards'
 
 const WriterFinder = ({ navigation }) => {
     return (

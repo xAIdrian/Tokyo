@@ -1,14 +1,16 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, FONTS } from '../constants'
+import { COLORS, FONTS, images } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
 import { sendMessageToServer } from '../hooks/useFetch'
-import axios from 'axios'
+import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
+import { useActionSheet } from '@expo/react-native-action-sheet';
 
 const PersonalChat = ({ navigation }) => {
+    const { showActionSheetWithOptions } = useActionSheet();
     const [messages, setMessages] = useState([])
 
     //TODO: temporary until we can fetch messages from server
@@ -21,11 +23,42 @@ const PersonalChat = ({ navigation }) => {
                 user: {
                     _id: 2,
                     name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
+                    avatar: images.icon,
                 },
             },
         ])
     }, [])
+
+    const showOptions = useCallback(() => {
+        const options = [
+            'Redo Last Recording',
+            'Skip This Question',
+            'Remind Me Later',
+            'Cancel'
+        ];
+        const cancelButtonIndex = 3;
+      
+        showActionSheetWithOptions(
+          {
+            options,
+            cancelButtonIndex,
+            title: 'Choose an option',
+            message: 'Select an option from below:',
+            destructiveButtonIndex: 3, // Index of the destructive option (if needed)
+            tintColor: 'red', // Color of the Cancel button text
+          },
+          (buttonIndex) => {
+            // Handle the selected option
+            if (buttonIndex === 0) {
+              // Option 1 selected
+              // Add your logic here
+            } else if (buttonIndex === 1) {
+              // Option 2 selected
+              // Add your logic here
+            }
+          }
+        );
+      }, [showActionSheetWithOptions]);
 
     const onSend = useCallback(async (newMessage = []) => {
         let sendMessages = [];
@@ -33,9 +66,7 @@ const PersonalChat = ({ navigation }) => {
             sendMessages = GiftedChat.append(previousMessages, newMessage);
             return sendMessages;
         });
-        console.log("🚀 ~ file: PersonalChat.js:33 ~ onSend ~ messages:", sendMessages)
         const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
-        console.log("🚀 ~ file: PersonalChat.js:38 ~ onSend ~ responseResult:", responseResult)
         setMessages( previousMessages =>
             GiftedChat.append(previousMessages, responseResult[responseResult.length - 1]),
         )
@@ -69,6 +100,9 @@ const PersonalChat = ({ navigation }) => {
             <Bubble
                 {...props}
                 wrapperStyle={{
+                    left: {
+                        backgroundColor: COLORS.tertiaryWhite,
+                    },
                     right: {
                         backgroundColor: COLORS.primary,
                     },
@@ -153,7 +187,6 @@ const PersonalChat = ({ navigation }) => {
                     _id: 1,
                 }}
                 renderBubble={renderBubble}
-                alwaysShowSend
                 renderSend={renderSend}
                 scrollToBottom
                 textInputStyle={{
@@ -163,6 +196,9 @@ const PersonalChat = ({ navigation }) => {
                     marginRight: 6,
                     paddingHorizontal: 12,
                 }}
+            />
+            <AudioRecorder
+                moreOptionsClick={ showOptions }
             />
         </SafeAreaView>
     )
