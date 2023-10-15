@@ -1,13 +1,14 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, FONTS, images } from '../constants'
+import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
-import { sendMessageToServer } from '../hooks/useFetch'
-import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
+import { sendMessageToServer, initMessage } from '../hooks/useFetch'
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
+import AudioBubble from '../components/AudioBubble/AudioBubble'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
@@ -15,19 +16,12 @@ const PersonalChat = ({ navigation }) => {
 
     //TODO: temporary until we can fetch messages from server
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hey there, it\'s great to see you. Are you ready to create some awesome content?',
-                // createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: images.icon,
-                },
-            },
-        ])
+        setMessages(initMessage)
     }, [])
+
+    const handleAudioRecording = useCallback((data) => { 
+        GiftedChat.onSend(data);
+    });
 
     const showOptions = useCallback(() => {
         const options = [
@@ -59,7 +53,11 @@ const PersonalChat = ({ navigation }) => {
             }
           }
         );
-      }, [showActionSheetWithOptions]);
+    }, [showActionSheetWithOptions]);
+    
+    const onAudioSend = useCallback((audioFileLocation) => { 
+        GiftedChat.onSend(audioFileLocation);
+    }, []);
 
     const onSend = useCallback(async (newMessage = []) => {
         let sendMessages = [];
@@ -68,10 +66,11 @@ const PersonalChat = ({ navigation }) => {
             return sendMessages;
         });
         const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
-        setMessages( previousMessages =>
+        setMessages(previousMessages =>
             GiftedChat.append(previousMessages, responseResult[responseResult.length - 1]),
         )
-    }, [setMessages])
+        // }, [setMessages])
+    }, []);
 
     // change button of send
     const renderSend = (props) => {
@@ -117,41 +116,7 @@ const PersonalChat = ({ navigation }) => {
                                 },
                             }}
                         />
-                    ): (
-                            <View
-                                style={{
-                                backgroundColor: COLORS.primary,
-                                minWidth: 150,
-                                borderRadius: 30,
-                                borderBottomRightRadius: 30,
-                                marginBottom: 10,
-                                padding: 8,
-                                right: 15,
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                                alignSelf: 'stretch',
-                                marginLeft: 0,
-                                alignSelf: "center",
-                                flexDirection: "row",
-                            }}>
-                                <FontAwesome name="play-circle" size={32} color={COLORS.white} />
-                                <Image
-                                    source={images.waveIcon}
-                                    style={{
-                                        width: 50,
-                                        height: 30,
-                                        marginLeft: 10,
-                                    }}
-                                />
-                                <Image
-                                    source={images.waveIcon}
-                                    style={{
-                                        width: 50,
-                                        height: 30,
-                                    }}
-                                />
-                            </View> 
-                    )
+                    ): ( <AudioBubble playFileLocation={ props.currentMessage.audioFileLocation } /> )
                 }
             </>
         )
@@ -228,7 +193,8 @@ const PersonalChat = ({ navigation }) => {
                     _id: 1,
                 }}
                 renderBubble={ renderBubble }
-                renderSend={ renderSend }
+                renderSend={ renderSend } 
+                renderLoading={() =>  <ActivityIndicator size="small" color= { COLORS.primary } />}
                 scrollToBottom
                 textInputStyle={{
                     borderRadius: 22,
@@ -239,6 +205,7 @@ const PersonalChat = ({ navigation }) => {
                 }}
             />
             <AudioRecorder
+                recordingConfirmed={ handleAudioRecording }
                 moreOptionsClick={ showOptions }
             />
         </SafeAreaView>

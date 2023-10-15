@@ -6,7 +6,7 @@ import styles from './audiorecorder.style.js';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 
-const AudioRecorder = ({ moreOptionsClick }) => {
+const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
   const [audioPermission, setAudioPermission] = useState(null);
   
   const [recordingStatus, setRecordingStatus] = useState('idle');
@@ -69,16 +69,18 @@ const AudioRecorder = ({ moreOptionsClick }) => {
         const fileName = `recording-${Date.now()}.caf`;
 
         // Move the recording to the new directory with the new file name
+        const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
         await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
         await FileSystem.moveAsync({
           from: recordingUri,
-          to: FileSystem.documentDirectory + 'recordings/' + `${fileName}`
+          to: recordingPath
         });
+        recordingConfirmed(recordingPath);
 
         // This is for simply playing the sound back
-        const playbackObject = new Audio.Sound();
-        await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}` });
-        await playbackObject.playAsync();
+        // const playbackObject = new Audio.Sound();
+        // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}` });
+        // await playbackObject.playAsync();
 
         // resert our states to record again
         setRecording(null);
