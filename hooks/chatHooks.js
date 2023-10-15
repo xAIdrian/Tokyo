@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import images from '../constants/images'
+import generateUUID from '../utils/StringUtils'
 
 export const initMessage = [
     {
@@ -11,23 +12,22 @@ export const initMessage = [
             _id: 2,
             name: 'React Native',
             avatar: images.icon,
-        },
-        quickReplies: {
-            type: 'radio', // or 'checkbox',
-            // keepIt: true,
-            values: [
-                {
-                    title: 'Examples',
-                    value: 'examples',
-                },
-                {
-                    title: 'Learn More',
-                    value: 'more_info',
-                },
-            ],
-        },
+        }
     },
 ]
+
+export const audioMessage = (audioFile) => {
+    return [
+        {
+            _id: generateUUID(),
+            text: '',
+            audioFile: audioFile,
+            user: {
+                _id: 1,
+            }
+        }
+    ]
+}
 
 export const sendMessageToServer = async (messages, framework) => {
     const url = 'http://localhost:3000/api/v3/writer'
@@ -55,21 +55,7 @@ export const sendMessageToServer = async (messages, framework) => {
                     user: {
                         _id: message.role === 'user' ? 1 : 2,
                         // avatar: message.role === 'user' ? 'https://placeimg.com/140/140/any' : 'https://placeimg.com/140/140/any',
-                  },
-                  quickReplies: message.role === 'user' ? null : {
-                    type: 'radio', // or 'checkbox',
-                    // keepIt: true,
-                    values: [
-                      {
-                        title: 'Examples',
-                        value: 'examples',
-                      },
-                      {
-                        title: 'Learn More',
-                        value: 'more_info',
-                      }
-                    ],
-                  },
+                  }
                 }
             })
         } else {

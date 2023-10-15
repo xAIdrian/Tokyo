@@ -5,7 +5,7 @@ import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
-import { sendMessageToServer, initMessage } from '../hooks/useFetch'
+import { sendMessageToServer, initMessage, audioMessage } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
 import AudioBubble from '../components/AudioBubble/AudioBubble'
@@ -15,12 +15,10 @@ const PersonalChat = ({ navigation }) => {
     const [messages, setMessages] = useState([])
 
     //TODO: temporary until we can fetch messages from server
-    useEffect(() => {
-        setMessages(initMessage)
-    }, [])
+    useEffect(() => { setMessages(initMessage) }, [])
 
     const handleAudioRecording = useCallback((data) => { 
-        GiftedChat.onSend(data);
+        onSend(audioMessage(data));
     });
 
     const showOptions = useCallback(() => {
@@ -46,20 +44,15 @@ const PersonalChat = ({ navigation }) => {
             // Handle the selected option
             if (buttonIndex === 0) {
               // Option 1 selected
-              // Add your logic here
             } else if (buttonIndex === 1) {
               // Option 2 selected
-              // Add your logic here
             }
           }
         );
     }, [showActionSheetWithOptions]);
-    
-    const onAudioSend = useCallback((audioFileLocation) => { 
-        GiftedChat.onSend(audioFileLocation);
-    }, []);
 
     const onSend = useCallback(async (newMessage = []) => {
+        console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", newMessage)
         let sendMessages = [];
         setMessages(previousMessages => {
             sendMessages = GiftedChat.append(previousMessages, newMessage);
@@ -67,9 +60,25 @@ const PersonalChat = ({ navigation }) => {
         });
         const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
         setMessages(previousMessages =>
-            GiftedChat.append(previousMessages, responseResult[responseResult.length - 1]),
+            GiftedChat.append(previousMessages, {
+                ...responseResult[responseResult.length - 1],
+                quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
+                    type: 'radio', // or 'checkbox',
+                    // keepIt: true,
+                    values: [
+                      {
+                        title: 'Examples',
+                        value: 'examples',
+                      },
+                      {
+                        title: 'Learn More',
+                        value: 'more_info',
+                      }
+                    ],
+                  },
+            }),
         )
-        // }, [setMessages])
+    // }, [setMessages])
     }, []);
 
     // change button of send
@@ -194,7 +203,10 @@ const PersonalChat = ({ navigation }) => {
                 }}
                 renderBubble={ renderBubble }
                 renderSend={ renderSend } 
-                renderLoading={() =>  <ActivityIndicator size="small" color= { COLORS.primary } />}
+                renderLoading={() => <ActivityIndicator size="small" color={COLORS.primary} />}
+                onLoadEarlier={() => {
+                    console.log('Old messages should be start loading');
+                  }}
                 scrollToBottom
                 textInputStyle={{
                     borderRadius: 22,
