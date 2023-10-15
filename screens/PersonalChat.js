@@ -110,7 +110,7 @@ const PersonalChat = ({ navigation }) => {
         return (
             <>
                 {
-                    props.currentMessage.user._id === 2 || props.currentMessage.text !== '' ? (
+                    props.currentMessage.user._id === 2 || props.currentMessage.audioFileLocation === undefined ? (
                         <Bubble
                             {...props}
                             wrapperStyle={{

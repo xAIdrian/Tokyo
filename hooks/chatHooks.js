@@ -29,9 +29,8 @@ export const audioMessage = (audioFile) => {
     return [
         {
             _id: generateUUID(),
-            text: '',
-            audioFileLocation: audioFile,
-            transcript: '',
+            text: audioFile.transcript,
+            audioFileLocation: audioFile.recordingPath,
             user: {
                 _id: 1,
             }
@@ -64,7 +63,7 @@ export const sendMessageToServer = async (messages, framework) => {
                     text: message.content,
                     user: {
                         _id: message.role === 'user' ? 1 : 2,
-                        // avatar: message.role === 'user' ? 'https://placeimg.com/140/140/any' : 'https://placeimg.com/140/140/any',
+                        avatar: message.role === 'user' ? null : images.icon
                   }
                 }
             })

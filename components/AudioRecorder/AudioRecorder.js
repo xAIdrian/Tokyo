@@ -67,6 +67,7 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
         await recording.stopAndUnloadAsync();
         const recordingUri = recording.getURI();
 
+        // Send the recording to the server for transcription
         FileSystem.uploadAsync(
           'http://localhost:3000/api/v3/writer/transcript',
           recordingUri,
@@ -78,8 +79,28 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
             httpMethod: 'POST',
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           }
-        ).then(async (response) => {
-          console.log("🚀 ~ file: AudioRecorder.js:91 ~ stopRecording ~ response", response.body)
+        ).then(async (fullResponse) => {
+          const response = JSON.parse(fullResponse.body);
+          console.log("🚀 ~ file: AudioRecorder.js:91 ~ stopRecording ~ response", response)
+          if (response.message === 'success') {
+            const transcript = response.result;
+
+            // Move the recording to the new directory with the new file name
+            const fileName = `recording-${Date.now()}.caf`;
+            const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
+            await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
+            await FileSystem.moveAsync({
+              from: recordingUri,
+              to: recordingPath
+            });
+
+            recordingConfirmed({
+              transcript: transcript,
+              recordingPath: recordingPath
+            });
+          } else {
+            console.log('Error: ', response.message);
+          }
 
           // Move the recording to the new directory with the new file name
           const fileName = `recording-${Date.now()}.caf`;
@@ -89,14 +110,7 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
             from: recordingUri,
             to: recordingPath
           });
-          // Send the recording to the server for transcription
-          // const recordingTranscript = await sendAudioForTranscript(recordingUri);
-          // recordingConfirmed({
-          //   transcript: recordingTranscript,
-          //   recording: recordingPath
-          // }); 
         }).catch((error) => {
-          setIsLoading(false);
           console.log("🚀 ~ file: AudioRecorder.js:93 ~ stopRecording ~ error", error)
         })
 
