@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { SIZES, COLORS, SHADOWS } from "../../constants/theme";
+import { COLORS } from "../../constants/theme";
 import { Feather } from '@expo/vector-icons';
 import styles from './audiorecorder.style.js';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
-import { sendAudioForTranscript } from '../../hooks/audioHooks';
 
-const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
+const AudioRecorder = ({ recordingConfirmed, moreOptionsClick, onUploadError }) => {
   const [audioPermission, setAudioPermission] = useState(null);
-  
   const [recordingStatus, setRecordingStatus] = useState('idle');
   const [recording, setRecording] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  const isDisabled = !audioPermission || isLoading;
+  const [buttonBackgroundColor, setButtonBackgroundColor] = useState(COLORS.primary);
 
   useEffect(() => {
-
     // Simply get recording permission upon first render
     async function getPermission() {
       await Audio.requestPermissionsAsync().then((permission) => {
@@ -25,6 +23,7 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
         setAudioPermission(permission.granted)
       }).catch(error => {
         console.log(error);
+        onUploadError(error);
       });
     }
 
@@ -37,6 +36,13 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    // Whenever audioPermission or isLoading changes, update isDisabled
+    console.log("🚀 ~ file: AudioRecorder.js:42 ~ useCallback ~ !audioPermission || isLoading:", !audioPermission || isLoading)
+    setIsDisabled(!audioPermission || isLoading);
+    setButtonBackgroundColor(!audioPermission || isLoading ? COLORS.grey : COLORS.primary);
+  }, [audioPermission, isLoading]);
 
   async function startRecording() {
     try {
@@ -57,6 +63,7 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
 
     } catch (error) {
       console.error('Failed to start recording', error);
+      onUploadError(error);
     }
   }
 
@@ -64,6 +71,8 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
     try {
       if (recordingStatus === 'recording') {
         console.log('Stopping Recording')
+        
+        setIsLoading(true);
         await recording.stopAndUnloadAsync();
         const recordingUri = recording.getURI();
 
@@ -80,8 +89,11 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           }
         ).then(async (fullResponse) => {
-          const response = JSON.parse(fullResponse.body);
           console.log("🚀 ~ file: AudioRecorder.js:91 ~ stopRecording ~ response", response)
+          
+          setIsLoading(false);
+          const response = JSON.parse(fullResponse.body);
+          
           if (response.message === 'success') {
             const transcript = response.result;
 
@@ -100,6 +112,7 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
             });
           } else {
             console.log('Error: ', response.message);
+            onUploadError(response.message);
           }
 
           // Move the recording to the new directory with the new file name
@@ -111,7 +124,9 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
             to: recordingPath
           });
         }).catch((error) => {
+          setIsLoading(false);
           console.log("🚀 ~ file: AudioRecorder.js:93 ~ stopRecording ~ error", error)
+          onUploadError(error);
         })
 
         // resert our states to record again
@@ -125,6 +140,10 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
   }
 
   async function handleRecordButtonPress() {
+    // Your logic here to update the background color
+    setButtonBackgroundColor(recording ? COLORS.primary : COLORS.secondary)
+
+    // Functionality for managing the recording
     if (recording) {
       const audioUri = await stopRecording(recording);
       if (audioUri) {
@@ -143,23 +162,35 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick }) => {
               padding: 8,
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: recording ? COLORS.secondary : COLORS.primary,
+              backgroundColor: buttonBackgroundColor,
             }}
         onPress={handleRecordButtonPress}
         disabled={ isDisabled }
-          >
+      >
+        {
+          !isLoading ? (
             <Feather
-              name="mic"
+              name={ recording ? "mic-off" : "mic" }
               size={ 24 }
               color={ recording ? COLORS.primary : COLORS.white }
             />
+          ) : (
+              <Text style={{
+                height: 24,
+                alignContent: 'center',
+              }}>
+                Loading...
+              </Text>
+          )
+        }
       </TouchableOpacity>
       <TouchableOpacity
             style={{
               width: '100%',
               padding: 8,
               alignItems: 'center',
-              justifyContent: 'center',
+          justifyContent: 'center',
+              color: COLORS.secondary,
             }}
             onPress={ moreOptionsClick }
             disabled={ isDisabled }

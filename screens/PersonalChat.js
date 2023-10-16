@@ -215,9 +215,11 @@ const PersonalChat = ({ navigation }) => {
                     paddingHorizontal: 12,
                 }}
             />
+
             <AudioRecorder
                 recordingConfirmed={ handleAudioRecording }
-                moreOptionsClick={ showOptions }
+                moreOptionsClick={showOptions}
+                onUploadError={ (error) => alert(error) }
             />
         </SafeAreaView>
     )
