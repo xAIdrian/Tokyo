@@ -9,15 +9,11 @@
  */
 
 import {
-    View,
     Text,
-    TouchableOpacity,
-    Image,
-    TextInput,
     FlatList,
     ScrollView,
 } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
@@ -119,7 +115,7 @@ const Home = ({ navigation }) => {
                                 if (item.title === 'Writer Finder') {
                                     navigation.jumpTo('WriterFinder')
                                 } else {
-                                    navigation.jumpTo('Interviews')
+                                    // navigation.jumpTo('Interviews')
                                 }
                             }}
                         />}
