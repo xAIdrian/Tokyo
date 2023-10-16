@@ -42,9 +42,8 @@ const AudioRecorder = ({
     };
   }, []);
 
+  // Whenever audioPermission or isLoading changes, this is called
   useEffect(() => {
-    // Whenever audioPermission or isLoading changes, update isDisabled
-    console.log("🚀 ~ file: AudioRecorder.js:42 ~ useCallback ~ !audioPermission || isLoading:", !audioPermission || isLoading)
     setIsDisabled(!audioPermission || isLoading || isParentLoading);
     setButtonBackgroundColor(!audioPermission || isLoading || isParentLoading ? COLORS.grey : COLORS.primary);
   }, [audioPermission, isLoading]);
@@ -93,9 +92,7 @@ const AudioRecorder = ({
             httpMethod: 'POST',
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           }
-        ).then(async (fullResponse) => {
-          console.log("🚀 ~ file: AudioRecorder.js:91 ~ stopRecording ~ response", response)
-          
+        ).then(async (fullResponse) => {          
           setIsLoading(false);
           const response = JSON.parse(fullResponse.body);
           
@@ -121,7 +118,6 @@ const AudioRecorder = ({
           }
         }).catch((error) => {
           setIsLoading(false);
-          console.log("🚀 ~ file: AudioRecorder.js:93 ~ stopRecording ~ error", error)
           onUploadError(error);
         })
 

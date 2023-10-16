@@ -8,10 +8,7 @@ import {
     Verification,
     ProfileAccount,
     Login,
-    PersonalChat,
-    WriterFinder,
-    Chats,
-    Interviews
+    PersonalChat
 } from './screens'
 import { useCallback } from 'react'
 import BottomTabNavigation from './navigation/BottomTabNavigation'
@@ -65,7 +62,10 @@ export default function App() {
                             name="ProfileAccount"
                             component={ProfileAccount}
                         />
-                        <Stack.Screen name="Login" component={Login} />
+                        <Stack.Screen
+                            name="Login"
+                            component={Login}
+                        />
                         <Stack.Screen
                             name="BottomTabNavigation"
                             component={BottomTabNavigation}

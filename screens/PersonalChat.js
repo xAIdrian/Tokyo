@@ -5,19 +5,24 @@ import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
-import { sendMessageToServer, initMessage, audioMessage } from '../hooks/chatHooks'
+import { sendOneShotToServer, initMessage, audioMessage, questionCount, questionsArray, answersArray } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
 import AudioBubble from '../components/AudioBubble/AudioBubble'
+import images from '../constants/images'
+import generateUUID from '../utils/StringUtils'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
 
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [currentQuestionIndex, setCurrentQuestion] = useState(1);
 
-    //TODO: temporary until we can fetch messages from server
-    useEffect(() => { setMessages(initMessage) }, [])
+    useEffect(() => {
+        setMessages(initMessage)
+        answersArray.length = 0;
+    }, [])
 
     const handleAudioRecording = useCallback((data) => { 
         onSend(audioMessage(data));
@@ -53,44 +58,80 @@ const PersonalChat = ({ navigation }) => {
         );
     }, [showActionSheetWithOptions]);
 
+    /**
+     * Called after every time messages object is updated.
+     * This is where we need to put the request to the server for chat messages.
+     */
+    // const starter = useEffect(() => {
+    //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
+    // }, [messages])
+
     const onSend = useCallback(async (newMessage = []) => {
         console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", newMessage)
 
-        setIsLoading(true);
+        answersArray.push(newMessage[0].text);
+        setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
 
-        let sendMessages = [];
-        setMessages(previousMessages => {
-            sendMessages = GiftedChat.append(previousMessages, newMessage);
-            return sendMessages;
-        });
+        if (currentQuestionIndex <= questionCount) {
+            
+            if (currentQuestionIndex === questionCount) {
+                setIsLoading(true);
+                const content = await sendOneShotToServer();
+                setIsLoading(false);
+                if (content !== undefined && content !== '') {
+                    setMessages(previousMessages => GiftedChat.append(previousMessages, {
+                        _id: generateUUID(),
+                        text: content.slice(1, -1),
+                        user: {
+                            _id: 2,
+                            name: 'React Native',
+                            avatar: images.icon,
+                        }
+                    }));
+                } else {
+                    console.log("🔥 ~ file: PersonalChat.js:59 ~ onSend ~ content:", content)
+                }
+                return;
+            }
 
-        const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
-        setIsLoading(false);
+            //still questions to ask
+            setMessages(previousMessages => GiftedChat.append(previousMessages, {
+                _id: generateUUID(),
+                text: questionsArray[currentQuestionIndex],
+                user: {
+                    _id: 2,
+                    name: 'React Native',
+                    avatar: images.icon,
+                }
+            }));
+            setCurrentQuestion(currentQuestionIndex + 1);
+        } 
+        // const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
 
-        if (responseResult !== undefined) {
-            setMessages(previousMessages =>
-                GiftedChat.append(previousMessages, {
-                    ...responseResult[responseResult.length - 1],
-                    quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
-                        type: 'radio', // or 'checkbox',
-                        // keepIt: true,
-                        values: [
-                          {
-                            title: 'Examples',
-                            value: 'examples',
-                          },
-                          {
-                            title: 'Learn More',
-                            value: 'more_info',
-                          }
-                        ],
-                      },
-                }),
-            )
-        } else {
-            alert('There is an error')
-        }
-    }, []);
+        // if (responseResult !== undefined) {
+        //     setMessages(previousMessages =>
+        //         GiftedChat.append(previousMessages, {
+        //             ...responseResult[responseResult.length - 1],
+        //             quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
+        //                 type: 'radio', // or 'checkbox',
+        //                 // keepIt: true,
+        //                 values: [
+        //                   {
+        //                     title: 'Examples',
+        //                     value: 'examples',
+        //                   },
+        //                   {
+        //                     title: 'Learn More',
+        //                     value: 'more_info',
+        //                   }
+        //                 ],
+        //               },
+        //         }),
+        //     )
+        // } else {
+        //     alert('There is an error')
+        // }
+    }, [currentQuestionIndex, messages]);
 
     // change button of send
     const renderSend = (props) => {
@@ -180,18 +221,6 @@ const PersonalChat = ({ navigation }) => {
                         alignItems: 'center',
                     }}
                 >
-                    <TouchableOpacity
-                        onPress={() => console.log('search')}
-                        style={{
-                            marginRight: 8,
-                        }}
-                    >
-                        <MaterialIcons
-                            name="search"
-                            size={24}
-                            color={COLORS.black}
-                        />
-                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => console.log('Menu')}
                         style={{
