@@ -55,32 +55,41 @@ const PersonalChat = ({ navigation }) => {
 
     const onSend = useCallback(async (newMessage = []) => {
         console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", newMessage)
+
+        setIsLoading(true);
+
         let sendMessages = [];
         setMessages(previousMessages => {
             sendMessages = GiftedChat.append(previousMessages, newMessage);
             return sendMessages;
         });
+
         const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
-        setMessages(previousMessages =>
-            GiftedChat.append(previousMessages, {
-                ...responseResult[responseResult.length - 1],
-                quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
-                    type: 'radio', // or 'checkbox',
-                    // keepIt: true,
-                    values: [
-                      {
-                        title: 'Examples',
-                        value: 'examples',
+        setIsLoading(false);
+
+        if (responseResult !== undefined) {
+            setMessages(previousMessages =>
+                GiftedChat.append(previousMessages, {
+                    ...responseResult[responseResult.length - 1],
+                    quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
+                        type: 'radio', // or 'checkbox',
+                        // keepIt: true,
+                        values: [
+                          {
+                            title: 'Examples',
+                            value: 'examples',
+                          },
+                          {
+                            title: 'Learn More',
+                            value: 'more_info',
+                          }
+                        ],
                       },
-                      {
-                        title: 'Learn More',
-                        value: 'more_info',
-                      }
-                    ],
-                  },
-            }),
-        )
-    // }, [setMessages])
+                }),
+            )
+        } else {
+            alert('There is an error')
+        }
     }, []);
 
     // change button of send
@@ -204,9 +213,6 @@ const PersonalChat = ({ navigation }) => {
                 user={{
                     _id: 1,
                 }}
-                renderBubble={ renderBubble }
-                renderSend={ renderSend } 
-                scrollToBottom
                 textInputStyle={{
                     borderRadius: 22,
                     borderWidth: 1,
@@ -214,12 +220,17 @@ const PersonalChat = ({ navigation }) => {
                     marginRight: 6,
                     paddingHorizontal: 12,
                 }}
+                scrollToBottom
+                renderBubble={ renderBubble }
+                renderSend={renderSend} 
+                renderLoading={() =>  <ActivityIndicator size="large" color="#0000ff" />}
             />
 
             <AudioRecorder
                 recordingConfirmed={ handleAudioRecording }
-                moreOptionsClick={showOptions}
-                onUploadError={ (error) => alert(error) }
+                moreOptionsClick={ showOptions }
+                onUploadError={(error) => alert(error)}
+                isParentLoading={ isLoading }
             />
         </SafeAreaView>
     )

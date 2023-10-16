@@ -68,7 +68,7 @@ export const sendMessageToServer = async (messages, framework) => {
                 }
             })
         } else {
-            throw new Error(response.data.message)
+            return undefined;
         }
     } catch (error) {
         throw error

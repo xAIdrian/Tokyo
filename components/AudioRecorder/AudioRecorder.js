@@ -6,7 +6,12 @@ import styles from './audiorecorder.style.js';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 
-const AudioRecorder = ({ recordingConfirmed, moreOptionsClick, onUploadError }) => {
+const AudioRecorder = ({
+  recordingConfirmed,
+  moreOptionsClick,
+  onUploadError,
+  isParentLoading
+}) => {
   const [audioPermission, setAudioPermission] = useState(null);
   const [recordingStatus, setRecordingStatus] = useState('idle');
   const [recording, setRecording] = useState(null);
@@ -40,8 +45,8 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick, onUploadError }) 
   useEffect(() => {
     // Whenever audioPermission or isLoading changes, update isDisabled
     console.log("🚀 ~ file: AudioRecorder.js:42 ~ useCallback ~ !audioPermission || isLoading:", !audioPermission || isLoading)
-    setIsDisabled(!audioPermission || isLoading);
-    setButtonBackgroundColor(!audioPermission || isLoading ? COLORS.grey : COLORS.primary);
+    setIsDisabled(!audioPermission || isLoading || isParentLoading);
+    setButtonBackgroundColor(!audioPermission || isLoading || isParentLoading ? COLORS.grey : COLORS.primary);
   }, [audioPermission, isLoading]);
 
   async function startRecording() {
@@ -114,15 +119,6 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick, onUploadError }) 
             console.log('Error: ', response.message);
             onUploadError(response.message);
           }
-
-          // Move the recording to the new directory with the new file name
-          const fileName = `recording-${Date.now()}.caf`;
-          const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
-          await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
-          await FileSystem.moveAsync({
-            from: recordingUri,
-            to: recordingPath
-          });
         }).catch((error) => {
           setIsLoading(false);
           console.log("🚀 ~ file: AudioRecorder.js:93 ~ stopRecording ~ error", error)
@@ -162,25 +158,25 @@ const AudioRecorder = ({ recordingConfirmed, moreOptionsClick, onUploadError }) 
               padding: 8,
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: buttonBackgroundColor,
+              backgroundColor: isParentLoading ? COLORS.grey : buttonBackgroundColor,
             }}
         onPress={handleRecordButtonPress}
         disabled={ isDisabled }
       >
         {
-          !isLoading ? (
-            <Feather
-              name={ recording ? "mic-off" : "mic" }
-              size={ 24 }
-              color={ recording ? COLORS.primary : COLORS.white }
-            />
-          ) : (
+          isLoading || isParentLoading ? (
               <Text style={{
                 height: 24,
                 alignContent: 'center',
               }}>
                 Loading...
               </Text>
+          ) : (
+            <Feather
+              name={ recording ? "mic-off" : "mic" }
+              size={ 24 }
+              color={ recording ? COLORS.primary : COLORS.white }
+            />
           )
         }
       </TouchableOpacity>
