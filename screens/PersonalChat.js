@@ -22,6 +22,7 @@ const PersonalChat = ({ navigation }) => {
     useEffect(() => {
         setMessages(initMessage)
         answersArray.length = 0;
+        setCurrentQuestion(1);
     }, [])
 
     const handleAudioRecording = useCallback((data) => { 
@@ -81,7 +82,7 @@ const PersonalChat = ({ navigation }) => {
                 if (content !== undefined && content !== '') {
                     setMessages(previousMessages => GiftedChat.append(previousMessages, {
                         _id: generateUUID(),
-                        text: content.slice(1, -1),
+                        text: content,
                         user: {
                             _id: 2,
                             name: 'React Native',
