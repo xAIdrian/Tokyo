@@ -36,29 +36,34 @@ const TinderCards = ({ item, onCardAction }) => {
     }
 
     const onCardLeftScreen = (myIdentifier) => {
-      console.log(myIdentifier + ' left the screen')
-      navigator.navigate('PersonalChat')
+        console.log(myIdentifier + ' left the screen')
+        navigator.navigate('PersonalChat')
     }
-  
+
     return (
-      <View>
-        <TinderCard
-          onSwipe={onSwipe}
-          onCardLeftScreen={ onCardAction }
-          preventSwipe={['up', 'down']}
-        >
-          <View style={styles.container}>
-            <Text style={styles.title}>The Myth Buster</Text>
-            <Image source={images.user1} style={ styles.image } />
-            <Text style={styles.subtitle}>The misconception, limiting belief, or myth cracker </Text>
-            <Text style={styles.description}>Think about a common misconception (that you’d like to debunk)
-              that your audience tends to have. Something that is holding them back, 
-              and hurting them. 
-            </Text>
-            <Text style={styles.subdescription}>Best for: Education, Rapport, & Growth</Text>
-          </View>
-        </TinderCard>
-      </View>
+        <View>
+            <TinderCard
+                onSwipe={onSwipe}
+                onCardLeftScreen={onCardAction}
+                preventSwipe={['up', 'down']}
+            >
+                <View style={styles.container}>
+                    <Text style={styles.title}>The Myth Buster</Text>
+                    <Image source={images.user1} style={styles.image} />
+                    <Text style={styles.subtitle}>
+                        The misconception, limiting belief, or myth cracker{' '}
+                    </Text>
+                    <Text style={styles.description}>
+                        Think about a common misconception (that you’d like to
+                        debunk) that your audience tends to have. Something that
+                        is holding them back, and hurting them.
+                    </Text>
+                    <Text style={styles.subdescription}>
+                        Best for: Education, Rapport, & Growth
+                    </Text>
+                </View>
+            </TinderCard>
+        </View>
     )
 }
 
