@@ -126,6 +126,7 @@ export const sendOneShotToServer = async () => {
 
     try {
         const response = await axios.request(options)
+        console.log("🚀 ~ file: chatHooks.js:130 ~ sendOneShotToServer ~ response.data:", response.data)
         if (response.data.message == 'success') {
             return response.data.result
         } else {

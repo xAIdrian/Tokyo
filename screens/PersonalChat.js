@@ -19,10 +19,11 @@ const PersonalChat = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestionIndex, setCurrentQuestion] = useState(1);
 
-    useEffect(() => {
+    useEffect(async () => {
         setMessages(initMessage)
         answersArray.length = 0;
         setCurrentQuestion(1);
+        
     }, [])
 
     const handleAudioRecording = useCallback((data) => { 
