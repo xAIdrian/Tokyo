@@ -11,7 +11,7 @@ import {
     Entypo,
 } from '@expo/vector-icons'
 
-const More = () => {
+const More = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <PageContainer>
@@ -346,4 +346,4 @@ const More = () => {
     )
 }
 
-export default More
+export default More;

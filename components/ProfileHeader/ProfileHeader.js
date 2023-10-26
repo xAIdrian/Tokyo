@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import images from '../../constants/images'
-import { SIZES, COLORS, SHADOWS } from '../../constants/theme'
 import styles from './profileheader.style.js'
 
 const ProfileHeader = () => {

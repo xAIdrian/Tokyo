@@ -128,22 +128,6 @@ const PersonalChat = ({ navigation }) => {
                         ],
                       },
                 }));
-                // setIsLoading(true);
-                // const content = await sendOneShotToServer();
-                // setIsLoading(false);
-                // if (content !== undefined && content !== '') {
-                //     setMessages(previousMessages => GiftedChat.append(previousMessages, {
-                //         _id: generateUUID(),
-                //         text: content,
-                //         user: {
-                //             _id: 2,
-                //             name: 'React Native',
-                //             avatar: images.icon,
-                //         }
-                //     }));
-                // } else {
-                //     console.log("🔥 ~ file: PersonalChat.js:59 ~ onSend ~ content:", content)
-                // }
                 return;
             }
 
