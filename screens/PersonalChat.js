@@ -11,8 +11,16 @@ import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
 import AudioBubble from '../components/AudioBubble/AudioBubble'
 import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
-import { Dialog, DialogButton, DialogContent, DialogFooter, DialogTitle } from 'react-native-popup-dialog';
 import DetailDialog from '../components/DetailDialog/DetailDialog'
+import { Slider } from '@react-native-assets/slider'
+<Slider
+          minimumValue={0}
+          maximumValue={100}
+          step={1}
+          enabled={false}
+          value={60} 
+          thumbTintColor={ COLORS.primary }
+        />
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
@@ -308,27 +316,6 @@ const PersonalChat = ({ navigation }) => {
                     navigation.navigate('Output', { answers: answersArray });
                 }}
             />
-            {/* <Dialog
-                visible={isPopupVisible}
-                onTouchOutside={() => { setIsPopupVisible(false) }}
-            >
-                <DialogTitle title="Dialog Title" />
-                <DialogContent>
-                    <Text>
-                        Dialog Content
-                    </Text>
-                </DialogContent>
-                <DialogFooter>
-                    <DialogButton
-                        text="CANCEL"
-                        onPress={() => { setIsPopupVisible(false) }}
-                    />
-                    <DialogButton
-                        text="OK"
-                        onPress={() => { setIsPopupVisible(false) }}
-                    />
-                </DialogFooter>
-            </Dialog> */}
         </SafeAreaView>
     )
 }
