@@ -8,6 +8,7 @@ import PersonalChat from './PersonalChat'
 import More from './More'
 import Home from './Home'
 import WriterFinder from './WriterFinder'
+import Output from './Output'
 export {
     Walkthrough,
     Login,
@@ -19,4 +20,5 @@ export {
     More,
     Home,
     WriterFinder,
+    Output
 }

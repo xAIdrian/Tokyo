@@ -11,6 +11,8 @@ import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
 import AudioBubble from '../components/AudioBubble/AudioBubble'
 import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
+import { Dialog, DialogButton, DialogContent, DialogFooter, DialogTitle } from 'react-native-popup-dialog';
+import DetailDialog from '../components/DetailDialog/DetailDialog'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
@@ -18,13 +20,21 @@ const PersonalChat = ({ navigation }) => {
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestionIndex, setCurrentQuestion] = useState(1);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-    useEffect(async () => {
+    useEffect(() => {
         setMessages(initMessage)
         answersArray.length = 0;
         setCurrentQuestion(1);
-        
     }, [])
+
+    /**
+     * Called after every time messages object is updated.
+     * This is where we need to put the request to the server for chat messages.
+     */
+    // const starter = useEffect(() => {
+    //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
+    // }, [messages])
 
     const handleAudioRecording = useCallback((data) => { 
         onSend(audioMessage(data));
@@ -52,7 +62,8 @@ const PersonalChat = ({ navigation }) => {
           (buttonIndex) => {
             // Handle the selected option
             if (buttonIndex === 0) {
-              // Option 1 selected
+                // Option 1 selected
+                setIsPopupVisible(true);
             } else if (buttonIndex === 1) {
               // Option 2 selected
             }
@@ -60,13 +71,22 @@ const PersonalChat = ({ navigation }) => {
         );
     }, [showActionSheetWithOptions]);
 
-    /**
-     * Called after every time messages object is updated.
-     * This is where we need to put the request to the server for chat messages.
-     */
-    // const starter = useEffect(() => {
-    //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
-    // }, [messages])
+    const onQuickReply = useCallback((quickReply) => {
+        switch (quickReply[0].value) {
+            case 'more_info':
+              break;
+            case 'examples':
+              break;
+            case 'edit':
+              break;
+            case 'generate':
+              setIsPopupVisible(true);
+              break;
+            default:
+              // Do something if the value doesn't match any of the cases
+              break;
+        }
+    });
 
     const onSend = useCallback(async (newMessage = []) => {
         console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", newMessage)
@@ -77,22 +97,45 @@ const PersonalChat = ({ navigation }) => {
         if (currentQuestionIndex <= questionCount) {
             
             if (currentQuestionIndex === questionCount) {
-                setIsLoading(true);
-                const content = await sendOneShotToServer();
-                setIsLoading(false);
-                if (content !== undefined && content !== '') {
-                    setMessages(previousMessages => GiftedChat.append(previousMessages, {
-                        _id: generateUUID(),
-                        text: content,
-                        user: {
-                            _id: 2,
-                            name: 'React Native',
-                            avatar: images.icon,
-                        }
-                    }));
-                } else {
-                    console.log("🔥 ~ file: PersonalChat.js:59 ~ onSend ~ content:", content)
-                }
+                setMessages(previousMessages => GiftedChat.append(previousMessages, {
+                    _id: generateUUID(),
+                    text: 'We have everything we need and we\'re ready to write your content\n\nAre you satisfied with your answers?',
+                    user: {
+                        _id: 2,
+                        name: 'React Native',
+                        avatar: images.icon,
+                    },
+                    quickReplies: {
+                        type: 'radio', // or 'checkbox',
+                        // keepIt: true,
+                        values: [
+                          {
+                            title: '✅ Create content!',
+                            value: 'generate',
+                          },
+                          {
+                            title: '❌ Make edits',
+                            value: 'edit',
+                          }
+                        ],
+                      },
+                }));
+                // setIsLoading(true);
+                // const content = await sendOneShotToServer();
+                // setIsLoading(false);
+                // if (content !== undefined && content !== '') {
+                //     setMessages(previousMessages => GiftedChat.append(previousMessages, {
+                //         _id: generateUUID(),
+                //         text: content,
+                //         user: {
+                //             _id: 2,
+                //             name: 'React Native',
+                //             avatar: images.icon,
+                //         }
+                //     }));
+                // } else {
+                //     console.log("🔥 ~ file: PersonalChat.js:59 ~ onSend ~ content:", content)
+                // }
                 return;
             }
 
@@ -104,35 +147,24 @@ const PersonalChat = ({ navigation }) => {
                     _id: 2,
                     name: 'React Native',
                     avatar: images.icon,
-                }
+                },
+                quickReplies: {
+                    type: 'radio', // or 'checkbox',
+                    // keepIt: true,
+                    values: [
+                      {
+                        title: 'Examples',
+                        value: 'examples',
+                      },
+                      {
+                        title: 'Learn More',
+                        value: 'more_info',
+                      }
+                    ],
+                  },
             }));
             setCurrentQuestion(currentQuestionIndex + 1);
         } 
-        // const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
-
-        // if (responseResult !== undefined) {
-        //     setMessages(previousMessages =>
-        //         GiftedChat.append(previousMessages, {
-        //             ...responseResult[responseResult.length - 1],
-        //             quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
-        //                 type: 'radio', // or 'checkbox',
-        //                 // keepIt: true,
-        //                 values: [
-        //                   {
-        //                     title: 'Examples',
-        //                     value: 'examples',
-        //                   },
-        //                   {
-        //                     title: 'Learn More',
-        //                     value: 'more_info',
-        //                   }
-        //                 ],
-        //               },
-        //         }),
-        //     )
-        // } else {
-        //     alert('There is an error')
-        // }
     }, [currentQuestionIndex, messages]);
 
     // change button of send
@@ -240,7 +272,8 @@ const PersonalChat = ({ navigation }) => {
 
             <GiftedChat
                 messages={messages}
-                onSend={ messages => onSend(messages) }
+                onSend={messages => onSend(messages)}
+                onQuickReply={ selected => onQuickReply(selected) }
                 user={{
                     _id: 1,
                 }}
@@ -263,6 +296,39 @@ const PersonalChat = ({ navigation }) => {
                 onUploadError={(error) => alert(error)}
                 isParentLoading={ isLoading }
             />
+
+            <DetailDialog
+                isVisible={ isPopupVisible }
+                title="We have what we need here"
+                content="Are you sure you are ready to create content?"
+                cancelText="Edit"
+                confirmText="Get Posts"
+                cancelAction={() => { setIsPopupVisible(false) }}
+                confirmAction={() => {
+                    navigation.navigate('Output', { answers: answersArray });
+                }}
+            />
+            {/* <Dialog
+                visible={isPopupVisible}
+                onTouchOutside={() => { setIsPopupVisible(false) }}
+            >
+                <DialogTitle title="Dialog Title" />
+                <DialogContent>
+                    <Text>
+                        Dialog Content
+                    </Text>
+                </DialogContent>
+                <DialogFooter>
+                    <DialogButton
+                        text="CANCEL"
+                        onPress={() => { setIsPopupVisible(false) }}
+                    />
+                    <DialogButton
+                        text="OK"
+                        onPress={() => { setIsPopupVisible(false) }}
+                    />
+                </DialogFooter>
+            </Dialog> */}
         </SafeAreaView>
     )
 }

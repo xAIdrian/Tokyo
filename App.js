@@ -8,7 +8,8 @@ import {
     Verification,
     ProfileAccount,
     Login,
-    PersonalChat
+    PersonalChat,
+    Output
 } from './screens'
 import { useCallback } from 'react'
 import BottomTabNavigation from './navigation/BottomTabNavigation'
@@ -73,6 +74,10 @@ export default function App() {
                         <Stack.Screen
                             name="PersonalChat"
                             component={PersonalChat}
+                        />
+                        <Stack.Screen
+                            name="Output"
+                            component={Output}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
