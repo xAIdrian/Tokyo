@@ -13,14 +13,6 @@ import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
-<Slider
-          minimumValue={0}
-          maximumValue={100}
-          step={1}
-          enabled={false}
-          value={60} 
-          thumbTintColor={ COLORS.primary }
-        />
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
@@ -214,52 +206,72 @@ const PersonalChat = ({ navigation }) => {
             <StatusBar style="light" backgroundColor={COLORS.white} />
             <View
                 style={{
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'space-between',
-                    paddingHorizontal: 22,
                     backgroundColor: COLORS.tertiaryWhite,
-                    height: 60,
-                }}
-            >
+                }
+            }>
+                
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 24,
+                        height: 60,
                     }}
                 >
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('BottomTabNavigation')}
-                    >
-                        <MaterialIcons
-                            name="keyboard-arrow-left"
-                            size={24}
-                            color={COLORS.black}
-                        />
-                    </TouchableOpacity>
-                    <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                        The Myth Buster
-                    </Text>
-                </View>
-
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
-                >
-                    <TouchableOpacity
-                        onPress={() => console.log('Menu')}
+                    <View
                         style={{
-                            marginRight: 8,
+                            flexDirection: 'row',
+                            alignItems: 'center',
                         }}
                     >
-                        <MaterialIcons
-                            name="menu"
-                            size={24}
-                            color={COLORS.black}
-                        />
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('BottomTabNavigation')}
+                        >
+                            <MaterialIcons
+                                name="keyboard-arrow-left"
+                                size={24}
+                                color={COLORS.black}
+                            />
+                        </TouchableOpacity>
+                        <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
+                            The Myth Buster
+                        </Text>
+                    </View>
+
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => console.log('Menu')}
+                            style={{
+                                marginRight: 8,
+                            }}
+                        >
+                            <MaterialIcons
+                                name="menu"
+                                size={24}
+                                color={COLORS.black}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
+                <Slider
+                    minimumValue={0}
+                    maximumValue={100}
+                    step={1}
+                    enabled={false}
+                    value={25}
+                    thumbTintColor={COLORS.primary}
+                    style={{
+                        paddingHorizontal: 24,
+                        paddingBottom: 8
+                    }}
+                />
             </View>
 
             <GiftedChat
