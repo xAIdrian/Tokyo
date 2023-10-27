@@ -15,8 +15,8 @@ import { questionsArray, answersArray, samplesArray } from './chatHooks'
 
 export const sendManyToServer = () => {
   const allQuestions = questionsArray
-  // const allAnswers = answersArray
-  const allAnswers = samplesArray
+  const allAnswers = answersArray
+  // const allAnswers = samplesArray
 
   return new Observable(async (subscriber) => {
     subscriber.next(await sendOneShotToServer(allQuestions, allAnswers))
