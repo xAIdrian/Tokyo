@@ -11,12 +11,14 @@ const Output = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [posts, setPosts] = useState([])
 
-    useEffect(async () => {
+    useEffect(() => {
         setIsLoading(true)
-        const content = await sendOneShotToServer()
-        setIsLoading(false)
-        // console.log(posts)
-        setPosts(posts => [...posts, content])
+        async function fetchData() {
+            const content = await sendOneShotToServer()
+            setIsLoading(false)
+            setPosts(posts => [...posts, content])
+        }
+        fetchData()
     }, [])
 
     return (
