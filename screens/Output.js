@@ -5,20 +5,23 @@ import { COLORS, SIZES, FONTS } from '../constants'
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader'
 import PageTitle from '../components/PageTitle'
 import PostCard from '../components/PostCard/PostCard'
-import { sendOneShotToServer } from '../hooks/chatHooks'
+import { sendManyToServer } from '../hooks/contentHooks'
 
 const Output = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        setIsLoading(true)
-        async function fetchData() {
-            const content = await sendOneShotToServer()
-            setIsLoading(false)
-            setPosts(posts => [...posts, content])
-        }
-        fetchData()
+        setPosts([])
+        sendManyToServer().subscribe({
+            next: (content) => {
+                setIsLoading(true)
+                setPosts((posts) => [...posts, content])
+            },
+            complete: () => {
+                setIsLoading(false)
+            },
+        });
     }, [])
 
     return (
@@ -32,11 +35,11 @@ const Output = ({ navigation, route }) => {
                 ) : (
                     <FlatList
                         data={posts}
-                        renderItem={ (item) =>  <PostCard content={item.item} /> }
+                        renderItem={(item) => <PostCard content={item.item} />}
                         style={{
                             paddingTop: SIZES.body3,
                         }}
-                        // keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.length}
                     />
                 )}
             </>
