@@ -5,7 +5,7 @@ import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
-import { sendOneShotToServer, initMessage, audioMessage, questionCount, questionsArray, answersArray } from '../hooks/chatHooks'
+import { initMessage, audioMessage, questionCount, questionsArray, answersArray } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
 import AudioBubble from '../components/AudioBubble/AudioBubble'

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { SafeAreaView, FlatList } from 'react-native-safe-area-context'
+import { FlatList, ActivityIndicator } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS } from '../constants'
 import ProfileHeader from '../components/ProfileHeader/ProfileHeader'
 import PageTitle from '../components/PageTitle'
@@ -12,16 +13,10 @@ const Output = ({ navigation, route }) => {
 
     useEffect(async () => {
         setIsLoading(true)
-        // const content = await sendOneShotToServer()
-        // setIsLoading(false)
-        // if (content !== undefined && content !== '') {
-        //     setPosts([content])
-        // } else {
-        //     console.log(
-        //         '🔥 ~ file: PersonalChat.js:59 ~ onSend ~ content:',
-        //         content
-        //     )
-        // }
+        const content = await sendOneShotToServer()
+        setIsLoading(false)
+        // console.log(posts)
+        setPosts(posts => [...posts, content])
     }, [])
 
     return (
@@ -29,6 +24,21 @@ const Output = ({ navigation, route }) => {
             <PageTitle
                 onPress={() => navigation.navigate('BottomTabNavigation')}
             />
+            <>
+                {posts.length == 0 ? (
+                    <ActivityIndicator />
+                ) : (
+                    <FlatList
+                        data={posts}
+                        renderItem={ (item) =>  <PostCard content={item.item} /> }
+                        style={{
+                            paddingTop: SIZES.body3,
+                        }}
+                        // keyExtractor={(item) => item.id}
+                    />
+                )}
+            </>
+            {isLoading && posts.length > 0 ? <ActivityIndicator /> : null}
         </SafeAreaView>
     )
 }

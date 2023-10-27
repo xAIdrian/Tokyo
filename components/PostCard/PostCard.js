@@ -3,7 +3,8 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import images from '../../constants/images'
 import styles from './postcard.style.js'
 
-const PostCard = (name, content) => {
+const PostCard = (content) => {
+    
     const handleChange = (value) => {
         console.log(value)
     }
@@ -24,12 +25,12 @@ const PostCard = (name, content) => {
                     }}
                 />
                 <Text style={styles.title} numberOfLines={1}>
-                    {{ name }}
+                    Mrs. Expert Expertson
                 </Text>
             </View>
             <View style={styles.infoContainer}>
                 <Text style={styles.subtitle}>
-                    {{ content }}
+                    { content.content  }
                 </Text>
             </View>
         </View>

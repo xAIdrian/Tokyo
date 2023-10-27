@@ -4,6 +4,7 @@ import images from '../../constants/images'
 import styles from './profileheader.style.js'
 
 const ProfileHeader = () => {
+
     const handleChange = (value) => {
         console.log(value)
     }

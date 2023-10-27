@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h4,
     fontWeight: "bold",
     marginTop: SIZES.body5 / 1.5,
+    paddingStart: SIZES.body5 / 1.5,
   },
   infoContainer: {
     paddingTop: SIZES.body3,

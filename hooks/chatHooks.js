@@ -119,8 +119,8 @@ export const sendOneShotToServer = async () => {
         url: url,
         data: {
             questions: questionsArray,
-            answers: answersArray
-            // answers: samplesArray
+            // answers: answersArray
+            answers: samplesArray
         },
     }
 
