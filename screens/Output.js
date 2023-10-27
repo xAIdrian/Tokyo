@@ -37,7 +37,7 @@ const Output = ({ navigation, route }) => {
                         data={posts}
                         renderItem={(item) => <PostCard content={item.item} />}
                         style={{
-                            paddingTop: SIZES.body3,
+                            paddingBottom: SIZES.body3,
                         }}
                         keyExtractor={(item) => item.length}
                     />

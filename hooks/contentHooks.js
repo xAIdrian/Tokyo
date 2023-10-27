@@ -65,14 +65,15 @@ const getSubsetArrays = (questions, answers) => {
   const splitPoint = Math.floor(indices.length / 2);
 
   // Split the indices into two arrays
-  const firstHalfIndices = indices.slice(0, splitPoint);
-  const secondHalfIndices = indices.slice(splitPoint);
+  //TODO modify these for different results
+  const firstHalfIndices = indices.slice(0, 1);
+  const secondHalfIndices = indices.slice(1, 2);
 
   // Create two new arrays using the split indices
   const questionsFirstHalf = firstHalfIndices.map((index) => questions[index]);
-  const questionsSecondHalf = secondHalfIndices.map((index) => questions[index]);
-
   const answersFirstHalf = firstHalfIndices.map((index) => answers[index]);
+  
+  const questionsSecondHalf = secondHalfIndices.map((index) => questions[index]);
   const answersSecondHalf = secondHalfIndices.map((index) => answers[index]);
 
   return {
