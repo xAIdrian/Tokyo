@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.body3,
     ...SHADOWS.medium,
     shadowColor: COLORS.black,
+    paddingTop: SIZES.body3,
   },
   title: {
     fontSize: SIZES.h4,

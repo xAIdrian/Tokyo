@@ -20,14 +20,9 @@ export const sendManyToServer = () => {
 
   return new Observable(async (subscriber) => {
     subscriber.next(await sendOneShotToServer(allQuestions, allAnswers))
-
-    const firstHalfQuestions = allQuestions.slice(0, allQuestions.length / 2)
-    const firstHalfAnswers = allAnswers.slice(0, allAnswers.length / 2)
-    subscriber.next(await sendOneShotToServer(firstHalfQuestions, firstHalfAnswers))
-
-    const secondHalfQuestions = allQuestions.slice(allQuestions.length / 2, allQuestions.length)
-    const secondHalfAnswers = allAnswers.slice(allAnswers.length / 2, allAnswers.length)
-    subscriber.next(await sendOneShotToServer(secondHalfQuestions, secondHalfAnswers))
+    const { questionsFirstHalf, questionsSecondHalf, answersFirstHalf, answersSecondHalf } = getSubsetArrays(allQuestions, allAnswers);
+    subscriber.next(await sendOneShotToServer(questionsFirstHalf, answersFirstHalf))
+    subscriber.next(await sendOneShotToServer(questionsSecondHalf, answersSecondHalf))
 
     subscriber.complete()
   })
@@ -58,3 +53,40 @@ export const sendOneShotToServer = async (questions, answers) => {
         throw error
     }
 };
+
+const getSubsetArrays = (questions, answers) => {
+  //create an array of indices
+  const indices = Array.from({ length: questions.length }, (_, i) => i);
+
+  // Shuffle the indices to randomize the order
+  shuffleArray(indices);
+
+  // Calculate the split point (e.g., 50%)
+  const splitPoint = Math.floor(indices.length / 2);
+
+  // Split the indices into two arrays
+  const firstHalfIndices = indices.slice(0, splitPoint);
+  const secondHalfIndices = indices.slice(splitPoint);
+
+  // Create two new arrays using the split indices
+  const questionsFirstHalf = firstHalfIndices.map((index) => questions[index]);
+  const questionsSecondHalf = secondHalfIndices.map((index) => questions[index]);
+
+  const answersFirstHalf = firstHalfIndices.map((index) => answers[index]);
+  const answersSecondHalf = secondHalfIndices.map((index) => answers[index]);
+
+  return {
+    questionsFirstHalf,
+    questionsSecondHalf,
+    answersFirstHalf,
+    answersSecondHalf,
+  };
+};
+
+// Function to shuffle an array (Fisher-Yates algorithm)
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
