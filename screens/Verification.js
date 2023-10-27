@@ -69,4 +69,4 @@ const Verification = ({ navigation }) => {
     )
 }
 
-export default Verification
+export default Verification;

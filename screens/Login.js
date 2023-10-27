@@ -18,7 +18,7 @@ import { COLORS, SIZES, FONTS } from '../constants'
 import Button from '../components/Button'
 import PageTitle from '../components/PageTitle'
 
-export default function Login({ navigation }) {
+const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
     const handleSend = () => {
@@ -116,3 +116,5 @@ export default function Login({ navigation }) {
         </SafeAreaView>
     )
 }
+
+export default Login;

@@ -4,61 +4,37 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
-import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
-import { sendOneShotToServer, initMessage, audioMessage, questionCount, questionsArray, answersArray } from '../hooks/chatHooks'
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
+import {
+    initMessage,
+    audioMessage,
+    questionCount,
+    questionsArray,
+    answersArray,
+} from '../hooks/chatHooks'
+import { useActionSheet } from '@expo/react-native-action-sheet'
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
 import AudioBubble from '../components/AudioBubble/AudioBubble'
 import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
+import DetailDialog from '../components/DetailDialog/DetailDialog'
+import { Slider } from '@react-native-assets/slider'
+import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
 
 const PersonalChat = ({ navigation }) => {
-    const { showActionSheetWithOptions } = useActionSheet();
+    const { showActionSheetWithOptions } = useActionSheet()
 
-    const [messages, setMessages] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestion] = useState(1);
+    const [messages, setMessages] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [currentQuestionIndex, setCurrentQuestion] = useState(1)
+    const [isPopupVisible, setIsPopupVisible] = useState(false)
+    const [isCountingDown, setIsCountingDown] = useState(false)
 
-    useEffect(async () => {
+    useEffect(() => {
         setMessages(initMessage)
-        answersArray.length = 0;
-        setCurrentQuestion(1);
-        
+        answersArray.length = 0
+        setCurrentQuestion(1)
     }, [])
-
-    const handleAudioRecording = useCallback((data) => { 
-        onSend(audioMessage(data));
-    });
-
-    const showOptions = useCallback(() => {
-        const options = [
-            'Redo Last Recording',
-            'Skip This Question',
-            'Remind Me Later',
-            'Speaker Notes',
-            'Cancel'
-        ];
-        const cancelButtonIndex = 4;
-      
-        showActionSheetWithOptions(
-          {
-            options,
-            cancelButtonIndex,
-            title: 'What would you like to do?',
-            // message: 'Select an option from below:',
-            destructiveButtonIndex: 3, // Index of the destructive option (if needed)
-            tintColor: 'red', // Color of the Cancel button text
-          },
-          (buttonIndex) => {
-            // Handle the selected option
-            if (buttonIndex === 0) {
-              // Option 1 selected
-            } else if (buttonIndex === 1) {
-              // Option 2 selected
-            }
-          }
-        );
-    }, [showActionSheetWithOptions]);
 
     /**
      * Called after every time messages object is updated.
@@ -68,72 +44,144 @@ const PersonalChat = ({ navigation }) => {
     //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
     // }, [messages])
 
-    const onSend = useCallback(async (newMessage = []) => {
-        console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", newMessage)
+    const handleTimerStart = useCallback(() => {
 
-        answersArray.push(newMessage[0].text);
-        setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage));
+    })
 
-        if (currentQuestionIndex <= questionCount) {
-            
-            if (currentQuestionIndex === questionCount) {
-                setIsLoading(true);
-                const content = await sendOneShotToServer();
-                setIsLoading(false);
-                if (content !== undefined && content !== '') {
-                    setMessages(previousMessages => GiftedChat.append(previousMessages, {
-                        _id: generateUUID(),
-                        text: content,
-                        user: {
-                            _id: 2,
-                            name: 'React Native',
-                            avatar: images.icon,
-                        }
-                    }));
-                } else {
-                    console.log("🔥 ~ file: PersonalChat.js:59 ~ onSend ~ content:", content)
+    const handleAudioRecording = useCallback((data) => {
+        setIsCountingDown(false)
+        onSend(audioMessage(data))
+    })
+
+    const showOptions = useCallback(() => {
+        const options = [
+            'Redo Last Recording',
+            'Skip This Question',
+            'Remind Me Later',
+            'Speaker Notes',
+            'Cancel',
+        ]
+        const cancelButtonIndex = 4
+
+        showActionSheetWithOptions(
+            {
+                options,
+                cancelButtonIndex,
+                title: 'What would you like to do?',
+                // message: 'Select an option from below:',
+                destructiveButtonIndex: 3, // Index of the destructive option (if needed)
+                tintColor: 'red', // Color of the Cancel button text
+            },
+            (buttonIndex) => {
+                // Handle the selected option
+                if (buttonIndex === 0) {
+                    // Option 1 selected
+                    setIsPopupVisible(true)
+                } else if (buttonIndex === 1) {
+                    // Option 2 selected
                 }
-                return;
             }
+        )
+    }, [showActionSheetWithOptions])
 
-            //still questions to ask
-            setMessages(previousMessages => GiftedChat.append(previousMessages, {
-                _id: generateUUID(),
-                text: questionsArray[currentQuestionIndex],
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: images.icon,
+    const onQuickReply = useCallback((quickReply) => {
+        switch (quickReply[0].value) {
+            case 'more_info':
+                setIsPopupVisible(true)
+                break
+            case 'examples':
+                setIsPopupVisible(true)
+                break
+            case 'edit':
+                break
+            case 'generate':
+                setIsPopupVisible(true)
+                break
+            default:
+                // Do something if the value doesn't match any of the cases
+                break
+        }
+    })
+
+    const onSend = useCallback(
+        async (newMessage = []) => {
+            console.log(
+                '🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:',
+                newMessage
+            )
+
+            answersArray.push(newMessage[0].text)
+            setMessages((previousMessages) =>
+                GiftedChat.append(previousMessages, newMessage)
+            )
+
+            if (currentQuestionIndex <= questionCount) {
+                if (currentQuestionIndex === questionCount) {
+                    setMessages((previousMessages) =>
+                        GiftedChat.append(previousMessages, {
+                            _id: generateUUID(),
+                            text: "We have everything we need and we're ready to write your content\n\nAre you satisfied with your answers?",
+                            user: {
+                                _id: 2,
+                                name: 'React Native',
+                                avatar: images.icon,
+                            },
+                            quickReplies: {
+                                type: 'radio', // or 'checkbox',
+                                // keepIt: true,
+                                values: [
+                                    {
+                                        title: '❌ Make edits',
+                                        value: 'edit',
+                                    },
+                                    {
+                                        title: '✅ Create content!',
+                                        value: 'generate',
+                                    },
+                                ],
+                            },
+                        })
+                    )
+                    return
                 }
-            }));
-            setCurrentQuestion(currentQuestionIndex + 1);
-        } 
-        // const responseResult = await sendMessageToServer(sendMessages, 'The Myth Buster');
 
-        // if (responseResult !== undefined) {
-        //     setMessages(previousMessages =>
-        //         GiftedChat.append(previousMessages, {
-        //             ...responseResult[responseResult.length - 1],
-        //             quickReplies: responseResult[responseResult.length - 1].role === 'user' ? null : {
-        //                 type: 'radio', // or 'checkbox',
-        //                 // keepIt: true,
-        //                 values: [
-        //                   {
-        //                     title: 'Examples',
-        //                     value: 'examples',
-        //                   },
-        //                   {
-        //                     title: 'Learn More',
-        //                     value: 'more_info',
-        //                   }
-        //                 ],
-        //               },
-        //         }),
-        //     )
-        // } else {
-        //     alert('There is an error')
-        // }
-    }, [currentQuestionIndex, messages]);
+                //still questions to ask, let's make them wait a little bit though
+                setTimeout(() => {
+                    setMessages((previousMessages) =>
+                        GiftedChat.append(previousMessages, {
+                            _id: generateUUID(),
+                            text: questionsArray[currentQuestionIndex],
+                            user: {
+                                _id: 2,
+                                name: 'React Native',
+                                avatar: images.icon,
+                            },
+                            quickReplies: {
+                                type: 'radio', // or 'checkbox',
+                                // keepIt: true,
+                                values: [
+                                    {
+                                        title: 'Examples',
+                                        value: 'examples',
+                                    },
+                                    {
+                                        title: 'Learn More',
+                                        value: 'more_info',
+                                    },
+                                ],
+                            },
+                        })
+                    )
+                    setCurrentQuestion(currentQuestionIndex + 1)
+                }, 1000)
+            }
+        },
+        [currentQuestionIndex, messages]
+    )
+
+    const renderInputToolbar = (props) => {
+        return !isCountingDown ? <InputToolbar {...props} containerStyle={{ backgroundColor: COLORS.tertiaryWhite }} /> : <CountdownProgressBar />
+    }
 
     // change button of send
     const renderSend = (props) => {
@@ -161,26 +209,31 @@ const PersonalChat = ({ navigation }) => {
     const renderBubble = (props) => {
         return (
             <>
-                {
-                    props.currentMessage.user._id === 2 || props.currentMessage.audioFileLocation === undefined ? (
-                        <Bubble
-                            {...props}
-                            wrapperStyle={{
-                                left: {
-                                    backgroundColor: COLORS.tertiaryWhite,
-                                },
-                                right: {
-                                    backgroundColor: COLORS.primary,
-                                },
-                            }}
-                            textStyle={{
-                                right: {
-                                    color: COLORS.white,
-                                },
-                            }}
-                        />
-                    ): ( <AudioBubble playFileLocation={ props.currentMessage.audioFileLocation } /> )
-                }
+                {props.currentMessage.user._id === 2 ||
+                props.currentMessage.audioFileLocation === undefined ? (
+                    <Bubble
+                        {...props}
+                        wrapperStyle={{
+                            left: {
+                                backgroundColor: COLORS.tertiaryWhite,
+                            },
+                            right: {
+                                backgroundColor: COLORS.primary,
+                            },
+                        }}
+                        textStyle={{
+                            right: {
+                                color: COLORS.white,
+                            },
+                        }}
+                    />
+                ) : (
+                    <AudioBubble
+                        playFileLocation={
+                            props.currentMessage.audioFileLocation
+                        }
+                    />
+                )}
             </>
         )
     }
@@ -190,57 +243,90 @@ const PersonalChat = ({ navigation }) => {
             <StatusBar style="light" backgroundColor={COLORS.white} />
             <View
                 style={{
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'space-between',
-                    paddingHorizontal: 22,
                     backgroundColor: COLORS.tertiaryWhite,
-                    height: 60,
                 }}
             >
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 8,
+                        height: 60,
                     }}
                 >
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('BottomTabNavigation')}
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
                     >
-                        <MaterialIcons
-                            name="keyboard-arrow-left"
-                            size={24}
-                            color={COLORS.black}
-                        />
-                    </TouchableOpacity>
-                    <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                        The Myth Buster
-                    </Text>
-                </View>
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.navigate('BottomTabNavigation')
+                            }
+                        >
+                            <MaterialIcons
+                                name="keyboard-arrow-left"
+                                size={24}
+                                color={COLORS.black}
+                            />
+                        </TouchableOpacity>
+                        <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
+                            The Myth Buster
+                        </Text>
+                    </View>
 
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => console.log('Menu')}
+                            style={{
+                                marginRight: 8,
+                            }}
+                        >
+                            <MaterialIcons
+                                name="menu"
+                                size={24}
+                                color={COLORS.black}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <View
                     style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 16,
+                        paddingBottom: 8,
                     }}
                 >
-                    <TouchableOpacity
-                        onPress={() => console.log('Menu')}
+                    <Slider
+                        minimumValue={0}
+                        maximumValue={100}
+                        step={1}
+                        enabled={false}
+                        value={(100 / questionCount) * currentQuestionIndex}
+                        thumbTintColor={COLORS.primary}
                         style={{
-                            marginRight: 8,
+                            width: '70%',
                         }}
-                    >
-                        <MaterialIcons
-                            name="menu"
-                            size={24}
-                            color={COLORS.black}
-                        />
-                    </TouchableOpacity>
+                    />
+                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>
+                        Question {currentQuestionIndex} of {questionCount} 
+                    </Text>
                 </View>
             </View>
 
             <GiftedChat
                 messages={messages}
-                onSend={ messages => onSend(messages) }
+                onSend={(messages) => onSend(messages)}
+                onQuickReply={(selected) => onQuickReply(selected)}
                 user={{
                     _id: 1,
                 }}
@@ -252,16 +338,34 @@ const PersonalChat = ({ navigation }) => {
                     paddingHorizontal: 12,
                 }}
                 scrollToBottom
-                renderBubble={ renderBubble }
-                renderSend={renderSend} 
-                renderLoading={() =>  <ActivityIndicator size="large" color="#0000ff" />}
+                renderBubble={renderBubble}
+                renderSend={renderSend}
+                renderInputToolbar={renderInputToolbar}
+                renderLoading={() => (
+                    <ActivityIndicator size="large" color="#0000ff" />
+                )}
+            />
+            
+            <AudioRecorder
+                recordingStarted={() => setIsCountingDown(true)}
+                recordingConfirmed={handleAudioRecording}
+                moreOptionsClick={showOptions}
+                onUploadError={(error) => alert(error)}
+                isParentLoading={isLoading}
             />
 
-            <AudioRecorder
-                recordingConfirmed={ handleAudioRecording }
-                moreOptionsClick={ showOptions }
-                onUploadError={(error) => alert(error)}
-                isParentLoading={ isLoading }
+            <DetailDialog
+                isVisible={isPopupVisible}
+                title="We have what we need here"
+                content="Are you sure you are ready to create content?"
+                cancelText="Edit"
+                confirmText="Get Posts"
+                cancelAction={() => {
+                    setIsPopupVisible(false)
+                }}
+                confirmAction={() => {
+                    navigation.navigate('Output', { answers: answersArray })
+                }}
             />
         </SafeAreaView>
     )

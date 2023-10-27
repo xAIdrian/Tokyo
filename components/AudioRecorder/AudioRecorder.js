@@ -7,6 +7,7 @@ import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 
 const AudioRecorder = ({
+  recordingStarted,
   recordingConfirmed,
   moreOptionsClick,
   onUploadError,
@@ -57,9 +58,10 @@ const AudioRecorder = ({
           playsInSilentModeIOS: true
         })
       }
+      console.log('Starting Recording')
+      recordingStarted();
 
       const newRecording = new Audio.Recording();
-      console.log('Starting Recording')
       await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
       await newRecording.startAsync();
       setRecording(newRecording);

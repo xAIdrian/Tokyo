@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, COLORS, SIZES, FONTS } from '../constants'
 import Button from '../components/Button'
 
-export default function Walkthrough({ navigation }) {
+const Walkthrough = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <PageContainer>
@@ -69,3 +69,4 @@ export default function Walkthrough({ navigation }) {
         </SafeAreaView>
     )
 }
+export default Walkthrough;

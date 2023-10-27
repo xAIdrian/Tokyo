@@ -109,34 +109,6 @@ export const sendBackAndForth = async (messages, framework) => {
     }
 }
 
-export const sendOneShotToServer = async () => {
-    console.log("❓ ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ sendOneShotToServer:", questionsArray)
-    console.log("📣 ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ sendOneShotToServer:", answersArray)
- 
-    const url = 'http://localhost:3000/api/v3/writer/oneshot'
-    const options = {
-        method: 'POST',
-        url: url,
-        data: {
-            questions: questionsArray,
-            answers: answersArray
-            // answers: samplesArray
-        },
-    }
-
-    try {
-        const response = await axios.request(options)
-        console.log("🚀 ~ file: chatHooks.js:130 ~ sendOneShotToServer ~ response.data:", response.data)
-        if (response.data.message == 'success') {
-            return response.data.result
-        } else {
-            return '';
-        }
-    } catch (error) {
-        throw error
-    }
-};
-
 const useFetch = (endpoint, query) => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
