@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
-import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat'
+import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import {
     initMessage,
     audioMessage,
@@ -19,6 +19,7 @@ import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
+import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet()
@@ -27,6 +28,7 @@ const PersonalChat = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [currentQuestionIndex, setCurrentQuestion] = useState(1)
     const [isPopupVisible, setIsPopupVisible] = useState(false)
+    const [isCountingDown, setIsCountingDown] = useState(false)
 
     useEffect(() => {
         setMessages(initMessage)
@@ -42,7 +44,12 @@ const PersonalChat = ({ navigation }) => {
     //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
     // }, [messages])
 
+    const handleTimerStart = useCallback(() => {
+
+    })
+
     const handleAudioRecording = useCallback((data) => {
+        setIsCountingDown(false)
         onSend(audioMessage(data))
     })
 
@@ -170,6 +177,14 @@ const PersonalChat = ({ navigation }) => {
         [currentQuestionIndex, messages]
     )
 
+    const renderInputToolbar = (props) => {
+        return !isCountingDown ? <InputToolbar {...props} containerStyle={{ backgroundColor: COLORS.tertiaryWhite }} /> : <CountdownProgressBar 
+            handleTimerEnd={() => {
+                setIsCountingDown(false)
+            }}
+        />
+    }
+
     // change button of send
     const renderSend = (props) => {
         return (
@@ -239,7 +254,7 @@ const PersonalChat = ({ navigation }) => {
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        paddingHorizontal: 24,
+                        paddingHorizontal: 8,
                         height: 60,
                     }}
                 >
@@ -289,7 +304,7 @@ const PersonalChat = ({ navigation }) => {
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        paddingHorizontal: 24,
+                        paddingHorizontal: 16,
                         paddingBottom: 8,
                     }}
                 >
@@ -301,11 +316,11 @@ const PersonalChat = ({ navigation }) => {
                         value={(100 / questionCount) * currentQuestionIndex}
                         thumbTintColor={COLORS.primary}
                         style={{
-                            width: '80%',
+                            width: '70%',
                         }}
                     />
                     <Text style={{ ...FONTS.body4, color: COLORS.primary }}>
-                        {currentQuestionIndex} of {questionCount}
+                        Question {currentQuestionIndex} of {questionCount} 
                     </Text>
                 </View>
             </View>
@@ -327,12 +342,14 @@ const PersonalChat = ({ navigation }) => {
                 scrollToBottom
                 renderBubble={renderBubble}
                 renderSend={renderSend}
+                renderInputToolbar={renderInputToolbar}
                 renderLoading={() => (
                     <ActivityIndicator size="large" color="#0000ff" />
                 )}
             />
-
+            
             <AudioRecorder
+                recordingStarted={() => setIsCountingDown(true)}
                 recordingConfirmed={handleAudioRecording}
                 moreOptionsClick={showOptions}
                 onUploadError={(error) => alert(error)}
