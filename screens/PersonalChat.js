@@ -87,8 +87,10 @@ const PersonalChat = ({ navigation }) => {
     const onQuickReply = useCallback((quickReply) => {
         switch (quickReply[0].value) {
             case 'more_info':
+                setIsPopupVisible(true)
                 break
             case 'examples':
+                setIsPopupVisible(true)
                 break
             case 'edit':
                 break
@@ -178,11 +180,7 @@ const PersonalChat = ({ navigation }) => {
     )
 
     const renderInputToolbar = (props) => {
-        return !isCountingDown ? <InputToolbar {...props} containerStyle={{ backgroundColor: COLORS.tertiaryWhite }} /> : <CountdownProgressBar 
-            handleTimerEnd={() => {
-                setIsCountingDown(false)
-            }}
-        />
+        return !isCountingDown ? <InputToolbar {...props} containerStyle={{ backgroundColor: COLORS.tertiaryWhite }} /> : <CountdownProgressBar />
     }
 
     // change button of send
