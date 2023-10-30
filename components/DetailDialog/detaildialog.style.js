@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   dialogContainer: {
     width: '75%',
-    height: '40%',
+    height: '50%',
     backgroundColor: '#fff',
     borderRadius: 8,
     overflow: 'hidden',

@@ -28,12 +28,38 @@ const PersonalChat = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [currentQuestionIndex, setCurrentQuestion] = useState(1)
     const [isPopupVisible, setIsPopupVisible] = useState(false)
+    const [popupContent, setPopupContent] = useState({})
     const [isCountingDown, setIsCountingDown] = useState(false)
+
+    useEffect(() => {
+        if (!isPopupVisible) {
+            console.log("🚀 ~ file: PersonalChat.js:36 ~ useEffect ~ isPopupVisible:", isPopupVisible)
+            setIsPopupVisible(true)
+        }
+    }, [popupContent])
 
     useEffect(() => {
         setMessages(initMessage)
         answersArray.length = 0
         setCurrentQuestion(1)
+
+        setPopupContent({
+            title: "It's a pleasure to meet you.",
+            content: `Hey there 👋, 
+I am the Conception Buster.
+
+I help you create engaging content that dissects,debunks and re-frames a common misconception/belief or thought in your audience, by asking you a few simple questions. 
+            
+There are 9 questions in total.
+
+Just tap the microphone button to start recording your answer.
+            
+Ready to go?`,
+            cancelText: "",
+            confirmText: "Start Interview",
+            confirmAction : () => { setIsPopupVisible(false) }
+        })
+        // setIsPopupVisible(true)
     }, [])
 
     /**
@@ -274,7 +300,7 @@ const PersonalChat = ({ navigation }) => {
                             />
                         </TouchableOpacity>
                         <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                            The Myth Buster
+                            The Conception Buster
                         </Text>
                     </View>
 
@@ -355,17 +381,13 @@ const PersonalChat = ({ navigation }) => {
             />
 
             <DetailDialog
-                isVisible={isPopupVisible}
-                title="We have what we need here"
-                content="Are you sure you are ready to create content?"
-                cancelText="Edit"
-                confirmText="Get Posts"
-                cancelAction={() => {
-                    setIsPopupVisible(false)
-                }}
-                confirmAction={() => {
-                    navigation.navigate('Output', { answers: answersArray })
-                }}
+                isVisible={ isPopupVisible }
+                title= { popupContent.title }
+                content= { popupContent.content }
+                cancelText= { popupContent.cancelText }
+                confirmText= { popupContent.confirmText }
+                cancelAction= { popupContent.cancelAction }
+                confirmAction= { popupContent.confirmAction }
             />
         </SafeAreaView>
     )
