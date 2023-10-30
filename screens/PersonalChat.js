@@ -113,10 +113,22 @@ Ready to go?`,
     const onQuickReply = useCallback((quickReply) => {
         switch (quickReply[0].value) {
             case 'more_info':
-                setIsPopupVisible(true)
+                setPopupContent({
+                    title: "More Info",
+                    content: questionsArray[currentQuestionIndex - 1].explanation,
+                    cancelText: "",
+                    confirmText: "Done",
+                    confirmAction : () => { setIsPopupVisible(false) }
+                })
                 break
             case 'examples':
-                setIsPopupVisible(true)
+                setPopupContent({
+                    title: "Example Answer",
+                    content: questionsArray[currentQuestionIndex].example,
+                    cancelText: "",
+                    confirmText: "Done",
+                    confirmAction : () => { setIsPopupVisible(false) }
+                })
                 break
             case 'edit':
                 break
@@ -176,7 +188,7 @@ Ready to go?`,
                     setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
-                            text: questionsArray[currentQuestionIndex],
+                            text: questionsArray[currentQuestionIndex].text,
                             user: {
                                 _id: 2,
                                 name: 'React Native',
@@ -187,7 +199,7 @@ Ready to go?`,
                                 // keepIt: true,
                                 values: [
                                     {
-                                        title: 'Examples',
+                                        title: 'Example',
                                         value: 'examples',
                                     },
                                     {
