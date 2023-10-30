@@ -101,7 +101,14 @@ Ready to go?`,
                 // Handle the selected option
                 if (buttonIndex === 0) {
                     // Option 1 selected
-                    setIsPopupVisible(true)
+                    setPopupContent({
+                        title: "Are you sure?",
+                        content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
+                        cancelText: "Go Back",
+                        confirmText: "Get my posts.",
+                        cancelAction : () => { setIsPopupVisible(false) },
+                        confirmAction : () => { navigation.navigate('Output') }
+                    })
                 } else if (buttonIndex === 1) {
                     // Option 2 selected
                 }
@@ -132,7 +139,14 @@ Ready to go?`,
             case 'edit':
                 break
             case 'generate':
-                setIsPopupVisible(true)
+                setPopupContent({
+                    title: "Are you sure?",
+                    content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
+                    cancelText: "Go Back",
+                    confirmText: "Get my posts.",
+                    cancelAction : () => { setIsPopupVisible(false) },
+                    confirmAction : () => { navigation.navigate('Output') }
+                })
                 break
             default:
                 // Do something if the value doesn't match any of the cases

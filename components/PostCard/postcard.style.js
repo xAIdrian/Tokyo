@@ -36,9 +36,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     textAlign: "center",
     color: COLORS.primary,
-    paddingVertical: SIZES.body3,
+    paddingVertical: 8,
     marginTop: SIZES.body3,
     borderRadius: SIZES.body3,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    fontSize: SIZES.body2,
   },
 });
 
