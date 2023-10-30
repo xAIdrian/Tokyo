@@ -33,7 +33,6 @@ const PersonalChat = ({ navigation }) => {
 
     useEffect(() => {
         if (!isPopupVisible) {
-            console.log("🚀 ~ file: PersonalChat.js:36 ~ useEffect ~ isPopupVisible:", isPopupVisible)
             setIsPopupVisible(true)
         }
     }, [popupContent])
@@ -218,7 +217,14 @@ Ready to go?`,
     )
 
     const renderInputToolbar = (props) => {
-        return !isCountingDown ? <InputToolbar {...props} containerStyle={{ backgroundColor: COLORS.tertiaryWhite }} /> : <CountdownProgressBar />
+        return !isCountingDown ? 
+            <InputToolbar {...props} 
+                containerStyle={{ 
+                    backgroundColor: COLORS.tertiaryWhite,
+                    justifyContent: 'center',
+                    height: 50, 
+                }} /> 
+            : <CountdownProgressBar />
     }
 
     // change button of send
@@ -385,7 +391,7 @@ Ready to go?`,
             />
             
             <AudioRecorder
-                recordingStarted={() => setIsCountingDown(true)}
+                isRecording={(isRecording) => setIsCountingDown(isRecording)}
                 recordingConfirmed={handleAudioRecording}
                 moreOptionsClick={showOptions}
                 onUploadError={(error) => alert(error)}

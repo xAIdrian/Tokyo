@@ -14,7 +14,7 @@ import generateUUID from '../utils/StringUtils'
 
 export const questionsArray = [
     {
-        text: 'Please state a common mistake/ limiting belief/ misinformation that your audience seems to have.',
+        text: 'Please state a common mistake/ limiting belief / misinformation that your audience seems to have.',
         explanation:
             'This could be a statement that your audience is repeating that’s absolutely not true, or a belief that they have about themselves or about something external that is wrong.\n\nRemember it could be a belief, a thought, a misconception, behavior.\n\nSomething that makes you think “wow they got this totally wrong"',
         example:
