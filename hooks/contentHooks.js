@@ -32,7 +32,7 @@ export const sendOneShotToServer = async (questions, answers) => {
     console.log("❓ ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ sendOneShotToServer:", questions)
     console.log("📣 ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ sendOneShotToServer:", answers)
  
-    const url = 'http://localhost:3000/api/v3/writer/oneshot'
+    const url = 'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/oneshot'
     const options = {
         method: 'POST',
         url: url,

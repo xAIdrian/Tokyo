@@ -73,7 +73,7 @@ export const audioMessage = (audioFile) => {
 
 export const sendBackAndForth = async (messages, framework) => {
     console.log("🚀 ~ file: chatHooks.js:42 ~ sendMessageToServer ~ messages:", messages)
-    const url = 'http://localhost:3000/api/v3/writer'
+    const url = 'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer'
     const options = {
         method: 'POST',
         url: url,

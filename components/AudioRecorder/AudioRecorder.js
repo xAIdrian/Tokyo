@@ -84,7 +84,7 @@ const AudioRecorder = ({
 
         // Send the recording to the server for transcription
         FileSystem.uploadAsync(
-          'http://localhost:3000/api/v3/writer/transcript',
+          'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/transcript',
           recordingUri,
           {
             headers: {

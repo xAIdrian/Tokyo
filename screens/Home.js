@@ -72,7 +72,7 @@ const Home = ({ navigation }) => {
                             marginVertical: 12,
                         }}
                     >
-                        Welcome to Yonni 👋
+                        Welcome to OutPost 🏕
                     </Text>
                     <Text
                         style={{
@@ -93,7 +93,9 @@ const Home = ({ navigation }) => {
                     </Text>
                     <FlatList
                         data={[1]}
-                        renderItem={({ item }) => <FrameworkCard />}
+                        renderItem={({ item }) => <FrameworkCard 
+                            onContinueInterviewPress = {() => navigation.navigate('PersonalChat')}
+                        />}
                         // keyExtractor={ item => item?.job_id }
                         contentContainerStyle={{ columnGap: SIZES.body3 }}
                         horizontal

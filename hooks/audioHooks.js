@@ -17,7 +17,7 @@ export const sendAudioForTranscript = async (audioUri) => {
   const formData = new FormData()
   formData.append('audio', audioUri)
 
-  const url = 'http://localhost:3000/api/v3/writer/transcript'
+  const url = 'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/transcript'
   const options = {
     method: 'POST',
     url: url,

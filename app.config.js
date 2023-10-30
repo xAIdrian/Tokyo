@@ -1,11 +1,11 @@
 import 'dotenv/config';
 export default {
     "expo": {
-        "name": "Tokyo",
-        "slug": "Tokyo",
-        "version": "1.0.0",
+        "name": "OutPost",
+        "slug": "OutPost",
+        "version": process.env.PROJECT_VERSION || "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/images/icon.png",
+        "icon": "./assets/images/tent.png",
         "userInterfaceStyle": "light",
         "splash": {
             "image": "./assets/images/splash.png",
@@ -14,16 +14,18 @@ export default {
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/tent.png",
+            }
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./assets/images/icon.png",
-                "backgroundColor": "#ffffff"
+                "foregroundImage": "./assets/images/tent.png",
             }
         },
         "web": {
-            "favicon": "./assets/favicon.png"
+            "favicon": "./assets/images/tent.png"
         },
         extra: {
             apiKey: process.env.API_KEY,

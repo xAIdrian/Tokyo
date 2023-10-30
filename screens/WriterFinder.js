@@ -50,9 +50,11 @@ const WriterFinder = ({ navigation }) => {
                   Swipe right to start your interview
                 </Text>
                 <TinderCards onCardAction={
-                    () => {
-                        console.log('Card action')
-                        navigation.navigate('PersonalChat')
+                    (itemName) => {
+                        if (itemName == 'The Conception Buster') {
+                            console.log('Card action')
+                            navigation.navigate('PersonalChat')
+                        }
                     }
                 } />
             </PageContainer>
