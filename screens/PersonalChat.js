@@ -49,7 +49,7 @@ I am the Conception Buster.
 
 I help you create engaging content that dissects,debunks and re-frames a common misconception/belief or thought in your audience, by asking you a few simple questions. 
             
-There are 9 questions in total.
+There are 9 questions in total. You will have 40 seconds to answer each question.
 
 Just tap the microphone button to start recording your answer.
             
@@ -107,7 +107,10 @@ Ready to go?`,
                         cancelText: "Go Back",
                         confirmText: "Get my posts.",
                         cancelAction : () => { setIsPopupVisible(false) },
-                        confirmAction : () => { navigation.navigate('Output') }
+                        confirmAction : () => { 
+                            setIsPopupVisible(false)
+                            navigation.navigate('Output') 
+                        }
                     })
                 } else if (buttonIndex === 1) {
                     // Option 2 selected
@@ -145,7 +148,10 @@ Ready to go?`,
                     cancelText: "Go Back",
                     confirmText: "Get my posts.",
                     cancelAction : () => { setIsPopupVisible(false) },
-                    confirmAction : () => { navigation.navigate('Output') }
+                    confirmAction : () => { 
+                        setIsPopupVisible(false)
+                        navigation.navigate('Output') 
+                    }
                 })
                 break
             default:

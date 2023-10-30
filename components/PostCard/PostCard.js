@@ -49,7 +49,7 @@ const PostCard = (content) => {
                 <TouchableOpacity
                     onPress={ onShare }
                 >
-                    <Text>
+                    <Text style={styles.selecter}>
                         Post to Social
                     </Text>
                 </TouchableOpacity>
