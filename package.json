@@ -1,5 +1,5 @@
 {
-    "name": "chateo",
+    "name": "outpost",
     "version": "1.0.0",
     "main": "node_modules/expo/AppEntry.js",
     "scripts": {
@@ -44,6 +44,11 @@
         "eslint": "^8.38.0",
         "eslint-config-prettier": "^8.8.0",
         "prettier": "^2.8.7"
+    },
+    "overrides": {
+        "expo-modules-autolinking": "~1.1.0",
+        "@expo/config-plugins": "~6.0.0",
+        "@expo/prebuild-config": "~6.0.0"
     },
     "private": true
 }

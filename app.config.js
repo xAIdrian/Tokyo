@@ -15,9 +15,7 @@ export default {
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/images/tent.png",
-            }
+            "bundleIdentifier": "com.outpost.app"
         },
         "android": {
             "adaptiveIcon": {
@@ -28,6 +26,9 @@ export default {
             "favicon": "./assets/images/tent.png"
         },
         extra: {
+            "eas": {
+                "projectId": "bcc26948-2941-4e7d-a3ee-26d14b6d7fff"
+            },
             apiKey: process.env.API_KEY,
             authDomain: process.env.AUTH_DOMAIN,
             databaseURL: process.env.DATABASE_URL,

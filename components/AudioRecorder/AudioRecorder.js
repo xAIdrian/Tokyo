@@ -44,7 +44,6 @@ const AudioRecorder = ({
   }, []);
 
   useEffect(() => {
-    console.log("🚀 ~ file: AudioRecorder.js:47 ~ useEffect ~ useEffect:", recording)
     isRecording(recording)
   }, [recording]);
 
