@@ -12,9 +12,17 @@
                 "simulator": true
             }
         },
-        "preview2": {
+        "internal": {
+            "env": {
+                "APP_ICON": "./assets/images/icon.png",
+                "APP_NAME": "OutPost (Preview)"
+            },
             "android": {
-                "gradleCommand": ":app:assembleRelease"
+                "gradleCommand": ":app:assembleRelease",
+                "buildType": "apk"
+            },
+            "ios": {
+                "distribution": "internal"
             }
         },
         "preview3": {

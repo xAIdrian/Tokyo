@@ -15,7 +15,8 @@ export default {
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.outpost.app"
+            "bundleIdentifier": "com.outpost.app",
+            "bitcode": false 
         },
         "android": {
             "adaptiveIcon": {
