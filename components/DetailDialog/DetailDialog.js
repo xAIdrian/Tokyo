@@ -28,12 +28,16 @@ const DetailDialog = ({
       </DialogContent>
 
       <DialogFooter style={styles.dialogFooterContainer}>
-        <DialogButton
-          style={styles.dialogButtonContainer}
-          textStyle={styles.dialogButtonText}
-          text= { cancelText }
-          onPress={ cancelAction }
-        />
+        {
+          cancelText === '' ?
+          <View /> :
+          <DialogButton
+            style={styles.dialogButtonContainer}
+            textStyle={styles.dialogButtonText}
+            text= { cancelText }
+            onPress={ cancelAction }
+          />
+        }
         <DialogButton
           style={styles.dialogButtonContainer}
           textStyle={styles.dialogButtonText}

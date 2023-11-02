@@ -2,8 +2,8 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { COLORS, FONTS } from '../constants'
-import { Chats, Interviews, More, Home, WriterFinder } from '../screens'
-import { FontAwesome, Feather, Ionicons } from '@expo/vector-icons'
+import { More, Home, WriterFinder } from '../screens'
+import { Feather } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator()
 
@@ -128,8 +128,8 @@ const BottomTabNavigation = () => {
             />
 
             <Tab.Screen
-                name="History"
-                component={Interviews}
+                name="Zoom"
+                component={ Home }
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
@@ -152,7 +152,7 @@ const BottomTabNavigation = () => {
                                                 color: COLORS.secondary,
                                             }}
                                         >
-                                            History
+                                            Zoom
                                         </Text>
                                     </>
                                 ) : (
@@ -168,7 +168,7 @@ const BottomTabNavigation = () => {
                                                 color: COLORS.primary,
                                             }}
                                         >
-                                            History
+                                            Zoom
                                         </Text>
                                     </>
                                 )}

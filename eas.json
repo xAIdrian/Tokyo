@@ -1,8 +1,15 @@
 {
     "build": {
         "preview": {
+            "env": {
+                "APP_ICON": "./assets/images/icon.png",
+                "APP_NAME": "OutPost (Preview)"
+            },
             "android": {
                 "buildType": "apk"
+            },
+            "ios": {
+                "simulator": true
             }
         },
         "preview2": {
@@ -13,6 +20,11 @@
         "preview3": {
             "developmentClient": true
         },
-        "production": {}
+        "test": {
+
+        },
+        "production": {
+            
+        }
     }
 }

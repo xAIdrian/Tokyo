@@ -7,7 +7,7 @@ import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 
 const AudioRecorder = ({
-  recordingStarted,
+  isRecording,
   recordingConfirmed,
   moreOptionsClick,
   onUploadError,
@@ -43,6 +43,10 @@ const AudioRecorder = ({
     };
   }, []);
 
+  useEffect(() => {
+    isRecording(recording)
+  }, [recording]);
+
   // Whenever audioPermission or isLoading changes, this is called
   useEffect(() => {
     setIsDisabled(!audioPermission || isLoading || isParentLoading);
@@ -59,7 +63,6 @@ const AudioRecorder = ({
         })
       }
       console.log('Starting Recording')
-      recordingStarted();
 
       const newRecording = new Audio.Recording();
       await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
@@ -84,7 +87,7 @@ const AudioRecorder = ({
 
         // Send the recording to the server for transcription
         FileSystem.uploadAsync(
-          'http://localhost:3000/api/v3/writer/transcript',
+          'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/transcript',
           recordingUri,
           {
             headers: {

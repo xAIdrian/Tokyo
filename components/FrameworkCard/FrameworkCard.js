@@ -4,7 +4,9 @@ import { Slider } from '@react-native-assets/slider'
 import { SIZES, COLORS, SHADOWS } from "../../constants/theme";
 import styles from './frameworkcard.style.js';
 
-const FrameworkCard = () => {
+const FrameworkCard = ({
+  onContinueInterviewPress
+}) => {
   const handleChange = (value) => {
     console.log(value);
   };
@@ -17,27 +19,30 @@ const FrameworkCard = () => {
         style={ styles.title }
         numberOfLines={ 1 }
       >
-        Truth vs Trend
+        The Conception Buster
       </Text>
       <View style={ styles.infoContainer }>
         <Text 
           style={ styles.subtitle }
           numberOfLines={ 1 }
         >
-          Addressing alternatives
+          I help you create engaging content that dissects,debunks and re-frames a common misconception your audience has.
+
         </Text>
         <Text style={ styles.info }>
-          60% complete
+          14% complete
         </Text>
         <Slider
           minimumValue={0}
           maximumValue={100}
           step={1}
           enabled={false}
-          value={60} 
+          value={14} 
           thumbTintColor={ COLORS.primary }
         />
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={ onContinueInterviewPress }
+        >
           <Text style={ styles.selecter }>
             Continue Interview
           </Text>

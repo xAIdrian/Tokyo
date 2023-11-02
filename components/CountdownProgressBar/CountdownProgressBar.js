@@ -5,7 +5,7 @@ import styles from './countdownprogressbar.style';
 import COLORS from '../../constants/theme';
 
 const CountdownProgressBar = ({
-  countdownDuration = 30,
+  countdownDuration = 40,
   increment = 1,
   handleTimerEnd = () => {
     console.log('Timer reached zero');
@@ -46,7 +46,13 @@ const CountdownProgressBar = ({
     <View
       style={styles.container}
     >
-      <ProgressBar
+      <Text style={styles.timeLeftText}>
+        {timeLeft}
+      </Text>
+      <Text style={styles.timeLeftLabelBelow}>
+        seconds left
+      </Text>
+      {/* <ProgressBar
         progress={timeLeft / countdownDuration} 
         borderWidth={0}
         height={32}
@@ -57,7 +63,7 @@ const CountdownProgressBar = ({
           padding: 0,
           margin: 0,
         }}
-      />
+      /> */}
     </View>
   );
 };

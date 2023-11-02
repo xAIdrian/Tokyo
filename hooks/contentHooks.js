@@ -14,9 +14,8 @@ import {Observable, from } from 'rxjs'
 import { questionsArray, answersArray, samplesArray } from './chatHooks'
 
 export const sendManyToServer = () => {
-  const allQuestions = questionsArray
-  const allAnswers = answersArray
-  // const allAnswers = samplesArray
+  const allQuestions = questionsArray.map((question) => question.text)
+  const allAnswers = answersArray.length > 0 ? answersArray : samplesArray
 
   return new Observable(async (subscriber) => {
     subscriber.next(await sendOneShotToServer(allQuestions, allAnswers))
@@ -29,10 +28,10 @@ export const sendManyToServer = () => {
 };
 
 export const sendOneShotToServer = async (questions, answers) => {
-    console.log("❓ ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ sendOneShotToServer:", questions)
-    console.log("📣 ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ sendOneShotToServer:", answers)
+    console.log("❓ ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ questions:", questions)
+    console.log("📣 ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ answers:", answers)
  
-    const url = 'http://localhost:3000/api/v3/writer/oneshot'
+    const url = 'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/oneshot'
     const options = {
         method: 'POST',
         url: url,
@@ -45,7 +44,11 @@ export const sendOneShotToServer = async (questions, answers) => {
     try {
         const response = await axios.request(options)
         if (response.data.message == 'success') {
-            return response.data.result
+          const shouldStrip = response.data.result[0].includes('"')
+          if (shouldStrip) {
+            return response.data.result.substring(1, response.data.result.length - 1);
+          }
+          return response.data.result
         } else {
             return '';
         }

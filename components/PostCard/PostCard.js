@@ -1,13 +1,27 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { Share, Alert, View, Text, TouchableOpacity, Image } from 'react-native'
 import images from '../../constants/images'
 import styles from './postcard.style.js'
 
 const PostCard = (content) => {
-    
-    const handleChange = (value) => {
-        console.log(value)
-    }
+    const onShare = async () => {
+        try {
+          const result = await Share.share({
+            message: content.content,
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+      };
 
     return (
         <View style={styles.container}>
@@ -25,13 +39,20 @@ const PostCard = (content) => {
                     }}
                 />
                 <Text style={styles.title} numberOfLines={1}>
-                    Mrs. Expert Expertson
+                    Sasha Cunningham
                 </Text>
             </View>
             <View style={styles.infoContainer}>
                 <Text style={styles.subtitle}>
                     { content.content  }
                 </Text>
+                <TouchableOpacity
+                    onPress={ onShare }
+                >
+                    <Text style={styles.selecter}>
+                        Post to Social
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

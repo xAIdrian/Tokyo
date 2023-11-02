@@ -5,14 +5,18 @@ import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants/theme";
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     width: "90%",
-    height: "92%",
+    height: 600,
     padding: SIZES.body5,
     margin: SIZES.body5,
     backgroundColor: COLORS.tertiaryWhite,
     borderRadius: SIZES.body3,
     ...SHADOWS.medium,
     shadowColor: COLORS.black,
+    position: 'absolute'
   },
   title: {
     ...FONTS.h1,
@@ -30,7 +34,8 @@ const styles = StyleSheet.create({
     marginTop: SIZES.body1,
   },
   image: {
-    width: '100%',
+    // width: '100%',
+    alignSelf: 'center',
   }
 });
 

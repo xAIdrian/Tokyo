@@ -5,7 +5,6 @@ import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants/theme";
 const styles = StyleSheet.create({
   container: {
     width: 320,
-    height: 200,
     padding: SIZES.body5,
     margin: SIZES.body5,
     backgroundColor: COLORS.secondaryBackground,
@@ -35,9 +34,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     textAlign: "center",
     color: COLORS.primary,
-    paddingVertical: SIZES.body3,
     marginTop: SIZES.body3,
     borderRadius: SIZES.body3,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    paddingVertical: 8,
   },
 });
 

@@ -28,12 +28,37 @@ const PersonalChat = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [currentQuestionIndex, setCurrentQuestion] = useState(1)
     const [isPopupVisible, setIsPopupVisible] = useState(false)
+    const [popupContent, setPopupContent] = useState({})
     const [isCountingDown, setIsCountingDown] = useState(false)
+
+    useEffect(() => {
+        if (!isPopupVisible) {
+            setIsPopupVisible(true)
+        }
+    }, [popupContent])
 
     useEffect(() => {
         setMessages(initMessage)
         answersArray.length = 0
         setCurrentQuestion(1)
+
+        setPopupContent({
+            title: "It's a pleasure to meet you.",
+            content: `Hey there 👋, 
+I am the Conception Buster.
+
+I help you create engaging content that dissects,debunks and re-frames a common misconception/belief or thought in your audience, by asking you a few simple questions. 
+            
+There are 9 questions in total. You will have 40 seconds to answer each question.
+
+Just tap the microphone button to start recording your answer.
+            
+Ready to go?`,
+            cancelText: "",
+            confirmText: "Start Interview",
+            confirmAction : () => { setIsPopupVisible(false) }
+        })
+        // setIsPopupVisible(true)
     }, [])
 
     /**
@@ -76,7 +101,17 @@ const PersonalChat = ({ navigation }) => {
                 // Handle the selected option
                 if (buttonIndex === 0) {
                     // Option 1 selected
-                    setIsPopupVisible(true)
+                    setPopupContent({
+                        title: "Are you sure?",
+                        content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
+                        cancelText: "Go Back",
+                        confirmText: "Get my posts.",
+                        cancelAction : () => { setIsPopupVisible(false) },
+                        confirmAction : () => { 
+                            setIsPopupVisible(false)
+                            navigation.navigate('Output') 
+                        }
+                    })
                 } else if (buttonIndex === 1) {
                     // Option 2 selected
                 }
@@ -87,15 +122,37 @@ const PersonalChat = ({ navigation }) => {
     const onQuickReply = useCallback((quickReply) => {
         switch (quickReply[0].value) {
             case 'more_info':
-                setIsPopupVisible(true)
+                setPopupContent({
+                    title: "More Info",
+                    content: questionsArray[currentQuestionIndex - 1].explanation,
+                    cancelText: "",
+                    confirmText: "Done",
+                    confirmAction : () => { setIsPopupVisible(false) }
+                })
                 break
             case 'examples':
-                setIsPopupVisible(true)
+                setPopupContent({
+                    title: "Example Answer",
+                    content: questionsArray[currentQuestionIndex].example,
+                    cancelText: "",
+                    confirmText: "Done",
+                    confirmAction : () => { setIsPopupVisible(false) }
+                })
                 break
             case 'edit':
                 break
             case 'generate':
-                setIsPopupVisible(true)
+                setPopupContent({
+                    title: "Are you sure?",
+                    content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
+                    cancelText: "Go Back",
+                    confirmText: "Get my posts.",
+                    cancelAction : () => { setIsPopupVisible(false) },
+                    confirmAction : () => { 
+                        setIsPopupVisible(false)
+                        navigation.navigate('Output') 
+                    }
+                })
                 break
             default:
                 // Do something if the value doesn't match any of the cases
@@ -150,7 +207,7 @@ const PersonalChat = ({ navigation }) => {
                     setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
-                            text: questionsArray[currentQuestionIndex],
+                            text: questionsArray[currentQuestionIndex].text,
                             user: {
                                 _id: 2,
                                 name: 'React Native',
@@ -161,7 +218,7 @@ const PersonalChat = ({ navigation }) => {
                                 // keepIt: true,
                                 values: [
                                     {
-                                        title: 'Examples',
+                                        title: 'Example',
                                         value: 'examples',
                                     },
                                     {
@@ -180,7 +237,14 @@ const PersonalChat = ({ navigation }) => {
     )
 
     const renderInputToolbar = (props) => {
-        return !isCountingDown ? <InputToolbar {...props} containerStyle={{ backgroundColor: COLORS.tertiaryWhite }} /> : <CountdownProgressBar />
+        return !isCountingDown ? 
+            <InputToolbar {...props} 
+                containerStyle={{ 
+                    backgroundColor: COLORS.tertiaryWhite,
+                    justifyContent: 'center',
+                    height: 50, 
+                }} /> 
+            : <CountdownProgressBar />
     }
 
     // change button of send
@@ -274,7 +338,7 @@ const PersonalChat = ({ navigation }) => {
                             />
                         </TouchableOpacity>
                         <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                            The Myth Buster
+                            The Conception Buster
                         </Text>
                     </View>
 
@@ -347,7 +411,7 @@ const PersonalChat = ({ navigation }) => {
             />
             
             <AudioRecorder
-                recordingStarted={() => setIsCountingDown(true)}
+                isRecording={(isRecording) => setIsCountingDown(isRecording)}
                 recordingConfirmed={handleAudioRecording}
                 moreOptionsClick={showOptions}
                 onUploadError={(error) => alert(error)}
@@ -355,17 +419,13 @@ const PersonalChat = ({ navigation }) => {
             />
 
             <DetailDialog
-                isVisible={isPopupVisible}
-                title="We have what we need here"
-                content="Are you sure you are ready to create content?"
-                cancelText="Edit"
-                confirmText="Get Posts"
-                cancelAction={() => {
-                    setIsPopupVisible(false)
-                }}
-                confirmAction={() => {
-                    navigation.navigate('Output', { answers: answersArray })
-                }}
+                isVisible={ isPopupVisible }
+                title= { popupContent.title }
+                content= { popupContent.content }
+                cancelText= { popupContent.cancelText }
+                confirmText= { popupContent.confirmText }
+                cancelAction= { popupContent.cancelAction }
+                confirmAction= { popupContent.confirmAction }
             />
         </SafeAreaView>
     )
