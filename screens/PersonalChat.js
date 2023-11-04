@@ -20,6 +20,7 @@ import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
 import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
+import LottieView from "lottie-react-native";
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet()
@@ -30,6 +31,7 @@ const PersonalChat = ({ navigation }) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState({})
     const [isCountingDown, setIsCountingDown] = useState(false)
+    const [isSuccessVisible, setIsSuccessVisible] = useState(false)
 
     useEffect(() => {
         if (!isPopupVisible) {
@@ -174,6 +176,10 @@ Ready to go?`,
 
             if (currentQuestionIndex <= questionCount) {
                 if (currentQuestionIndex === questionCount) {
+                    setIsSuccessVisible(true)
+                    setTimeout(() => {
+                        setIsSuccessVisible(false)
+                    }, 1250)
                     setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
@@ -238,12 +244,7 @@ Ready to go?`,
 
     const renderInputToolbar = (props) => {
         return !isCountingDown ? 
-            <InputToolbar {...props} 
-                containerStyle={{ 
-                    backgroundColor: COLORS.tertiaryWhite,
-                    justifyContent: 'center',
-                    height: 50, 
-                }} /> 
+            <InputToolbar {...props} /> 
             : <CountdownProgressBar />
     }
 
@@ -320,6 +321,7 @@ Ready to go?`,
                         height: 60,
                     }}
                 >
+                    
                     <View
                         style={{
                             flexDirection: 'row',
@@ -387,6 +389,7 @@ Ready to go?`,
                 </View>
             </View>
 
+
             <GiftedChat
                 messages={messages}
                 onSend={(messages) => onSend(messages)}
@@ -417,6 +420,18 @@ Ready to go?`,
                 onUploadError={(error) => alert(error)}
                 isParentLoading={isLoading}
             />
+
+            {
+                isSuccessVisible ? (
+                    <LottieView source={require("../assets/lottie/success.json")} autoPlay loop style={{
+                        height: '100%',
+                        width: '100%',
+                        padding: 64,
+                        position: 'absolute',
+                        alignSelf: 'center',
+                    }}/>
+                ) : null
+            }
 
             <DetailDialog
                 isVisible={ isPopupVisible }
