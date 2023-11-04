@@ -1,6 +1,5 @@
-## Ticket to Tokyo - Yonni AI Ghostwriter
-![Japan-tokyo-skyline-landscape-japan-tours-travel](https://github.com/xAIdrian/Tokyo/assets/7444521/6ed5be18-eefb-4a93-bc70-7418be9cfa0e)
-
+![🏕 Outpost](https://github.com/xAIdrian/Tokyo/assets/7444521/d7ed4e6c-13fd-40c6-8932-577bd86e3456)
+## Ticket to Tokyo - AI Ghostwriter
 
 ## Tech Stack
 - React Native: A JavaScript framework for building cross-platform mobile applications.
