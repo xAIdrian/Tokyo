@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
+import Constants from 'expo-constants';
 
 export const questionsArray = [
     {
@@ -90,16 +91,6 @@ export const initMessage = [
             ],
         },
     },
-    // {
-    //     _id: 2,
-    //     text: "Hey there, it's great to see you. Let's get started creating some awesome content...",
-    //     // createdAt: new Date(),
-    //     user: {
-    //         _id: 2,
-    //         name: 'React Native',
-    //         avatar: images.icon,
-    //     },
-    // },
 ]
 
 export const audioMessage = (audioFile) => {
@@ -120,8 +111,7 @@ export const sendBackAndForth = async (messages, framework) => {
         '🚀 ~ file: chatHooks.js:42 ~ sendMessageToServer ~ messages:',
         messages
     )
-    const url =
-        'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer'
+    const url =`${Constants.expoConfig.extra.aipiUrl}/api/v3/writer`
     const options = {
         method: 'POST',
         url: url,
@@ -164,10 +154,6 @@ const useFetch = (endpoint, query) => {
 
     const options = {
         method: 'GET',
-        // headers: {
-        //   'X-RapidAPI-Key': rapidApiKey,
-        //   'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
-        // },
         url: `${url}/${endpoint}`,
         params: { ...query },
     }

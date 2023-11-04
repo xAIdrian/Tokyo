@@ -3,7 +3,8 @@
         "preview": {
             "env": {
                 "APP_ICON": "./assets/images/icon.png",
-                "APP_NAME": "OutPost (Preview)"
+                "APP_NAME": "OutPost (Preview)",
+                "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             },
             "android": {
                 "buildType": "apk"
@@ -12,9 +13,18 @@
                 "simulator": true
             }
         },
-        "preview2": {
+        "internal": {
+            "env": {
+                "APP_ICON": "./assets/images/icon.png",
+                "APP_NAME": "OutPost (Preview)",
+                "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
+            },
             "android": {
-                "gradleCommand": ":app:assembleRelease"
+                "gradleCommand": ":app:assembleRelease",
+                "buildType": "apk"
+            },
+            "ios": {
+                "distribution": "internal"
             }
         },
         "preview3": {
@@ -24,7 +34,9 @@
 
         },
         "production": {
-            
+            "env": {
+                "EXPO_PUBLIC_AIPI_URL": "https://www.bereadyforai.com"
+            }
         }
     }
 }

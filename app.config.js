@@ -3,7 +3,7 @@ export default {
     "expo": {
         "name": "OutPost",
         "slug": "OutPost",
-        "version": process.env.PROJECT_VERSION || "1.0.0",
+        "version": process.env.EXPO_PUBLIC_PROJECT_VERSION || "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/tent.png",
         "userInterfaceStyle": "light",
@@ -15,7 +15,8 @@ export default {
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.outpost.app"
+            "bundleIdentifier": "com.outpost.app",
+            "bitcode": false 
         },
         "android": {
             "adaptiveIcon": {
@@ -29,13 +30,14 @@ export default {
             "eas": {
                 "projectId": "bcc26948-2941-4e7d-a3ee-26d14b6d7fff"
             },
-            apiKey: process.env.API_KEY,
-            authDomain: process.env.AUTH_DOMAIN,
-            databaseURL: process.env.DATABASE_URL,
-            projectId: process.env.PROJECT_ID,
-            storageBucket: process.env.STORAGE_BUCKET,
-            messagingSenderId: process.env.MESSAGING_SENDER_ID,
-            appId: process.env.APP_ID,
+            apiKey: process.env.EXPO_PUBLIC_API_KEY,
+            authDomain: process.env.EXPO_PUBLIC_AUTH_DOMAIN,
+            databaseURL: process.env.EXPO_PUBLIC_DATABASE_URL,
+            projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+            storageBucket: process.env.EXPO_PUBLIC_STORAGE_BUCKET,
+            messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
+            appId: process.env.EXPO_PUBLIC_APP_ID,
+            aipiUrl: process.env.EXPO_PUBLIC_AIPI_URL,
           }
     }
 }

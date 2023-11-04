@@ -9,6 +9,7 @@
  */
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Constants from 'expo-constants';
 
 export const sendAudioForTranscript = async (audioUri) => {
   const pathSegments = audioUri.split('/');
@@ -17,7 +18,7 @@ export const sendAudioForTranscript = async (audioUri) => {
   const formData = new FormData()
   formData.append('audio', audioUri)
 
-  const url = 'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/transcript'
+  const url = `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/transcript`
   const options = {
     method: 'POST',
     url: url,

@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
     ...FONTS.h1,
   },
   subtitle: {
+    textAlign: 'start',
     ...FONTS.h3,
+    width: '100%',
     marginTop: SIZES.body3,
   },
   description: {
