@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import appBuildNumbers from './app.json';
+
 export default {
     "expo": {
         "name": "OutPost",
@@ -16,7 +18,8 @@ export default {
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.outpost.app",
-            "bitcode": false 
+            "bitcode": false,
+            "buildNumber": appBuildNumbers.expo.ios.buildNumber,
         },
         "android": {
             "adaptiveIcon": {

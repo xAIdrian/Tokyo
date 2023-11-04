@@ -35,7 +35,7 @@
         },
         "production": {
             "env": {
-                "EXPO_PUBLIC_AIPI_URL": "https://www.bereadyforai.com"
+                "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             }
         }
     }
