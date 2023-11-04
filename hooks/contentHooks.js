@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {Observable, from } from 'rxjs'
 import { questionsArray, answersArray, samplesArray } from './chatHooks'
+import Constants from 'expo-constants';
 
 export const sendManyToServer = () => {
   const allQuestions = questionsArray.map((question) => question.text)
@@ -31,11 +32,12 @@ export const sendOneShotToServer = async (questions, answers) => {
     console.log("❓ ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ questions:", questions)
     console.log("📣 ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ answers:", answers)
  
-    const url = 'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/oneshot'
+    const url = `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/oneshot`
     const options = {
-        method: 'POST',
+        method: 'POST', 
         url: url,
         data: {
+            userUuid: '123',
             questions: questions,
             answers: answers
         },
@@ -44,10 +46,6 @@ export const sendOneShotToServer = async (questions, answers) => {
     try {
         const response = await axios.request(options)
         if (response.data.message == 'success') {
-          const shouldStrip = response.data.result[0].includes('"')
-          if (shouldStrip) {
-            return response.data.result.substring(1, response.data.result.length - 1);
-          }
           return response.data.result
         } else {
             return '';

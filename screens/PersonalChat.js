@@ -105,7 +105,7 @@ Ready to go?`,
                         title: "Are you sure?",
                         content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
                         cancelText: "Go Back",
-                        confirmText: "Get my posts.",
+                        confirmText: "Get My Posts",
                         cancelAction : () => { setIsPopupVisible(false) },
                         confirmAction : () => { 
                             setIsPopupVisible(false)
@@ -146,7 +146,7 @@ Ready to go?`,
                     title: "Are you sure?",
                     content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
                     cancelText: "Go Back",
-                    confirmText: "Get my posts.",
+                    confirmText: "Get My Posts",
                     cancelAction : () => { setIsPopupVisible(false) },
                     confirmAction : () => { 
                         setIsPopupVisible(false)

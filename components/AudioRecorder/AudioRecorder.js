@@ -5,6 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import styles from './audiorecorder.style.js';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import Constants from 'expo-constants';
 
 const AudioRecorder = ({
   isRecording,
@@ -86,8 +87,9 @@ const AudioRecorder = ({
         const recordingUri = recording.getURI();
 
         // Send the recording to the server for transcription
+        console.log(Constants.expoConfig.extra.aipiUrl)
         FileSystem.uploadAsync(
-          'https://legion-ai-content-machine.uc.r.appspot.com/api/v3/writer/transcript',
+          `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/transcript`,
           recordingUri,
           {
             headers: {

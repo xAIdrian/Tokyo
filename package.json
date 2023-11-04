@@ -6,7 +6,7 @@
         "start": "yarn start",
         "android": "yarn start --android",
         "ios": "yarn start --ios",
-        "web": "yaran start --web",
+        "web": "yarn start --web",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "lint:check": "eslint .",
