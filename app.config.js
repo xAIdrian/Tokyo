@@ -3,8 +3,8 @@ import appBuildNumbers from './app.json';
 
 export default {
     "expo": {
-        "name": "OutPost",
-        "slug": "OutPost",
+        "name": "Outbrand",
+        "slug": "Outbrand",
         "version": process.env.EXPO_PUBLIC_PROJECT_VERSION || "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/tent.png",

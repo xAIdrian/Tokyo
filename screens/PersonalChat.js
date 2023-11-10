@@ -6,11 +6,9 @@ import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import {
-    initMessage,
-    audioMessage,
-    questionCount,
-    questionsArray,
-    answersArray,
+    buildInitMessage,
+    processAudioMessage,
+    getQuestions
 } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
@@ -20,45 +18,46 @@ import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
 import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
+import { a } from '@react-spring/native'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet()
 
     const [messages, setMessages] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+
+    const [questions, setQuestions] = useState([])
+    const [answers, setAnswers] = useState([])
     const [currentQuestionIndex, setCurrentQuestion] = useState(1)
+    
     const [isPopupVisible, setIsPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState({})
+    
+    const [isLoading, setIsLoading] = useState(false)
     const [isCountingDown, setIsCountingDown] = useState(false)
 
     useEffect(() => {
-        if (!isPopupVisible) {
+        if (!isPopupVisible && popupContent.title !== undefined) {
             setIsPopupVisible(true)
         }
     }, [popupContent])
 
     useEffect(() => {
-        setMessages(initMessage)
-        answersArray.length = 0
-        setCurrentQuestion(1)
-
-        setPopupContent({
-            title: "It's a pleasure to meet you.",
-            content: `Hey there 👋, 
-I am the Conception Buster.
-
-I help you create engaging content that dissects,debunks and re-frames a common misconception/belief or thought in your audience, by asking you a few simple questions. 
-            
-There are 9 questions in total. You will have 40 seconds to answer each question.
-
-Just tap the microphone button to start recording your answer.
-            
-Ready to go?`,
-            cancelText: "",
-            confirmText: "Start Interview",
-            confirmAction : () => { setIsPopupVisible(false) }
+        // setIsLoading(true)
+        getQuestions().then((loadQuestions) => {
+            if (loadQuestions.length > 0) {
+                setIsLoading(false)
+                setQuestions(loadQuestions)
+                //setting initial state
+                setMessages(buildInitMessage(loadQuestions[0]))
+                setAnswers([])
+                setCurrentQuestion(1)
+                // setIsLoading(false)
+            } else {
+                alert('Error loading questions')
+            }
+        }).catch((error) => {
+            alert(error)
         })
-        // setIsPopupVisible(true)
     }, [])
 
     /**
@@ -73,9 +72,15 @@ Ready to go?`,
 
     })
 
-    const handleAudioRecording = useCallback((data) => {
+    const audioRecordingComplete = useCallback((data) => {
+        setIsLoading(false)
         setIsCountingDown(false)
-        onSend(audioMessage(data))
+        onSend(processAudioMessage(data))
+    })
+
+    const audioRecordingConfirmed = useCallback((data) => {
+        console.log("🚀 ~ file: PersonalChat.js:82 ~ audioRecordingConfirmed ~ data:", data)
+        answers.push(data.transcript)
     })
 
     const showOptions = useCallback(() => {
@@ -124,7 +129,7 @@ Ready to go?`,
             case 'more_info':
                 setPopupContent({
                     title: "More Info",
-                    content: questionsArray[currentQuestionIndex - 1].explanation,
+                    content: questions[currentQuestionIndex - 1].info,
                     cancelText: "",
                     confirmText: "Done",
                     confirmAction : () => { setIsPopupVisible(false) }
@@ -133,7 +138,7 @@ Ready to go?`,
             case 'examples':
                 setPopupContent({
                     title: "Example Answer",
-                    content: questionsArray[currentQuestionIndex].example,
+                    content: questions[currentQuestionIndex].example,
                     cancelText: "",
                     confirmText: "Done",
                     confirmAction : () => { setIsPopupVisible(false) }
@@ -142,17 +147,7 @@ Ready to go?`,
             case 'edit':
                 break
             case 'generate':
-                setPopupContent({
-                    title: "Are you sure?",
-                    content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
-                    cancelText: "Go Back",
-                    confirmText: "Get My Posts",
-                    cancelAction : () => { setIsPopupVisible(false) },
-                    confirmAction : () => { 
-                        setIsPopupVisible(false)
-                        navigation.navigate('Output') 
-                    }
-                })
+                navigation.navigate('Output') 
                 break
             default:
                 // Do something if the value doesn't match any of the cases
@@ -167,13 +162,12 @@ Ready to go?`,
                 newMessage
             )
 
-            answersArray.push(newMessage[0].text)
             setMessages((previousMessages) =>
                 GiftedChat.append(previousMessages, newMessage)
             )
 
-            if (currentQuestionIndex <= questionCount) {
-                if (currentQuestionIndex === questionCount) {
+            if (currentQuestionIndex <= questions.length) {
+                if (currentQuestionIndex === questions.length) {
                     setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
@@ -207,7 +201,7 @@ Ready to go?`,
                     setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
-                            text: questionsArray[currentQuestionIndex].text,
+                            text: questions[currentQuestionIndex].text,
                             user: {
                                 _id: 2,
                                 name: 'React Native',
@@ -230,7 +224,7 @@ Ready to go?`,
                         })
                     )
                     setCurrentQuestion(currentQuestionIndex + 1)
-                }, 1000)
+                }, 500)
             }
         },
         [currentQuestionIndex, messages]
@@ -375,14 +369,14 @@ Ready to go?`,
                         maximumValue={100}
                         step={1}
                         enabled={false}
-                        value={(100 / questionCount) * currentQuestionIndex}
+                        // value={(100 / questions.length) * currentQuestionIndex}
                         thumbTintColor={COLORS.primary}
                         style={{
                             width: '70%',
                         }}
                     />
                     <Text style={{ ...FONTS.body4, color: COLORS.primary }}>
-                        Question {currentQuestionIndex} of {questionCount} 
+                        Question {currentQuestionIndex} of {questions.length} 
                     </Text>
                 </View>
             </View>
@@ -412,7 +406,8 @@ Ready to go?`,
             
             <AudioRecorder
                 isRecording={(isRecording) => setIsCountingDown(isRecording)}
-                recordingConfirmed={handleAudioRecording}
+                recordingComplete={audioRecordingComplete}
+                recordingConfirmed={audioRecordingConfirmed}
                 moreOptionsClick={showOptions}
                 onUploadError={(error) => alert(error)}
                 isParentLoading={isLoading}

@@ -8,15 +8,14 @@
  *
  * For inquiries, contact: [Your Contact Email]
  */
-import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {Observable, from } from 'rxjs'
-import { questionsArray, answersArray, samplesArray } from './chatHooks'
+import { samplesArray } from './chatHooks'
 import Constants from 'expo-constants';
 
-export const sendManyToServer = () => {
-  const allQuestions = questionsArray.map((question) => question.text)
-  const allAnswers = answersArray.length > 0 ? answersArray : samplesArray
+export const sendManyToServer = (questions, answers) => {
+  const allQuestions = questions.map((question) => question.text)
+  const allAnswers = answers.length > 0 ? answers : samplesArray
 
   return new Observable(async (subscriber) => {
     subscriber.next(await sendOneShotToServer(allQuestions, allAnswers))
@@ -48,7 +47,7 @@ export const sendOneShotToServer = async (questions, answers) => {
         if (response.data.message == 'success') {
           return response.data.result
         } else {
-            return '';
+            return undefined
         }
     } catch (error) {
         throw error

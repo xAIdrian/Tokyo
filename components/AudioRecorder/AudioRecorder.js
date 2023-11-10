@@ -9,6 +9,7 @@ import Constants from 'expo-constants';
 
 const AudioRecorder = ({
   isRecording,
+  recordingComplete,
   recordingConfirmed,
   moreOptionsClick,
   onUploadError,
@@ -82,7 +83,6 @@ const AudioRecorder = ({
       if (recordingStatus === 'recording') {
         console.log('Stopping Recording')
         
-        setIsLoading(true);
         await recording.stopAndUnloadAsync();
         const recordingUri = recording.getURI();
 
@@ -100,24 +100,15 @@ const AudioRecorder = ({
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           }
         ).then(async (fullResponse) => {          
-          setIsLoading(false);
+          console.log("🚀 ~ file: AudioRecorder.js:104 ~ ).then ~ fullResponse:", fullResponse)
+          // setIsLoading(false);
           const response = JSON.parse(fullResponse.body);
           
           if (response.message === 'success') {
             const transcript = response.result;
 
-            // Move the recording to the new directory with the new file name
-            const fileName = `recording-${Date.now()}.caf`;
-            const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
-            await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
-            await FileSystem.moveAsync({
-              from: recordingUri,
-              to: recordingPath
-            });
-
             recordingConfirmed({
-              transcript: transcript,
-              recordingPath: recordingPath
+              transcript: transcript
             });
           } else {
             console.log('Error: ', response.message);
@@ -127,15 +118,32 @@ const AudioRecorder = ({
           setIsLoading(false);
           onUploadError(error);
         })
-
-        // resert our states to record again
-        setRecording(null);
-        setRecordingStatus('stopped');
+        recordingCompleteCleanup(recordingUri);
       }
 
     } catch (error) {
       console.error('Failed to stop recording', error);
     }
+  }
+
+  async function recordingCompleteCleanup(recordingUri) {
+    // Move the recording to the new directory with the new file name
+    const fileName = `recording-${Date.now()}.caf`;
+    const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
+    await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
+    await FileSystem.moveAsync({
+      from: recordingUri,
+      to: recordingPath
+    });
+
+    // resert our states to record again
+    setRecording(null);
+    setRecordingStatus('stopped');
+
+    recordingComplete({
+      recordingUri: recordingUri,
+      recordingPath: recordingPath,   
+    });
   }
 
   async function handleRecordButtonPress() {

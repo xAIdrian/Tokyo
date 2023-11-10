@@ -3,7 +3,7 @@
         "preview": {
             "env": {
                 "APP_ICON": "./assets/images/icon.png",
-                "APP_NAME": "OutPost (Preview)",
+                "APP_NAME": "Outbrand",
                 "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             },
             "android": {
@@ -16,7 +16,7 @@
         "internal": {
             "env": {
                 "APP_ICON": "./assets/images/icon.png",
-                "APP_NAME": "OutPost (Preview)",
+                "APP_NAME": "Outbrand",
                 "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             },
             "android": {
