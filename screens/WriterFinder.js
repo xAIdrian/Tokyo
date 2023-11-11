@@ -63,7 +63,9 @@ const WriterFinder = ({ navigation }) => {
                     data={frameworks}
                     onCardAction={
                         (framework) => {
-                            navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
+                            if (framework.questions !== undefined) {
+                                navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
+                            }
                         }
                     }
                     onCardRefresh={ loadFrameworks } 

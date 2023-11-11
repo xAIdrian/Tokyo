@@ -62,22 +62,7 @@ const PersonalChat = ({ route, navigation }) => {
     }, [route])
 
     useEffect(() => {
-        // setIsLoading(true)
-        // getQuestions().then((loadQuestions) => {
-        //     if (loadQuestions.length > 0) {
-        //         setIsLoading(false)
-        //         setQuestions(loadQuestions)
-        //         //setting initial state
-        //         setMessages(buildInitMessage(loadQuestions[0]))
-        //         setAnswers([])
-        //         setCurrentQuestion(1)
-        //         // setIsLoading(false)
-        //     } else {
-        //         alert('Error loading questions')
-        //     }
-        // }).catch((error) => {
-        //     alert(error)
-        // })
+        
     }, [])
 
     /**
@@ -131,10 +116,7 @@ const PersonalChat = ({ route, navigation }) => {
                         cancelText: "Go Back",
                         confirmText: "Get My Posts",
                         cancelAction : () => { setIsPopupVisible(false) },
-                        confirmAction : () => { 
-                            setIsPopupVisible(false)
-                            navigation.navigate('Output') 
-                        }
+                        confirmAction : () => { }
                     })
                 } else if (buttonIndex === 1) {
                     // Option 2 selected
@@ -166,7 +148,10 @@ const PersonalChat = ({ route, navigation }) => {
             case 'edit':
                 break
             case 'generate':
-                navigation.navigate('Output') 
+                navigation.navigate('Output', {
+                    frameworkQuestions: questions,
+                    frameworkAnswers: answers
+                }) 
                 break
             default:
                 // Do something if the value doesn't match any of the cases
