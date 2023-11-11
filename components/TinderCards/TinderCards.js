@@ -8,7 +8,11 @@ import { Feather } from '@expo/vector-icons'
 import { COLORS, SIZES } from '../../constants/theme'
 
 
-const TinderCards = ({ data, onCardAction }) => {
+const TinderCards = ({ 
+    data, 
+    onCardAction,
+    onCardRefresh
+}) => {
 
     const [lastDirection, setLastDirection] = useState()
 
@@ -21,8 +25,11 @@ const TinderCards = ({ data, onCardAction }) => {
         console.log(name + ' left the screen!')
     }
 
-    const onSwipe = (direction) => {
+    const onSwipe = (direction, item) => {
         console.log('You swiped: ' + direction)
+        if (direction === 'right') {
+            onCardAction(item)
+        }
     }
 
     const onCardLeftScreen = (myIdentifier) => {
@@ -32,11 +39,42 @@ const TinderCards = ({ data, onCardAction }) => {
 
     return (
         <View>
+            <View style={{
+                position: 'absolute',
+                textAlign: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 100
+            }}>
+                <Text style={{
+                    textAlign: 'center',
+                }}>
+                    Looks like you are out of frameworks to review.
+                </Text>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: COLORS.primary,
+                        padding: 8,
+                        borderRadius: 8,
+                        marginTop: 16,
+                    }}
+                    onPress={() => {
+                        onCardRefresh()
+                    }}
+                >
+                    <Text style={{
+                        color: COLORS.white,
+                        textAlign: 'center',
+                    }}>
+                        Back to Home
+                    </Text>
+                </TouchableOpacity>
+            </View>
             {data.map((item, index) => (
                 <TinderCard
                     key={index}
-                    onSwipe={(dir) => onSwipe(dir, item.title)}
-                    onCardLeftScreen={ () => onCardAction(item.title) }
+                    onSwipe={(dir) => onSwipe(dir, item)}
+                    // onCardLeftScreen={ () => onCardAction(item) }
                     preventSwipe={['up', 'down']}
                 >
                     <View style={styles.container}>

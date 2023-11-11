@@ -19,7 +19,7 @@ import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
 import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
 
-const PersonalChat = ({ navigation }) => {
+const PersonalChat = ({ route, navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet()
 
     const [messages, setMessages] = useState([])

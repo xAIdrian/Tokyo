@@ -38,14 +38,17 @@ const WriterFinder = ({ navigation }) => {
     const [frameworks, setFrameworks] = useState([])
 
     useEffect(() => {
+        loadFrameworks()
+    }, [])
+
+    const loadFrameworks = () => {
         getFrameworkQuestions().then((loadFrameworks) => {
-            console.log("🚀 ~ file: WriterFinder.js:42 ~ getFrameworkQuestions ~ loadFrameworks:", loadFrameworks)
             console.log('loadFrameworks', loadFrameworks)
             setFrameworks(loadFrameworks.reverse())
         }).catch((error) => {
             alert(error)
-        })
-    }, [])
+        }) 
+    }
 
     return (
         <SafeAreaView
@@ -66,13 +69,12 @@ const WriterFinder = ({ navigation }) => {
                 <TinderCards 
                     data={frameworks}
                     onCardAction={
-                        (itemName) => {
-                            if (itemName == 'The Conception Buster') {
-                                console.log('Card action')
-                                navigation.navigate('PersonalChat')
-                            }
+                        (framework) => {
+                            // navigation.navigate('PersonalChat', { questions: framework.questions })
                         }
-                } />
+                    }
+                    onCardRefresh={ loadFrameworks } 
+                />
             </PageContainer>
         </SafeAreaView>
     )
