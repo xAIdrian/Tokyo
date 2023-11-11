@@ -27,7 +27,6 @@ const AudioRecorder = ({
     // Simply get recording permission upon first render
     async function getPermission() {
       await Audio.requestPermissionsAsync().then((permission) => {
-        console.log('Permission Granted: ' + permission.granted);
         setAudioPermission(permission.granted)
       }).catch(error => {
         console.log(error);
@@ -99,9 +98,7 @@ const AudioRecorder = ({
             httpMethod: 'POST',
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           }
-        ).then(async (fullResponse) => {          
-          console.log("🚀 ~ file: AudioRecorder.js:104 ~ ).then ~ fullResponse:", fullResponse)
-          // setIsLoading(false);
+        ).then(async (fullResponse) => {  
           const response = JSON.parse(fullResponse.body);
           
           if (response.message === 'success') {

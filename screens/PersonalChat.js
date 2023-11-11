@@ -18,7 +18,6 @@ import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
 import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
-import { a } from '@react-spring/native'
 
 const PersonalChat = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet()
@@ -43,21 +42,21 @@ const PersonalChat = ({ navigation }) => {
 
     useEffect(() => {
         // setIsLoading(true)
-        getQuestions().then((loadQuestions) => {
-            if (loadQuestions.length > 0) {
-                setIsLoading(false)
-                setQuestions(loadQuestions)
-                //setting initial state
-                setMessages(buildInitMessage(loadQuestions[0]))
-                setAnswers([])
-                setCurrentQuestion(1)
-                // setIsLoading(false)
-            } else {
-                alert('Error loading questions')
-            }
-        }).catch((error) => {
-            alert(error)
-        })
+        // getQuestions().then((loadQuestions) => {
+        //     if (loadQuestions.length > 0) {
+        //         setIsLoading(false)
+        //         setQuestions(loadQuestions)
+        //         //setting initial state
+        //         setMessages(buildInitMessage(loadQuestions[0]))
+        //         setAnswers([])
+        //         setCurrentQuestion(1)
+        //         // setIsLoading(false)
+        //     } else {
+        //         alert('Error loading questions')
+        //     }
+        // }).catch((error) => {
+        //     alert(error)
+        // })
     }, [])
 
     /**
@@ -79,7 +78,6 @@ const PersonalChat = ({ navigation }) => {
     })
 
     const audioRecordingConfirmed = useCallback((data) => {
-        console.log("🚀 ~ file: PersonalChat.js:82 ~ audioRecordingConfirmed ~ data:", data)
         answers.push(data.transcript)
     })
 

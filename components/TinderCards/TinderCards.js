@@ -7,7 +7,7 @@ import { Feather } from '@expo/vector-icons'
 import { COLORS, SIZES } from '../../constants/theme'
 
 
-const TinderCards = ({ item, onCardAction }) => {
+const TinderCards = ({ data, onCardAction }) => {
     const swipeItems = [
         {
             title: 'Truth vs Trend',
@@ -61,7 +61,7 @@ const TinderCards = ({ item, onCardAction }) => {
 
     return (
         <View>
-            {swipeItems.map((item, index) => (
+            {data.map((item, index) => (
                 <TinderCard
                     key={index}
                     onSwipe={(dir) => onSwipe(dir, item.title)}
@@ -83,7 +83,7 @@ const TinderCards = ({ item, onCardAction }) => {
                             { item.description }
                         </Text>
                         <Text style={styles.subdescription}>
-                            { item.subdescription }
+                            { item.bestfor }
                         </Text>
                     </View>
                 </TinderCard>

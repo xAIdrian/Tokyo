@@ -1,12 +1,10 @@
 /*
- * Tokyo Mobile
+ * Oligarch Ventures, LLC.
  * Version: 1.0.0
  * Author: Adrian Mohnacs
  * Copyright (c) 2023 Adrian Mohnacs
  * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
- *
- * For inquiries, contact: [Your Contact Email]
- */
+*/
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Constants from 'expo-constants';

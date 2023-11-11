@@ -1,12 +1,10 @@
 /*
- * Tokyo Mobile
+ * Oligarch Ventures, LLC.
  * Version: 1.0.0
  * Author: Adrian Mohnacs
  * Copyright (c) 2023 Adrian Mohnacs
  * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
- *
- * For inquiries, contact: [Your Contact Email]
- */
+*/
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import images from '../constants/images'
@@ -61,28 +59,6 @@ export const processAudioMessage = (audioFile) => {
             },
         },
     ]
-}
-
-export const getQuestions = async () => {
-    const url = `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/questions`
-    const options = {
-        method: 'GET',
-        url: url,
-        params: {
-            framework: 'framework',
-        },
-    }
-
-    try {
-        const response = await axios.request(options)
-        if (response.data.message == 'success') {
-            return response.data.result
-        } else {
-            return undefined
-        }
-    } catch (error) {
-        throw error
-    }
 }
 
 export const sendBackAndForth = async (messages, framework) => {
