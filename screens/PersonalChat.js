@@ -6,9 +6,8 @@ import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import {
-    buildInitMessage,
     processAudioMessage,
-    getQuestions
+    buildInitMessage
 } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
@@ -18,8 +17,11 @@ import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
 import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
+import { getFrameworkQuestions } from '../hooks/frameworkHooks'
 
 const PersonalChat = ({ route, navigation }) => {
+    const { frameworkQuestions } = route.params ? route.params : { frameworkQuestions: []}
+
     const { showActionSheetWithOptions } = useActionSheet()
 
     const [messages, setMessages] = useState([])
@@ -39,6 +41,25 @@ const PersonalChat = ({ route, navigation }) => {
             setIsPopupVisible(true)
         }
     }, [popupContent])
+
+    useEffect(() => {
+        if (route.params !== undefined) {
+            setQuestions(frameworkQuestions)
+            setMessages(buildInitMessage(questions[0]))
+            setAnswers([])
+            setCurrentQuestion(1)
+        } else {
+            getFrameworkQuestions().then((loadFrameworks) => {
+                const currentFramework = loadFrameworks.reverse()[0]
+                setQuestions(currentFramework.questions)
+                setMessages(buildInitMessage(currentFramework.questions[0]))
+                setAnswers([])
+                setCurrentQuestion(1)
+            }).catch((error) => {
+                alert(error)
+            }) 
+        }
+    }, [route])
 
     useEffect(() => {
         // setIsLoading(true)

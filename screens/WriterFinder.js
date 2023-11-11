@@ -18,13 +18,7 @@
  */
 
 import {
-    View,
     Text,
-    TouchableOpacity,
-    Image,
-    TextInput,
-    FlatList,
-    ScrollView,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -43,7 +37,6 @@ const WriterFinder = ({ navigation }) => {
 
     const loadFrameworks = () => {
         getFrameworkQuestions().then((loadFrameworks) => {
-            console.log('loadFrameworks', loadFrameworks)
             setFrameworks(loadFrameworks.reverse())
         }).catch((error) => {
             alert(error)
@@ -70,7 +63,7 @@ const WriterFinder = ({ navigation }) => {
                     data={frameworks}
                     onCardAction={
                         (framework) => {
-                            // navigation.navigate('PersonalChat', { questions: framework.questions })
+                            navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
                         }
                     }
                     onCardRefresh={ loadFrameworks } 
