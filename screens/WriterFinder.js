@@ -39,6 +39,7 @@ const WriterFinder = ({ navigation }) => {
 
     useEffect(() => {
         getFrameworkQuestions().then((loadFrameworks) => {
+            console.log("🚀 ~ file: WriterFinder.js:42 ~ getFrameworkQuestions ~ loadFrameworks:", loadFrameworks)
             console.log('loadFrameworks', loadFrameworks)
             setFrameworks(loadFrameworks.reverse())
         }).catch((error) => {
