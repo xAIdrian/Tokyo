@@ -20,14 +20,12 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: SIZES.body5,
     justifyContent: 'space-evenly',
-    alignItems: 'start',
     overflow: 'hidden',
   },
   title: {
     ...FONTS.h1,
   },
   subtitle: {
-    textAlign: 'start',
     ...FONTS.h3,
     width: '100%',
     marginTop: SIZES.body3,
