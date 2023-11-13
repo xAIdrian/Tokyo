@@ -25,6 +25,7 @@ const PersonalChat = ({ route, navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet()
 
     const [messages, setMessages] = useState([])
+    const [sliderValue, setSliderValue] = useState(0)
 
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
@@ -228,6 +229,7 @@ const PersonalChat = ({ route, navigation }) => {
                         })
                     )
                     setCurrentQuestion(currentQuestionIndex + 1)
+                    setSliderValue((100 / questions.length) * currentQuestionIndex)
                 }, 500)
             }
         },
@@ -373,7 +375,7 @@ const PersonalChat = ({ route, navigation }) => {
                         maximumValue={100}
                         step={1}
                         enabled={false}
-                        // value={(100 / questions.length) * currentQuestionIndex}
+                        value={sliderValue}
                         thumbTintColor={COLORS.primary}
                         style={{
                             width: '70%',
