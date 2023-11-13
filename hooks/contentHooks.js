@@ -16,9 +16,20 @@ export const sendManyToServer = (questions, answers) => {
 
   return new Observable(async (subscriber) => {
     subscriber.next(await sendOneShotToServer(allQuestions, allAnswers))
-    const { questionsFirstHalf, questionsSecondHalf, answersFirstHalf, answersSecondHalf } = getSubsetArrays(allQuestions, allAnswers);
+    const { 
+      questionsFirstHalf, 
+      questionsSecondHalf, 
+      questionsThirdHalf,
+      questionsFourthHalf,
+      answersFirstHalf, 
+      answersSecondHalf,
+      answersThirdHalf,
+      answersFourthHalf
+    } = getSubsetArrays(allQuestions, allAnswers);
     subscriber.next(await sendOneShotToServer(questionsFirstHalf, answersFirstHalf))
     subscriber.next(await sendOneShotToServer(questionsSecondHalf, answersSecondHalf))
+    subscriber.next(await sendOneShotToServer(questionsThirdHalf, answersThirdHalf))
+    subscriber.next(await sendOneShotToServer(questionsFourthHalf, answersFourthHalf))
 
     subscriber.complete()
   })
@@ -51,6 +62,12 @@ export const sendOneShotToServer = async (questions, answers) => {
     }
 };
 
+/**
+ * This will need a programmatic overhaul to work with the new data structure
+ * @param {*} questions 
+ * @param {*} answers 
+ * @returns 
+ */
 const getSubsetArrays = (questions, answers) => {
   //create an array of indices
   const indices = Array.from({ length: questions.length }, (_, i) => i);
@@ -65,6 +82,8 @@ const getSubsetArrays = (questions, answers) => {
   //TODO modify these for different results
   const firstHalfIndices = indices.slice(0, 1);
   const secondHalfIndices = indices.slice(1, 2);
+  const thirdHalfIndices = indices.slice(2, 3);
+  const fourthHalfIndices = indices.slice(3, 4);
 
   // Create two new arrays using the split indices
   const questionsFirstHalf = firstHalfIndices.map((index) => questions[index]);
@@ -73,11 +92,21 @@ const getSubsetArrays = (questions, answers) => {
   const questionsSecondHalf = secondHalfIndices.map((index) => questions[index]);
   const answersSecondHalf = secondHalfIndices.map((index) => answers[index]);
 
+  const questionsThirdHalf = thirdHalfIndices.map((index) => questions[index]);
+  const answersThirdHalf = thirdHalfIndices.map((index) => answers[index]);
+
+  const questionsFourthHalf = fourthHalfIndices.map((index) => questions[index]);
+  const answersFourthHalf = fourthHalfIndices.map((index) => answers[answers[0], index]);
+
   return {
     questionsFirstHalf,
     questionsSecondHalf,
+    questionsThirdHalf,
+    questionsFourthHalf,
     answersFirstHalf,
     answersSecondHalf,
+    answersThirdHalf,
+    answersFourthHalf
   };
 };
 
