@@ -72,7 +72,7 @@ const Home = ({ navigation }) => {
                             marginVertical: 12,
                         }}
                     >
-                        Welcome to OutPost 🏕
+                        Welcome to Outbrand
                     </Text>
                     <Text
                         style={{

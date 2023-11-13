@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { FlatList, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS } from '../constants'
-import ProfileHeader from '../components/ProfileHeader/ProfileHeader'
 import PageTitle from '../components/PageTitle'
 import PostCard from '../components/PostCard/PostCard'
 import { sendManyToServer } from '../hooks/contentHooks'
@@ -21,8 +20,10 @@ const Output = ({ route, navigation }) => {
         if (route.params !== undefined) {
             sendManyToServer(frameworkQuestions, frameworkAnswers).subscribe({
                 next: (content) => {
-                    setIsLoading(true)
-                    setPosts((posts) => [...posts, content])
+                    if (content !== undefined) {
+                        setIsLoading(true)
+                        setPosts((posts) => [...posts, content])
+                    }
                 },
                 complete: () => {
                     setIsLoading(false)
