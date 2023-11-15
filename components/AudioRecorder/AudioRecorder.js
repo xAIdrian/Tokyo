@@ -27,7 +27,6 @@ const AudioRecorder = ({
     // Simply get recording permission upon first render
     async function getPermission() {
       await Audio.requestPermissionsAsync().then((permission) => {
-        console.log('Permission Granted: ' + permission.granted);
         setAudioPermission(permission.granted)
       }).catch(error => {
         console.log(error);
@@ -84,10 +83,11 @@ const AudioRecorder = ({
         console.log('Stopping Recording')
         
         await recording.stopAndUnloadAsync();
-        const recordingUri = recording.getURI();
+        let recordingUri = recording.getURI();
+
+        recordingUri = await recordingCompleteCleanup(recordingUri);
 
         // Send the recording to the server for transcription
-        console.log(Constants.expoConfig.extra.aipiUrl)
         FileSystem.uploadAsync(
           `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/transcript`,
           recordingUri,
@@ -99,13 +99,12 @@ const AudioRecorder = ({
             httpMethod: 'POST',
             uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           }
-        ).then(async (fullResponse) => {          
-          console.log("🚀 ~ file: AudioRecorder.js:104 ~ ).then ~ fullResponse:", fullResponse)
-          // setIsLoading(false);
+        ).then(async (fullResponse) => {  
           const response = JSON.parse(fullResponse.body);
           
           if (response.message === 'success') {
             const transcript = response.result;
+            console.log("🚀 ~ file: AudioRecorder.js:107 ~ ).then ~ transcript:", transcript)
 
             recordingConfirmed({
               transcript: transcript
@@ -118,7 +117,6 @@ const AudioRecorder = ({
           setIsLoading(false);
           onUploadError(error);
         })
-        recordingCompleteCleanup(recordingUri);
       }
 
     } catch (error) {
@@ -128,7 +126,7 @@ const AudioRecorder = ({
 
   async function recordingCompleteCleanup(recordingUri) {
     // Move the recording to the new directory with the new file name
-    const fileName = `recording-${Date.now()}.caf`;
+    const fileName = `recorded-${Date.now()}-${recordingUri.split('/').pop()}`;
     const recordingPath = FileSystem.documentDirectory + 'recordings/' + `${fileName}`
     await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
     await FileSystem.moveAsync({
@@ -144,6 +142,7 @@ const AudioRecorder = ({
       recordingUri: recordingUri,
       recordingPath: recordingPath,   
     });
+    return recordingPath;
   }
 
   async function handleRecordButtonPress() {

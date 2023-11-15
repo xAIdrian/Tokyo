@@ -5,24 +5,27 @@ import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants/theme";
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
-    display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
     width: "90%",
-    height: 600,
-    padding: SIZES.body5,
+    height: 625,
     margin: SIZES.body5,
     backgroundColor: COLORS.tertiaryWhite,
-    borderRadius: SIZES.body3,
+    borderRadius: SIZES.body5,
     ...SHADOWS.medium,
     shadowColor: COLORS.black,
-    position: 'absolute'
+    position: 'absolute',
+  },
+  textContainer: {
+    flex: 1,
+    width: '100%',
+    padding: SIZES.body5,
+    justifyContent: 'space-evenly',
+    overflow: 'hidden',
   },
   title: {
     ...FONTS.h1,
   },
   subtitle: {
-    textAlign: 'start',
     ...FONTS.h3,
     width: '100%',
     marginTop: SIZES.body3,
@@ -36,8 +39,12 @@ const styles = StyleSheet.create({
     marginTop: SIZES.body1,
   },
   image: {
-    // width: '100%',
+    width: '100%',
+    height: 200,
+    borderTopLeftRadius: SIZES.body5,
+    borderTopRightRadius: SIZES.body5,
     alignSelf: 'center',
+    resizeMode: 'cover',
   }
 });
 

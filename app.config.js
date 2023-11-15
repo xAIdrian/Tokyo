@@ -4,7 +4,7 @@ import appBuildNumbers from './app.json';
 export default {
     "expo": {
         "name": "Outbrand",
-        "slug": "Outbrand",
+        "slug": "OutPost",
         "version": process.env.EXPO_PUBLIC_PROJECT_VERSION || "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/tent.png",
@@ -24,7 +24,8 @@ export default {
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/tent.png",
-            }
+            },
+            "package": "com.outpost.app",
         },
         "web": {
             "favicon": "./assets/images/tent.png"

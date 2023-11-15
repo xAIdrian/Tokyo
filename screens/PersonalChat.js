@@ -6,9 +6,8 @@ import { StatusBar } from 'expo-status-bar'
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import {
-    buildInitMessage,
     processAudioMessage,
-    getQuestions
+    buildInitMessage
 } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
@@ -18,12 +17,15 @@ import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
 import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
-import { a } from '@react-spring/native'
+import { getFrameworkQuestions } from '../hooks/frameworkHooks'
 
-const PersonalChat = ({ navigation }) => {
+const PersonalChat = ({ route, navigation }) => {
+    const { frameworkQuestions } = route.params ? route.params : { frameworkQuestions: []}
+
     const { showActionSheetWithOptions } = useActionSheet()
 
     const [messages, setMessages] = useState([])
+    const [sliderValue, setSliderValue] = useState(0)
 
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState([])
@@ -42,22 +44,26 @@ const PersonalChat = ({ navigation }) => {
     }, [popupContent])
 
     useEffect(() => {
-        // setIsLoading(true)
-        getQuestions().then((loadQuestions) => {
-            if (loadQuestions.length > 0) {
-                setIsLoading(false)
-                setQuestions(loadQuestions)
-                //setting initial state
-                setMessages(buildInitMessage(loadQuestions[0]))
+        if (route.params !== undefined) {
+            setQuestions(frameworkQuestions)
+            setMessages(buildInitMessage(questions[0]))
+            setAnswers([])
+            setCurrentQuestion(1)
+        } else {
+            getFrameworkQuestions().then((loadFrameworks) => {
+                const currentFramework = loadFrameworks.reverse()[0]
+                setQuestions(currentFramework.questions)
+                setMessages(buildInitMessage(currentFramework.questions[0]))
                 setAnswers([])
                 setCurrentQuestion(1)
-                // setIsLoading(false)
-            } else {
-                alert('Error loading questions')
-            }
-        }).catch((error) => {
-            alert(error)
-        })
+            }).catch((error) => {
+                alert(error)
+            }) 
+        }
+    }, [route])
+
+    useEffect(() => {
+        
     }, [])
 
     /**
@@ -79,7 +85,6 @@ const PersonalChat = ({ navigation }) => {
     })
 
     const audioRecordingConfirmed = useCallback((data) => {
-        console.log("🚀 ~ file: PersonalChat.js:82 ~ audioRecordingConfirmed ~ data:", data)
         answers.push(data.transcript)
     })
 
@@ -112,10 +117,7 @@ const PersonalChat = ({ navigation }) => {
                         cancelText: "Go Back",
                         confirmText: "Get My Posts",
                         cancelAction : () => { setIsPopupVisible(false) },
-                        confirmAction : () => { 
-                            setIsPopupVisible(false)
-                            navigation.navigate('Output') 
-                        }
+                        confirmAction : () => { }
                     })
                 } else if (buttonIndex === 1) {
                     // Option 2 selected
@@ -147,7 +149,10 @@ const PersonalChat = ({ navigation }) => {
             case 'edit':
                 break
             case 'generate':
-                navigation.navigate('Output') 
+                navigation.navigate('Output', {
+                    frameworkQuestions: questions,
+                    frameworkAnswers: answers
+                }) 
                 break
             default:
                 // Do something if the value doesn't match any of the cases
@@ -224,6 +229,7 @@ const PersonalChat = ({ navigation }) => {
                         })
                     )
                     setCurrentQuestion(currentQuestionIndex + 1)
+                    setSliderValue((100 / questions.length) * currentQuestionIndex)
                 }, 500)
             }
         },
@@ -369,7 +375,7 @@ const PersonalChat = ({ navigation }) => {
                         maximumValue={100}
                         step={1}
                         enabled={false}
-                        // value={(100 / questions.length) * currentQuestionIndex}
+                        value={sliderValue}
                         thumbTintColor={COLORS.primary}
                         style={{
                             width: '70%',

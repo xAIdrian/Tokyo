@@ -3,41 +3,16 @@ import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import styles from './tindercards.style.js'
 import TinderCard from 'react-tinder-card'
 import images from '../../constants/images'
+import { mapping } from '../../constants/images'
 import { Feather } from '@expo/vector-icons'
 import { COLORS, SIZES } from '../../constants/theme'
 
 
-const TinderCards = ({ item, onCardAction }) => {
-    const swipeItems = [
-        {
-            title: 'Truth vs Trend',
-            icon: 'layers',
-            subtitle: 'Addressing alternatives to the status quo',
-            description: 'Show your audience that there is a better way to do something. This is a great way to build trust and rapport with your audience.',
-            subdescription: 'Best for: Education, Rapport, & Growth',
-        },
-        {
-            title: 'The Conception Buster',
-            icon: 'key',
-            subtitle: 'Debunking a common misconception',
-            description: 'Think about a common misconception (that you’d like to debunk) that your audience tends to have. Something that is holding them back, and hurting them.',
-            subdescription: 'Best for: Education, Rapport, & Growth',
-        },
-        {
-            title: 'Close the Gap',
-            icon: 'crop',
-            subtitle: 'Showing the gap between where they are and where they want to be',
-            description: 'We all have a gap between where we are and where we want to be. This gap is what causes us to take action. Think about the gap that your audience has between where they are and where they want to be.',
-            subdescription: 'Best for: Marketing, Sales, & Growth',
-        },
-        {
-            title: 'Weekly Win',
-            icon: 'user',
-            subtitle: 'Sharing a win with your audience',
-            description: 'Share a win that you’ve had recently. This is a great way to build rapport with your audience, and show them that you’re a real person.',
-            subdescription: 'Best for: Authority & Knowledge',
-        },
-    ]
+const TinderCards = ({ 
+    data, 
+    onCardAction,
+    onCardRefresh
+}) => {
 
     const [lastDirection, setLastDirection] = useState()
 
@@ -50,8 +25,11 @@ const TinderCards = ({ item, onCardAction }) => {
         console.log(name + ' left the screen!')
     }
 
-    const onSwipe = (direction) => {
+    const onSwipe = (direction, item) => {
         console.log('You swiped: ' + direction)
+        if (direction === 'right') {
+            onCardAction(item)
+        }
     }
 
     const onCardLeftScreen = (myIdentifier) => {
@@ -61,30 +39,58 @@ const TinderCards = ({ item, onCardAction }) => {
 
     return (
         <View>
-            {swipeItems.map((item, index) => (
+            <View style={{
+                position: 'absolute',
+                textAlign: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 100
+            }}>
+                <Text style={{
+                    textAlign: 'center',
+                }}>
+                    Looks like you are out of frameworks to review.
+                </Text>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: COLORS.primary,
+                        padding: 8,
+                        borderRadius: 8,
+                        marginTop: 16,
+                    }}
+                    onPress={() => {
+                        onCardRefresh()
+                    }}
+                >
+                    <Text style={{
+                        color: COLORS.white,
+                        textAlign: 'center',
+                    }}>
+                        Back to Home
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            {data.map((item, index) => (
                 <TinderCard
                     key={index}
-                    onSwipe={(dir) => onSwipe(dir, item.title)}
-                    onCardLeftScreen={ () => onCardAction(item.title) }
+                    onSwipe={(dir) => onSwipe(dir, item)}
+                    // onCardLeftScreen={ () => onCardAction(item) }
                     preventSwipe={['up', 'down']}
                 >
                     <View style={styles.container}>
-                        <Text style={styles.title}>{ item.title }</Text>
-                        <Feather
-                            name= { item.icon }
-                            size={100}
-                            color={COLORS.primary}
-                            style={styles.image}
-                        />
-                        <Text style={styles.subtitle}>
-                            { item.subtitle }
-                        </Text>
-                        <Text style={styles.description}>
-                            { item.description }
-                        </Text>
-                        <Text style={styles.subdescription}>
-                            { item.subdescription }
-                        </Text>
+                        <Image source ={mapping[item.image]} style={ styles.image }/>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.title}>{ item.title }</Text>
+                            <Text style={styles.subtitle}>
+                                { item.subtitle }
+                            </Text>
+                            <Text style={styles.description}>
+                                { item.description }
+                            </Text>
+                            <Text style={styles.subdescription}>
+                                Best for: { item.bestfor.join(', ') }
+                            </Text>
+                        </View>
                     </View>
                 </TinderCard>
             ))}

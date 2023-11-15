@@ -18,21 +18,31 @@
  */
 
 import {
-    View,
     Text,
-    TouchableOpacity,
-    Image,
-    TextInput,
-    FlatList,
-    ScrollView,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { COLORS, FONTS, SIZES } from '../constants'
 import TinderCards from '../components/TinderCards/TinderCards'
+import { getFrameworkQuestions } from '../hooks/frameworkHooks'
 
 const WriterFinder = ({ navigation }) => {
+
+    const [frameworks, setFrameworks] = useState([])
+
+    useEffect(() => {
+        loadFrameworks()
+    }, [])
+
+    const loadFrameworks = () => {
+        getFrameworkQuestions().then((loadFrameworks) => {
+            setFrameworks(loadFrameworks.reverse())
+        }).catch((error) => {
+            alert(error)
+        }) 
+    }
+
     return (
         <SafeAreaView
             style={{
@@ -49,14 +59,17 @@ const WriterFinder = ({ navigation }) => {
                 >
                   Swipe right to start your interview
                 </Text>
-                <TinderCards onCardAction={
-                    (itemName) => {
-                        if (itemName == 'The Conception Buster') {
-                            console.log('Card action')
-                            navigation.navigate('PersonalChat')
+                <TinderCards 
+                    data={frameworks}
+                    onCardAction={
+                        (framework) => {
+                            if (framework.questions !== undefined) {
+                                navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
+                            }
                         }
                     }
-                } />
+                    onCardRefresh={ loadFrameworks } 
+                />
             </PageContainer>
         </SafeAreaView>
     )
