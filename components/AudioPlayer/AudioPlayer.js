@@ -25,7 +25,7 @@ const AudioBubble = ({ playFileLocation, styleType }) => {
                 }
             })
             currentPlabackObject.current.loadAsync({ uri: playFileLocation }).then(() => {
-                setIsPlaying(playbackStatus.isPlaying)
+                setIsPlaying(true)
                 currentPlabackObject.current.playAsync()
             })
         } else {
