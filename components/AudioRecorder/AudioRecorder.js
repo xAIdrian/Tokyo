@@ -170,7 +170,7 @@ const AudioRecorder = ({
     const handleRecordPressIn = async () => {
         if (audioReviewData !== null) {
             recordingApproved(audioReviewData)
-            audioReviewData = null
+            setAudioReviewData(null)
         } else {
             setButtonBackgroundColor(COLORS.secondary)
             await startRecording()
