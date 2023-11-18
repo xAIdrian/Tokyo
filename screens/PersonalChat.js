@@ -114,10 +114,14 @@ const PersonalChat = ({ route, navigation }) => {
             case 'edit':
                 break
             case 'generate':
-                navigation.navigate('Output', {
-                    frameworkQuestions: questions,
-                    frameworkAnswers: answers
-                }) 
+                if (questions.length !== answers.length) {
+                    alert("Please wait until we load all of your content before clicking to generate")
+                } else {
+                    navigation.navigate('Output', {
+                        frameworkQuestions: questions,
+                        frameworkAnswers: answers
+                    }) 
+                }
                 break
             default:
                 // Do something if the value doesn't match any of the cases

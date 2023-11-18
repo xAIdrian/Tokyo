@@ -90,49 +90,9 @@ const AudioRecorder = ({
     async function stopRecording() {
         try {
             if (recordingStatus === 'recording') {
-                setRecordingStatus('stopped')
                 console.log('Stopping Recording')
-
+                setRecordingStatus('stopped')
                 await recording.stopAndUnloadAsync()
-                let recordingUri = recording.getURI()
-
-                recordingUri = await recordingCompleteCleanup(recordingUri)
-
-                // Send the recording to the server for transcription
-                FileSystem.uploadAsync(
-                    `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/transcript`,
-                    recordingUri,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        fieldName: 'audio',
-                        httpMethod: 'POST',
-                        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-                    }
-                )
-                    .then(async (fullResponse) => {
-                        const response = JSON.parse(fullResponse.body)
-
-                        if (response.message === 'success') {
-                            const transcript = response.result
-                            console.log(
-                                '🚀 ~ file: AudioRecorder.js:107 ~ ).then ~ transcript:',
-                                transcript
-                            )
-
-                            transcriptionComplete({
-                                transcript: transcript,
-                            })
-                        } else {
-                            console.log('Error: ', response.message)
-                            onUploadError(response.message)
-                        }
-                    })
-                    .catch((error) => {
-                        setIsLoading(false)
-                        // onUploadError(error)
-                    })
             }
         } catch (error) {
             console.error('Failed to stop recording', error)
@@ -169,6 +129,44 @@ const AudioRecorder = ({
 
     const handleRecordPressIn = async () => {
         if (audioReviewData !== null) {
+            let recordingUri = recording.getURI()
+            recordingUri = await recordingCompleteCleanup(recordingUri)
+
+            // Send the recording to the server for transcription
+            FileSystem.uploadAsync(
+                `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/transcript`,
+                recordingUri,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    fieldName: 'audio',
+                    httpMethod: 'POST',
+                    uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+                }
+            )
+                .then(async (fullResponse) => {
+                    const response = JSON.parse(fullResponse.body)
+
+                    if (response.message === 'success') {
+                        const transcript = response.result
+                        console.log(
+                            '🚀 ~ file: AudioRecorder.js:107 ~ ).then ~ transcript:',
+                            transcript
+                        )
+
+                        transcriptionComplete({
+                            transcript: transcript,
+                        })
+                    } else {
+                        console.log('Error: ', response.message)
+                        onUploadError(response.message)
+                    }
+                })
+                .catch((error) => {
+                    setIsLoading(false)
+                    // onUploadError(error)
+                })
             recordingApproved(audioReviewData)
             setAudioReviewData(null)
         } else {
