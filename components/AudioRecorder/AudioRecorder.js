@@ -8,11 +8,11 @@ import * as FileSystem from 'expo-file-system'
 import Constants from 'expo-constants'
 import CountdownProgressBar from '../CountdownProgressBar/CountdownProgressBar'
 import { TouchableWithoutFeedback } from 'react-native'
+import AudioPlayer from '../AudioPlayer/AudioPlayer'
 
 const AudioRecorder = ({
     recordingApproved,
     recordingConfirmed,
-    heightUpdate,
     moreOptionsClick,
     onUploadError,
 }) => {
@@ -24,12 +24,7 @@ const AudioRecorder = ({
     const [isCountingDown, setIsCountingDown] = useState(false)
     const [buttonBackgroundColor, setButtonBackgroundColor] = useState(COLORS.primary)
 
-    // const [stagedAudio, setStagedAudio] = useRef(null)
-
-    const handleLayout = (event) => {
-        const { height } = event.nativeEvent.layout
-        heightUpdate(height)
-    }
+    const [audioReviewData, setAudioReviewData] = useState(null)
 
     useEffect(() => {
         // Simply get recording permission upon first render
@@ -75,6 +70,7 @@ const AudioRecorder = ({
                     playsInSilentModeIOS: true,
                 })
             }
+            setAudioReviewData(null)
             console.log('Starting Recording')
 
             const newRecording = new Audio.Recording()
@@ -82,6 +78,7 @@ const AudioRecorder = ({
                 Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
             )
             await newRecording.startAsync()
+
             setRecording(newRecording)
             setRecordingStatus('recording')
         } catch (error) {
@@ -93,6 +90,7 @@ const AudioRecorder = ({
     async function stopRecording() {
         try {
             if (recordingStatus === 'recording') {
+                setRecordingStatus('stopped')
                 console.log('Stopping Recording')
 
                 await recording.stopAndUnloadAsync()
@@ -162,7 +160,7 @@ const AudioRecorder = ({
         setRecordingStatus('stopped')
         setIsCountingDown(false)
 
-        recordingApproved({
+        setAudioReviewData({
             recordingUri: recordingUri,
             recordingPath: recordingPath,
         })
@@ -170,41 +168,34 @@ const AudioRecorder = ({
     }
 
     const handleRecordPressIn = async () => {
-        setButtonBackgroundColor(COLORS.secondary)
-        await startRecording()
+        if (audioReviewData !== null) {
+            recordingApproved(audioReviewData)
+            audioReviewData = null
+        } else {
+            setButtonBackgroundColor(COLORS.secondary)
+            await startRecording()
+        }
     }
 
     const handleRecordPressOut = async () => {
-        setRecordingStatus('stopped')
-        setButtonBackgroundColor(COLORS.primary)
-        const audioUri = await stopRecording(recording)
-        if (audioUri) {
-            console.log('Saved audio file to', savedUri)
+        if (audioReviewData !== null) {
+            return
+        } else {
+            setButtonBackgroundColor(COLORS.primary)
+            const audioUri = await stopRecording(recording)
+            if (audioUri) {
+                console.log('Saved audio file to', savedUri)
+            }
         }
     }
 
     return (
         <>
-            <View
-                onLayout={handleLayout}
-            >
-                {/* <View
-                    style={{
-                        flexDirection: 'row',
-                        width: '100%',
-                        justifyContent: 'space-between',
-                        alignContent: 'center',
-                        padding: 8,
-                        backgroundColor: COLORS.tertiaryWhite,
-                    }}
-                >
-                    
-                </View> */}
+            <View>
                 <View
                     style={{
                         flexDirection: 'row',
                         width: '100%',
-                        minHeight: 64,
                         justifyContent: 'space-between',
                         alignContent: 'center',
                         padding: 8,
@@ -214,36 +205,67 @@ const AudioRecorder = ({
                         shadowOpacity: 0.25,
                     }}
                 >
-                    {isCountingDown ? (
-                        <CountdownProgressBar />
-                    ) : (
-                        <View
-                            style={{
-                                flex: 1,
-                                padding: 8,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignContent: 'center',
-                            }}
-                        >
-                            <TouchableOpacity>
-                                <Feather
-                                    name="more-vertical"
-                                    size={24}
-                                    color={COLORS.primary}
-                                />
-                            </TouchableOpacity>
-                            <Text
+                    {
+                        isCountingDown ? (
+                            <CountdownProgressBar />
+                        ) : audioReviewData === null ? (
+                                <View
                                 style={{
-                                    color: COLORS.primary,
-                                    fontSize: 16,
-                                    marginHorizontal: 24,
+                                    flex: 1,
+                                    padding: 8,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignContent: 'center',
                                 }}
                             >
-                                Hold to record
-                            </Text>
-                        </View>
-                    )}
+                                <TouchableOpacity>
+                                    <Feather
+                                        name="more-vertical"
+                                        size={24}
+                                        color={COLORS.primary}
+                                    />
+                                </TouchableOpacity>
+                                <Text
+                                    style={{
+                                        color: COLORS.primary,
+                                        fontSize: 16,
+                                        marginHorizontal: 24,
+                                    }}
+                                >
+                                    Hold to record
+                                </Text>
+                            </View>
+                            ) : (
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        padding: 8,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    <AudioPlayer
+                                        playFileLocation={
+                                            audioReviewData.recordingPath
+                                        }
+                                    />
+                                    <Feather
+                                        name="trash"
+                                        size={20}
+                                        color={COLORS.secondary}
+                                        style={{
+                                            alignSelf: 'center',
+                                            paddingHorizontal: 8,
+                                        }}
+                                        onPress={() => {
+                                            setAudioReviewData(null)
+                                        }}
+                                    />  
+                                </View>
+                            )
+                    
+                }
                     <TouchableWithoutFeedback
                         onPressIn={handleRecordPressIn}
                         onPressOut={handleRecordPressOut}
@@ -259,26 +281,25 @@ const AudioRecorder = ({
                                 backgroundColor: buttonBackgroundColor,
                             }}
                         >
-                            {isLoading ? (
-                                <Text
-                                    style={{
-                                        height: 24,
-                                        alignContent: 'center',
-                                    }}
-                                >
-                                    Loading...
-                                </Text>
-                            ) : (
-                                <Feather
-                                    name={recording ? 'mic-off' : 'mic'}
-                                    size={30}
-                                    color={
-                                        recording
-                                            ? COLORS.primary
-                                            : COLORS.white
-                                    }
-                                />
-                            )}
+                            {
+                                audioReviewData === null ? (
+                                    <Feather
+                                        name={recording ? 'mic-off' : 'mic'}
+                                        size={31}
+                                        color={
+                                            recording
+                                                ? COLORS.primary
+                                                : COLORS.white
+                                        }
+                                    />
+                                ) : (
+                                    <Feather
+                                        name={'send'}
+                                        size={24}
+                                        color={COLORS.white}
+                                    />
+                                )
+                            }
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

@@ -5,8 +5,6 @@ import { COLORS, FONTS, SHADOWS, SIZES } from '../../constants/theme'
 const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.tertiaryWhite,
-        minWidth: 150,
-        padding: 8,
         justifyContent: 'flex-start',
         alignItems: 'center',
         alignSelf: 'stretch',

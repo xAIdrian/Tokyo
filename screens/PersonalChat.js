@@ -24,7 +24,7 @@ const PersonalChat = ({ route, navigation }) => {
 
     const { showActionSheetWithOptions } = useActionSheet()
     const [showTextInputToolbar, setShowTextInputToolbar] = useState(false)
-    const [textInputToolbarHeight, setTextInputToolbarHeight] = useState(64)
+    const [textInputToolbarHeight, setTextInputToolbarHeight] = useState(0)
 
     const [messages, setMessages] = useState([])
     const [sliderValue, setSliderValue] = useState(0)
@@ -208,13 +208,8 @@ const PersonalChat = ({ route, navigation }) => {
                     backgroundColor: COLORS.tertiaryWhite,
                     justifyContent: 'center',
                 }} /> 
-            : <AudioRecorder
-                recordingApproved={audioRecordingApproved}
-                transcriptionComplete={transcriptionComplete}
-                heightUpdate={(height) => setTextInputToolbarHeight(height)}
-                moreOptionsClick={showOptions}
-                onUploadError={(error) => alert(error)}
-            />
+            : setTextInputToolbarHeight(0)
+            
     }
 
     // change button of send
@@ -382,6 +377,15 @@ const PersonalChat = ({ route, navigation }) => {
                     <ActivityIndicator size="large" color="#0000ff" />
                 )}
             />
+            {
+                !showTextInputToolbar ?
+                    <AudioRecorder
+                        recordingApproved={audioRecordingApproved}
+                        transcriptionComplete={transcriptionComplete}
+                        moreOptionsClick={showOptions}
+                        onUploadError={(error) => alert(error)}
+                    /> : null
+            }
 
             <DetailDialog
                 isVisible={ isPopupVisible }
