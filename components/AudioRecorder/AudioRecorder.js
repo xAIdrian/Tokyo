@@ -12,7 +12,7 @@ import AudioPlayer from '../AudioPlayer/AudioPlayer'
 
 const AudioRecorder = ({
     recordingApproved,
-    recordingConfirmed,
+    transcriptionComplete,
     moreOptionsClick,
     onUploadError,
 }) => {
@@ -121,7 +121,7 @@ const AudioRecorder = ({
                                 transcript
                             )
 
-                            recordingConfirmed({
+                            transcriptionComplete({
                                 transcript: transcript,
                             })
                         } else {

@@ -10,28 +10,28 @@ import images from '../../constants/images.js'
 const AudioBubble = ({ playFileLocation, styleType }) => {
 
     const [isPlaying, setIsPlaying] = useState(false)
-    const currentPlabackObject = useRef(null)
+    let currentPlabackObject = null
 
-    const effect = useCallback((isPlaying) => {
-        console.log("🚀 ~ file: AudioPlayer.js:17 ~ useEffect ~ useEffect:", isPlaying)
-        if (!isPlaying && currentPlabackObject.current == null) {
+    const effect = useCallback(async (isPlaying) => {
+        if (!isPlaying && !currentPlabackObject) {
             setIsPlaying(true)
-            currentPlabackObject.current = new Audio.Sound()
+            currentPlabackObject = new Audio.Sound()
             
-            currentPlabackObject.current.setOnPlaybackStatusUpdate((playbackStatus) => {
+            await currentPlabackObject.unloadAsync()
+            await currentPlabackObject.loadAsync({ uri: playFileLocation })
+            currentPlabackObject.setOnPlaybackStatusUpdate((playbackStatus) => {
+                console.log("🚀 ~ file: AudioPlayer.js:25 ~ currentPlabackObject.current.setOnPlaybackStatusUpdate ~ playbackStatus:", playbackStatus)
                 if (playbackStatus.didJustFinish) {
                     setIsPlaying(false)
-                    currentPlabackObject.current = null
+                    currentPlabackObject = null
                 }
             })
-            currentPlabackObject.current.loadAsync({ uri: playFileLocation }).then(() => {
-                setIsPlaying(true)
-                currentPlabackObject.current.playAsync()
-            })
+            currentPlabackObject.playAsync()
+            setIsPlaying(true)
         } else {
             console.log("📡 ~ file: AudioPlayer.js:32 ~ effect ~ else:", isPlaying)
             setIsPlaying(false)
-            currentPlabackObject.current = null
+            currentPlabackObject = null
         }
     })
 
