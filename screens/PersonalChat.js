@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons, FontAwesome, Feather } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import {
     processAudioMessage,
@@ -23,6 +23,7 @@ const PersonalChat = ({ route, navigation }) => {
     const { frameworkQuestions } = route.params ? route.params : { frameworkQuestions: []}
 
     const { showActionSheetWithOptions } = useActionSheet()
+    const [showTextInputToolbar, setShowTextInputToolbar] = useState(false)
 
     const [messages, setMessages] = useState([])
     const [sliderValue, setSliderValue] = useState(0)
@@ -34,9 +35,6 @@ const PersonalChat = ({ route, navigation }) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState({})
     
-    const [isLoading, setIsLoading] = useState(false)
-    const [isCountingDown, setIsCountingDown] = useState(false)
-
     useEffect(() => {
         if (!isPopupVisible && popupContent.title !== undefined) {
             setIsPopupVisible(true)
@@ -62,25 +60,7 @@ const PersonalChat = ({ route, navigation }) => {
         }
     }, [route])
 
-    useEffect(() => {
-        
-    }, [])
-
-    /**
-     * Called after every time messages object is updated.
-     * This is where we need to put the request to the server for chat messages.
-     */
-    // const starter = useEffect(() => {
-    //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
-    // }, [messages])
-
-    const handleTimerStart = useCallback(() => {
-
-    })
-
     const audioRecordingComplete = useCallback((data) => {
-        setIsLoading(false)
-        setIsCountingDown(false)
         onSend(processAudioMessage(data))
     })
 
@@ -90,38 +70,22 @@ const PersonalChat = ({ route, navigation }) => {
 
     const showOptions = useCallback(() => {
         const options = [
-            'Redo Last Recording',
-            'Skip This Question',
-            'Remind Me Later',
-            'Speaker Notes',
+            'Show text entry',
             'Cancel',
         ]
-        const cancelButtonIndex = 4
+        const cancelButtonIndex = 1
 
         showActionSheetWithOptions(
             {
                 options,
                 cancelButtonIndex,
-                title: 'What would you like to do?',
-                // message: 'Select an option from below:',
-                destructiveButtonIndex: 3, // Index of the destructive option (if needed)
-                tintColor: 'red', // Color of the Cancel button text
+                tintColor: 'red', 
             },
             (buttonIndex) => {
                 // Handle the selected option
                 if (buttonIndex === 0) {
-                    // Option 1 selected
-                    setPopupContent({
-                        title: "Are you sure?",
-                        content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
-                        cancelText: "Go Back",
-                        confirmText: "Get My Posts",
-                        cancelAction : () => { setIsPopupVisible(false) },
-                        confirmAction : () => { }
-                    })
-                } else if (buttonIndex === 1) {
-                    // Option 2 selected
-                }
+                    setShowTextInputToolbar(!setShowTextInputToolbar)
+                } 
             }
         )
     }, [showActionSheetWithOptions])
@@ -237,14 +201,13 @@ const PersonalChat = ({ route, navigation }) => {
     )
 
     const renderInputToolbar = (props) => {
-        return !isCountingDown ? 
+        return showTextInputToolbar ? 
             <InputToolbar {...props} 
                 containerStyle={{ 
                     backgroundColor: COLORS.tertiaryWhite,
                     justifyContent: 'center',
-                    height: 50, 
                 }} /> 
-            : <CountdownProgressBar />
+            : null
     }
 
     // change button of send
@@ -354,11 +317,12 @@ const PersonalChat = ({ route, navigation }) => {
                                 marginRight: 8,
                             }}
                         >
-                            <MaterialIcons
-                                name="menu"
+                            
+                            {/* <Feather
+                                name="more-vertical"
                                 size={24}
-                                color={COLORS.black}
-                            />
+                                color={COLORS.primary}
+                            /> */}
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -411,12 +375,10 @@ const PersonalChat = ({ route, navigation }) => {
             />
             
             <AudioRecorder
-                isRecording={(isRecording) => setIsCountingDown(isRecording)}
                 recordingComplete={audioRecordingComplete}
                 recordingConfirmed={audioRecordingConfirmed}
                 moreOptionsClick={showOptions}
                 onUploadError={(error) => alert(error)}
-                isParentLoading={isLoading}
             />
 
             <DetailDialog
