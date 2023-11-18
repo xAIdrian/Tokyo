@@ -11,7 +11,7 @@ import {
 } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
-import AudioBubble from '../components/AudioBubble/AudioBubble'
+import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
@@ -24,6 +24,7 @@ const PersonalChat = ({ route, navigation }) => {
 
     const { showActionSheetWithOptions } = useActionSheet()
     const [showTextInputToolbar, setShowTextInputToolbar] = useState(false)
+    const [textInputToolbarHeight, setTextInputToolbarHeight] = useState(64)
 
     const [messages, setMessages] = useState([])
     const [sliderValue, setSliderValue] = useState(0)
@@ -60,11 +61,11 @@ const PersonalChat = ({ route, navigation }) => {
         }
     }, [route])
 
-    const audioRecordingComplete = useCallback((data) => {
+    const audioRecordingApproved = useCallback((data) => {
         onSend(processAudioMessage(data))
     })
 
-    const audioRecordingConfirmed = useCallback((data) => {
+    const transcriptionComplete = useCallback((data) => {
         answers.push(data.transcript)
     })
 
@@ -207,7 +208,13 @@ const PersonalChat = ({ route, navigation }) => {
                     backgroundColor: COLORS.tertiaryWhite,
                     justifyContent: 'center',
                 }} /> 
-            : null
+            : <AudioRecorder
+                recordingApproved={audioRecordingApproved}
+                transcriptionComplete={transcriptionComplete}
+                heightUpdate={(height) => setTextInputToolbarHeight(height)}
+                moreOptionsClick={showOptions}
+                onUploadError={(error) => alert(error)}
+            />
     }
 
     // change button of send
@@ -255,10 +262,11 @@ const PersonalChat = ({ route, navigation }) => {
                         }}
                     />
                 ) : (
-                    <AudioBubble
+                    <AudioPlayer 
                         playFileLocation={
                             props.currentMessage.audioFileLocation
                         }
+                        styleType="bubble"
                     />
                 )}
             </>
@@ -368,17 +376,11 @@ const PersonalChat = ({ route, navigation }) => {
                 scrollToBottom
                 renderBubble={renderBubble}
                 renderSend={renderSend}
+                minInputToolbarHeight={textInputToolbarHeight}
                 renderInputToolbar={renderInputToolbar}
                 renderLoading={() => (
                     <ActivityIndicator size="large" color="#0000ff" />
                 )}
-            />
-            
-            <AudioRecorder
-                recordingComplete={audioRecordingComplete}
-                recordingConfirmed={audioRecordingConfirmed}
-                moreOptionsClick={showOptions}
-                onUploadError={(error) => alert(error)}
             />
 
             <DetailDialog

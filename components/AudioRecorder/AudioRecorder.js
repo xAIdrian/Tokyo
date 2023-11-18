@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { COLORS } from '../../constants/theme'
 import { Feather } from '@expo/vector-icons'
@@ -10,10 +10,11 @@ import CountdownProgressBar from '../CountdownProgressBar/CountdownProgressBar'
 import { TouchableWithoutFeedback } from 'react-native'
 
 const AudioRecorder = ({
-    recordingComplete,
+    recordingApproved,
     recordingConfirmed,
+    heightUpdate,
     moreOptionsClick,
-    onUploadError
+    onUploadError,
 }) => {
     const [audioPermission, setAudioPermission] = useState(null)
     const [recordingStatus, setRecordingStatus] = useState('idle')
@@ -21,10 +22,14 @@ const AudioRecorder = ({
     const [isLoading, setIsLoading] = useState(false)
     const [isDisabled, setIsDisabled] = useState(false)
     const [isCountingDown, setIsCountingDown] = useState(false)
+    const [buttonBackgroundColor, setButtonBackgroundColor] = useState(COLORS.primary)
 
-    const [buttonBackgroundColor, setButtonBackgroundColor] = useState(
-        COLORS.primary
-    )
+    // const [stagedAudio, setStagedAudio] = useRef(null)
+
+    const handleLayout = (event) => {
+        const { height } = event.nativeEvent.layout
+        heightUpdate(height)
+    }
 
     useEffect(() => {
         // Simply get recording permission upon first render
@@ -57,9 +62,7 @@ const AudioRecorder = ({
     useEffect(() => {
         setIsDisabled(!audioPermission || isLoading)
         setButtonBackgroundColor(
-            !audioPermission || isLoading
-                ? COLORS.grey
-                : COLORS.primary
+            !audioPermission || isLoading ? COLORS.grey : COLORS.primary
         )
     }, [audioPermission, isLoading])
 
@@ -130,7 +133,7 @@ const AudioRecorder = ({
                     })
                     .catch((error) => {
                         setIsLoading(false)
-                        onUploadError(error)
+                        // onUploadError(error)
                     })
             }
         } catch (error) {
@@ -159,7 +162,7 @@ const AudioRecorder = ({
         setRecordingStatus('stopped')
         setIsCountingDown(false)
 
-        recordingComplete({
+        recordingApproved({
             recordingUri: recordingUri,
             recordingPath: recordingPath,
         })
@@ -170,7 +173,7 @@ const AudioRecorder = ({
         setButtonBackgroundColor(COLORS.secondary)
         await startRecording()
     }
-    
+
     const handleRecordPressOut = async () => {
         setRecordingStatus('stopped')
         setButtonBackgroundColor(COLORS.primary)
@@ -183,83 +186,102 @@ const AudioRecorder = ({
     return (
         <>
             <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    padding: 8,
-                    backgroundColor: COLORS.tertiaryWhite,
-                    shadowColor: COLORS.black,
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.25,
-                    alignContent: 'center',
-                }}
+                onLayout={handleLayout}
             >
-                {isCountingDown ? (
-                    <CountdownProgressBar />
-                ) : (
-                    <View
-                        style={{
-                            flex: 1,
-                            padding: 8,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignContent: 'center',
-                        }}
-                    >
-                        <TouchableOpacity>
-                            <Feather
-                                name="more-vertical"
-                                size={24}
-                                color={COLORS.primary}
-                            />
-                        </TouchableOpacity>
-                        <Text
+                {/* <View
+                    style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignContent: 'center',
+                        padding: 8,
+                        backgroundColor: COLORS.tertiaryWhite,
+                    }}
+                >
+                    
+                </View> */}
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        minHeight: 64,
+                        justifyContent: 'space-between',
+                        alignContent: 'center',
+                        padding: 8,
+                        backgroundColor: COLORS.tertiaryWhite,
+                        shadowColor: COLORS.black,
+                        shadowOffset: { width: 0, height: 4 },
+                        shadowOpacity: 0.25,
+                    }}
+                >
+                    {isCountingDown ? (
+                        <CountdownProgressBar />
+                    ) : (
+                        <View
                             style={{
-                                color: COLORS.primary,
-                                fontSize: 16,
-                                marginHorizontal: 24,
+                                flex: 1,
+                                padding: 8,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignContent: 'center',
                             }}
                         >
-                            Hold to record
-                        </Text>
-                    </View>
-                )}
-                <TouchableWithoutFeedback
-                    onPressIn={handleRecordPressIn}
-                    onPressOut={handleRecordPressOut}
-                    disabled={isDisabled}
-                >
-                    <View
-                        style={{
-                            width: 48,
-                            padding: 8,
-                            borderRadius: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: buttonBackgroundColor,
-                        }}
-                    >
-                        {isLoading ? (
+                            <TouchableOpacity>
+                                <Feather
+                                    name="more-vertical"
+                                    size={24}
+                                    color={COLORS.primary}
+                                />
+                            </TouchableOpacity>
                             <Text
                                 style={{
-                                    height: 24,
-                                    alignContent: 'center',
+                                    color: COLORS.primary,
+                                    fontSize: 16,
+                                    marginHorizontal: 24,
                                 }}
                             >
-                                Loading...
+                                Hold to record
                             </Text>
-                        ) : (
-                            <Feather
-                                name={recording ? 'mic-off' : 'mic'}
-                                size={30}
-                                color={
-                                    recording ? COLORS.primary : COLORS.white
-                                }
-                            />
-                        )}
-                    </View>
-                </TouchableWithoutFeedback>
+                        </View>
+                    )}
+                    <TouchableWithoutFeedback
+                        onPressIn={handleRecordPressIn}
+                        onPressOut={handleRecordPressOut}
+                        disabled={isDisabled}
+                    >
+                        <View
+                            style={{
+                                width: 48,
+                                padding: 8,
+                                borderRadius: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: buttonBackgroundColor,
+                            }}
+                        >
+                            {isLoading ? (
+                                <Text
+                                    style={{
+                                        height: 24,
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    Loading...
+                                </Text>
+                            ) : (
+                                <Feather
+                                    name={recording ? 'mic-off' : 'mic'}
+                                    size={30}
+                                    color={
+                                        recording
+                                            ? COLORS.primary
+                                            : COLORS.white
+                                    }
+                                />
+                            )}
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         </>
     )
