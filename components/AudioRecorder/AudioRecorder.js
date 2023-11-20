@@ -92,7 +92,9 @@ const AudioRecorder = ({
             if (recordingStatus === 'recording') {
                 console.log('Stopping Recording')
                 setRecordingStatus('stopped')
+                setRecording(false)
                 await recording.stopAndUnloadAsync()
+                return recording.getURI()
             }
         } catch (error) {
             console.error('Failed to stop recording', error)
@@ -120,6 +122,7 @@ const AudioRecorder = ({
         setRecordingStatus('stopped')
         setIsCountingDown(false)
 
+        //TODO: DO WE NEED THIS HERE
         setAudioReviewData({
             recordingUri: recordingUri,
             recordingPath: recordingPath,
@@ -180,9 +183,10 @@ const AudioRecorder = ({
             return
         } else {
             setButtonBackgroundColor(COLORS.primary)
-            const audioUri = await stopRecording(recording)
-            if (audioUri) {
-                console.log('Saved audio file to', savedUri)
+            const recordingUri = await stopRecording(recording)
+            await recordingCompleteCleanup(recordingUri)
+            if (recordingUri) {
+                console.log('Saved audio file to', recordingUri)
             }
         }
     }

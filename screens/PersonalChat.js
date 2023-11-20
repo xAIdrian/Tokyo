@@ -212,7 +212,7 @@ const PersonalChat = ({ route, navigation }) => {
                     backgroundColor: COLORS.tertiaryWhite,
                     justifyContent: 'center',
                 }} /> 
-            : setTextInputToolbarHeight(0)
+            : null
             
     }
 
