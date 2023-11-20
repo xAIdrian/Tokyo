@@ -122,23 +122,18 @@ const AudioRecorder = ({
         setRecordingStatus('stopped')
         setIsCountingDown(false)
 
-        //TODO: DO WE NEED THIS HERE
         setAudioReviewData({
             recordingUri: recordingUri,
             recordingPath: recordingPath,
         })
-        return recordingPath
     }
 
     const handleRecordPressIn = async () => {
         if (audioReviewData !== null) {
-            let recordingUri = recording.getURI()
-            recordingUri = await recordingCompleteCleanup(recordingUri)
-
             // Send the recording to the server for transcription
             FileSystem.uploadAsync(
                 `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/transcript`,
-                recordingUri,
+                audioReviewData.recordingPath,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -171,7 +166,6 @@ const AudioRecorder = ({
                     // onUploadError(error)
                 })
             recordingApproved(audioReviewData)
-            setAudioReviewData(null)
         } else {
             setButtonBackgroundColor(COLORS.secondary)
             await startRecording()
@@ -180,6 +174,7 @@ const AudioRecorder = ({
 
     const handleRecordPressOut = async () => {
         if (audioReviewData !== null) {
+            setAudioReviewData(null)
             return
         } else {
             setButtonBackgroundColor(COLORS.primary)
