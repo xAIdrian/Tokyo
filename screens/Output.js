@@ -36,6 +36,14 @@ const Output = ({ route, navigation }) => {
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <PageTitle
                 onPress={() => navigation.navigate('BottomTabNavigation')}
+                style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 4,
+                    },
+                    shadowOpacity: 0.25,
+                }}
             />
             <>
                 {posts.length == 0 ? (

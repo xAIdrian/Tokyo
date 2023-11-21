@@ -30,8 +30,7 @@ const PageTitle = (props) => {
 
 const styles = StyleSheet.create({
     pageTitleContainer: {
-        marginHorizontal: 22,
-        marginVertical: 22,
+        margin: 12,
         flexDirection: 'row',
         alignItems: 'center',
     },
