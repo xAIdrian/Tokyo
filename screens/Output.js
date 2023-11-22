@@ -24,15 +24,6 @@ const Output = ({ route, navigation }) => {
                     if (contentListSoFar !== undefined && contentListSoFar.length > 0) {
                         setIsLoading(true)
                         setPosts(contentListSoFar)
-                        // setPosts((existingPosts) => {
-                        //     console.log("🚀 ~ file: Output.js:27 ~ setPosts ~ existingPosts:", existingPosts)
-                        //     console.log("🚀 ~ file: Output.js:28 ~ sendContentForPosts ~ posts.length !== contentListSoFar.length:", existingPosts.length, contentListSoFar.length);
-                        //     if (posts.length !== contentListSoFar.length) {
-                        //         const tartar = contentListSoFar[contentListSoFar.length - 1]
-                        //         console.log("🚀 ~ file: Output.js:31 ~ sendContentForPosts ~ tartar:", tartar);
-                        //         [...existingPosts, tartar]
-                        //     }
-                        // })
                     }
                 },
                 complete: () => {

@@ -36,7 +36,7 @@ const checkContentPolling = async (subscriber) => {
     console.log("🚀 ~ file: contentHooks.js:35 ~ checkContentPolling ~ isComplete:", isComplete)
     if (isComplete) {
       console.log("🚀 ~ file: contentHooks.js:38 ~ intervalaId ~ isComplete:", isComplete)
-      // subscriber.complete()
+      subscriber.complete()
       clearInterval(intervalaId)
     }
     isComplete = await getContentStatus(
