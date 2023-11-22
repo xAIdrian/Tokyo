@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS } from '../constants'
 import PageTitle from '../components/PageTitle'
 import PostCard from '../components/PostCard/PostCard'
-import { sendManyToServer } from '../hooks/contentHooks'
+import { sendContentForPosts } from '../hooks/contentHooks'
 
 const Output = ({ route, navigation }) => {
     const { frameworkQuestions, frameworkAnswers } = route.params
@@ -18,11 +18,15 @@ const Output = ({ route, navigation }) => {
 
     useEffect(() => {
         if (route.params !== undefined) {
-            sendManyToServer(frameworkQuestions, frameworkAnswers).subscribe({
-                next: (content) => {
-                    if (content !== undefined) {
+            sendContentForPosts(frameworkQuestions, frameworkAnswers).subscribe({
+                next: (contentListSoFar) => {
+                    console.log("🚀 ~ file: Output.js:23 ~ sendContentForPosts ~ contentListSoFar:", contentListSoFar)
+                    if (contentListSoFar !== undefined && contentListSoFar.length > 0) {
                         setIsLoading(true)
-                        setPosts((posts) => [...posts, content])
+                        if (posts.length !== contentListSoFar.length) {
+                            console.log("✅ not equal, update list")
+                            setPosts((posts) => [...posts, contentListSoFar.pop()])
+                        }
                     }
                 },
                 complete: () => {

@@ -114,7 +114,7 @@ const PersonalChat = ({ route, navigation }) => {
             case 'edit':
                 break
             case 'generate':
-                if (questions.length !== answers.length) {
+                if (questions.length > answers.length) {
                     alert("Please wait until we load all of your content before clicking to generate")
                 } else {
                     navigation.navigate('Output', {

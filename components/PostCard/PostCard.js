@@ -25,23 +25,6 @@ const PostCard = (content) => {
 
     return (
         <View style={styles.container}>
-            <View style={{
-                flex: 1,
-                flexDirection: 'row',
-            }}>
-                <Image
-                    source={images.user8}
-                    resizeMode="contain"
-                    style={{
-                        height: 32,
-                        width: 32,
-                        borderRadius: 25,
-                    }}
-                />
-                <Text style={styles.title} numberOfLines={1}>
-                    Sasha Cunningham
-                </Text>
-            </View>
             <View style={styles.infoContainer}>
                 <Text style={styles.subtitle}>
                     { content.content  }

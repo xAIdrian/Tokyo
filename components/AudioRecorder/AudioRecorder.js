@@ -83,7 +83,7 @@ const AudioRecorder = ({
             setRecordingStatus('recording')
         } catch (error) {
             console.error('Failed to start recording', error)
-            onUploadError(error)
+            // onUploadError(error)
         }
     }
 
@@ -102,30 +102,34 @@ const AudioRecorder = ({
     }
 
     async function recordingCompleteCleanup(recordingUri) {
-        // Move the recording to the new directory with the new file name
-        const fileName = `recorded-${Date.now()}-${recordingUri
-            .split('/')
-            .pop()}`
-        const recordingPath =
-            FileSystem.documentDirectory + 'recordings/' + `${fileName}`
-        await FileSystem.makeDirectoryAsync(
-            FileSystem.documentDirectory + 'recordings/',
-            { intermediates: true }
-        )
-        await FileSystem.moveAsync({
-            from: recordingUri,
-            to: recordingPath,
-        })
-
-        // resert our states to record again
-        setRecording(null)
-        setRecordingStatus('stopped')
-        setIsCountingDown(false)
-
-        setAudioReviewData({
-            recordingUri: recordingUri,
-            recordingPath: recordingPath,
-        })
+        try {
+            // Move the recording to the new directory with the new file name
+            const fileName = `recorded-${Date.now()}-${recordingUri
+                .split('/')
+                .pop()}`
+            const recordingPath =
+                FileSystem.documentDirectory + 'recordings/' + `${fileName}`
+            await FileSystem.makeDirectoryAsync(
+                FileSystem.documentDirectory + 'recordings/',
+                { intermediates: true }
+            )
+            await FileSystem.moveAsync({
+                from: recordingUri,
+                to: recordingPath,
+            })
+    
+            // resert our states to record again
+            setRecording(null)
+            setRecordingStatus('stopped')
+            setIsCountingDown(false)
+    
+            setAudioReviewData({
+                recordingUri: recordingUri,
+                recordingPath: recordingPath,
+            })
+        } catch (error) {
+            console.error('Failed to cleanup recording', error)
+        }
     }
 
     const handleRecordPressIn = async () => {
@@ -220,6 +224,7 @@ const AudioRecorder = ({
                                         name="more-vertical"
                                         size={24}
                                         color={COLORS.primary}
+                                        onPress={moreOptionsClick}
                                     />
                                 </TouchableOpacity>
                                 <Text
