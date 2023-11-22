@@ -23,10 +23,16 @@ const Output = ({ route, navigation }) => {
                     console.log("🚀 ~ file: Output.js:23 ~ sendContentForPosts ~ contentListSoFar:", contentListSoFar)
                     if (contentListSoFar !== undefined && contentListSoFar.length > 0) {
                         setIsLoading(true)
-                        if (posts.length !== contentListSoFar.length) {
-                            console.log("✅ not equal, update list")
-                            setPosts((posts) => [...posts, contentListSoFar.pop()])
-                        }
+                        setPosts(contentListSoFar)
+                        // setPosts((existingPosts) => {
+                        //     console.log("🚀 ~ file: Output.js:27 ~ setPosts ~ existingPosts:", existingPosts)
+                        //     console.log("🚀 ~ file: Output.js:28 ~ sendContentForPosts ~ posts.length !== contentListSoFar.length:", existingPosts.length, contentListSoFar.length);
+                        //     if (posts.length !== contentListSoFar.length) {
+                        //         const tartar = contentListSoFar[contentListSoFar.length - 1]
+                        //         console.log("🚀 ~ file: Output.js:31 ~ sendContentForPosts ~ tartar:", tartar);
+                        //         [...existingPosts, tartar]
+                        //     }
+                        // })
                     }
                 },
                 complete: () => {
