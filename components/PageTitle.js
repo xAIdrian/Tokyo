@@ -11,6 +11,8 @@ const PageTitle = (props) => {
                 onPress={props.onPress}
                 style={{
                     marginRight: 12,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                 }}
             >
                 <MaterialIcons
@@ -18,6 +20,9 @@ const PageTitle = (props) => {
                     size={SIZES.padding * 3}
                     color={COLORS.black}
                 />
+                <Text style={{ ...FONTS.h4, color: COLORS.black }}>
+                    Home
+                </Text>
             </TouchableOpacity>
             {props.title && (
                 <Text style={{ ...FONTS.h4, color: COLORS.black }}>
@@ -33,6 +38,9 @@ const styles = StyleSheet.create({
         margin: 12,
         flexDirection: 'row',
         alignItems: 'center',
+        shadowColor: COLORS.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
     },
 })
 

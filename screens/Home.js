@@ -74,6 +74,7 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.body3,
+                            color: COLORS.black,
                             marginVertical: 12,
                         }}
                     >
@@ -82,6 +83,7 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.body3,
+                            color: COLORS.black,
                             marginVertical: 12,
                         }}
                     >
@@ -90,7 +92,6 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.h2,
-                            color: COLORS.black,
                             marginTop: 12,
                         }}
                     >
@@ -108,7 +109,6 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.h2,
-                            color: COLORS.black,
                             marginTop: 12,
                         }}
                     >
@@ -121,7 +121,9 @@ const Home = ({ navigation }) => {
                             onHandlePress={() => {
                                 if (item.title === 'Writer Finder') {
                                     navigation.jumpTo('WriterFinder')
-                                } 
+                                } else {
+                                    navigation.navigate('PersonalChat')
+                                }
                             }}
                         />}
                         keyExtractor={ item => item?.title }
