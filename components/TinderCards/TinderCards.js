@@ -10,9 +10,9 @@ import { COLORS, SIZES } from '../../constants/theme'
 
 const TinderCards = ({ 
     data, 
-    onCardAction,
-    onCardRefresh
+    onCardAction
 }) => {
+    console.log("🚀 ~ file: TinderCards.js:16 ~ data:", data)
 
     const [lastDirection, setLastDirection] = useState()
 
@@ -39,75 +39,47 @@ const TinderCards = ({
 
     return (
         <View>
-            <View style={{
-                position: 'absolute',
-                textAlign: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 100
-            }}>
-                <Text style={{
-                    textAlign: 'center',
-                }}>
-                    Looks like you are out of frameworks to review.
-                </Text>
-                <TouchableOpacity
-                    style={{
-                        backgroundColor: COLORS.primary,
-                        padding: 8,
-                        borderRadius: 8,
-                        marginTop: 16,
-                    }}
-                    onPress={() => {
-                        onCardRefresh()
-                    }}
-                >
-                    <Text style={{
-                        color: COLORS.white,
-                        textAlign: 'center',
-                    }}>
-                        Refresh
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            {data.map((item, index) => (
-                <TinderCard
-                    key={index}
-                    onSwipe={(dir) => onSwipe(dir, item)}
-                    // onCardLeftScreen={ () => onCardAction(item) }
-                    preventSwipe={['up', 'down']}
-                >
-                    <View style={styles.container}>
-                        <Image source ={mapping[item.image]} style={ styles.image }/>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.title}>{ item.title }</Text>
-                            <Text style={styles.description}>
-                                { item.description }
-                            </Text>
-                            <Text style={styles.subdescription}>
-                                Expected time: { item.time}
-                            </Text>
-                            <Text style={styles.subdescription}>
-                                Expected pieces of content: { item.num_pieces}
-                            </Text>
-                        </View>
-                        <View style={{
-                            padding: SIZES.body3,
-                            width: '100%',
-                            justifyContent: 'center',
-                        }}>
-                            <TouchableOpacity style={ styles.selecter }>
-                                <Text style={{
-                                    color: COLORS.primary,
-                                    textAlign: 'center',
-                                }}>
-                                    More Info
+            {
+                data.map((item, index) => (
+                    <TinderCard
+                        // ref={item.title}
+                        key={item.title}
+                        onSwipe={(dir) => onSwipe(dir, item)}
+                        // onCardLeftScreen={ () => onCardAction(item) }
+                        preventSwipe={['up', 'down']}
+                    >
+                        <View style={styles.container}>
+                            <Image source ={mapping[item.image]} style={ styles.image }/>
+                            <View style={styles.textContainer}>
+                                <Text style={styles.title}>{ item.title }</Text>
+                                <Text style={styles.description}>
+                                    { item.description }
                                 </Text>
-                            </TouchableOpacity>
+                                <Text style={styles.subdescription}>
+                                    Expected time: { item.time}
+                                </Text>
+                                <Text style={styles.subdescription}>
+                                    Expected pieces of content: { item.num_pieces}
+                                </Text>
+                            </View>
+                            <View style={{
+                                padding: SIZES.body3,
+                                width: '100%',
+                                justifyContent: 'center',
+                            }}>
+                                <TouchableOpacity style={ styles.selecter }>
+                                    <Text style={{
+                                        color: COLORS.primary,
+                                        textAlign: 'center',
+                                    }}>
+                                        More Info
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
-                </TinderCard>
-            ))}
+                    </TinderCard>
+                ))
+            }
         </View>
     )
 }
