@@ -202,7 +202,7 @@ const AudioRecorder = ({
                         padding: 8,
                         backgroundColor: COLORS.tertiaryWhite,
                         shadowColor: COLORS.black,
-                        shadowOffset: { width: 0, height: 4 },
+                        shadowOffset: { width: 0, height: -1 },
                         shadowOpacity: 0.25,
                     }}
                 >

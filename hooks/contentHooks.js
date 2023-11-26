@@ -12,8 +12,6 @@ import Constants from 'expo-constants';
 
 const POLLING_TIMER = 10000  
 
-export let contentPosts = []
-
 export const sendContentForPosts = (questions, answers) => {
   contentPosts = []
 
@@ -56,7 +54,6 @@ const getContentStatus = async (subscriber, options) => {
     console.log("🚀 ~ file: contentHooks.js:53 ~ getContentStatus ~ pollResponse:", pollResponse.data)
     if (pollResponse.data.message == 'success') {
       const { isComplete, result } = pollResponse.data.result
-      contentPosts = result
       subscriber.next(result)
       return isComplete
     } else {

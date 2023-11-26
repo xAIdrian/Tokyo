@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS } from '../constants'
 import PageTitle from '../components/PageTitle'
 import PostCard from '../components/PostCard/PostCard'
-import { sendContentForPosts, contentPosts } from '../hooks/contentHooks'
+import { sendContentForPosts } from '../hooks/contentHooks'
 
 const Output = ({ route, navigation }) => {
     const { frameworkQuestions, frameworkAnswers } = route.params ?? {}
@@ -17,8 +17,6 @@ const Output = ({ route, navigation }) => {
     }, [])
 
     useEffect(() => {
-        console.log("🚀 ~ file: Output.js:21 ~ useEffect ~ useEffect:", route.params)
-        console.log("🚀 ~ file: Output.js:22 ~ useEffect ~ console:", contentPosts)
         if (route.params !== undefined) {
             sendContentForPosts(frameworkQuestions, frameworkAnswers).subscribe({
                 next: (contentListSoFar) => {
@@ -32,15 +30,18 @@ const Output = ({ route, navigation }) => {
                     setIsLoading(false)
                 },
             });
-        } else if (contentPosts.length > 0) {
-            setPosts(contentPosts)
-        }
+        } 
     }, [route])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <PageTitle
                 onPress={() => navigation.navigate('BottomTabNavigation')}
+                style={{
+                    shadowColor: COLORS.black,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                }}
             />
             <>
                 {posts.length == 0 ? (
@@ -68,28 +69,23 @@ const Output = ({ route, navigation }) => {
                         <ActivityIndicator />
                     </View>
                 ) : (
-                    <ScrollView
+                    <FlatList
+                        ListHeaderComponent={
+                            <Text style={{
+                                ...FONTS.body3,
+                                textAlign: 'center',
+                                marginHorizontal: SIZES.body1,
+                            }}>
+                                We have created a bunch of content for you.
+                            </Text>
+                        }
+                        data={posts}
+                        renderItem={(item) => <PostCard content={item.item} />}
                         style={{
-                            flex: 1,
-                            paddingTop: SIZES.body3,
+                            paddingBottom: SIZES.body3,
                         }}
-                    >
-                        <Text style={{
-                            ...FONTS.body3,
-                            textAlign: 'center',
-                            marginHorizontal: SIZES.body1,
-                        }}>
-                            We have created a bunch of content for you.
-                        </Text>
-                        <FlatList
-                            data={posts}
-                            renderItem={(item) => <PostCard content={item.item} />}
-                            style={{
-                                paddingBottom: SIZES.body3,
-                            }}
-                            keyExtractor={(item) => item.length}
-                        />
-                    </ScrollView>
+                        keyExtractor={(item) => item.length}
+                    />
                 )}
             </>
             {

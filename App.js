@@ -49,7 +49,7 @@ export default function App() {
                         screenOptions={{
                             headerShown: false,
                         }}
-                        initialRouteName="BottomTabNavigation"
+                        initialRouteName="Output"
                     >
                         <Stack.Screen
                             name="Walkthrough"

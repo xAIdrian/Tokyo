@@ -38,9 +38,6 @@ const styles = StyleSheet.create({
         margin: 12,
         flexDirection: 'row',
         alignItems: 'center',
-        shadowColor: COLORS.black,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
     },
 })
 

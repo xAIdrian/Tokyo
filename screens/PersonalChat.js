@@ -137,7 +137,7 @@ const PersonalChat = ({ route, navigation }) => {
                 break
             case 'generate':
                 if (questions.length > answers.length) {
-                    alert("Please wait until we load all of your content before clicking to generate")
+                    alert("We're still loading your voice note. Please wait a few more seconds then try again.")
                 } else {
                     navigation.navigate('Output', {
                         frameworkQuestions: questions,
@@ -295,6 +295,9 @@ const PersonalChat = ({ route, navigation }) => {
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     backgroundColor: COLORS.tertiaryWhite,
+                    shadowColor: COLORS.black,
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.25,
                 }}
             >
                 <View
