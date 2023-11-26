@@ -53,7 +53,11 @@ const TinderCards = ({
                             <Image source ={mapping[item.image]} style={ styles.image }/>
                             <View style={styles.textContainer}>
                                 <Text style={styles.title}>{ item.title }</Text>
-                                <Text style={styles.description}>
+                                <Text 
+                                    style={styles.description}
+                                    numberOfLines={6} 
+                                    ellipsizeMode='tail'
+                                >
                                     { item.description }
                                 </Text>
                                 <Text style={styles.subdescription}>

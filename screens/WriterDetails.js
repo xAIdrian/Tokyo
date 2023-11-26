@@ -44,7 +44,10 @@ const WriterDetails = ({ route, navigation }) => {
               onScroll={handleScroll}
             >
                 <View>
-                    <Image source={mapping[framework.image]} style={styles.image} />
+                    <Image source={mapping[framework.image]} style={{
+                      ...styles.image,
+                      height: 300,
+                    }} />
                     <View style={styles.textContainer}>
                         <Text style={styles.title}>{framework.title}</Text>
                         <Text style={styles.description}>
@@ -80,7 +83,14 @@ const WriterDetails = ({ route, navigation }) => {
             </ScrollView>
             {
               showButtons && (
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                        if (framework.questions !== undefined) {
+                            navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
+                        }
+                    }
+                }
+                >
                   <View
                     style={{
                         width: 64,
@@ -112,7 +122,9 @@ const WriterDetails = ({ route, navigation }) => {
             }
             {
               showButtons && (
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={ () => navigation.goBack() }
+                >
                   <View
                     style={{
                         width: 64,
