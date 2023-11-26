@@ -120,9 +120,7 @@ const Home = ({ navigation }) => {
                             onHandlePress={() => {
                                 if (item.title === 'Writer Finder') {
                                     navigation.jumpTo('WriterFinder')
-                                } else {
-                                    navigation.navigate('PersonalChat')
-                                }
+                                } 
                             }}
                         />}
                         keyExtractor={ item => item?.title }

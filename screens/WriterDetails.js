@@ -86,7 +86,7 @@ const WriterDetails = ({ route, navigation }) => {
                 <TouchableOpacity
                   onPress={() => {
                         if (framework.questions !== undefined) {
-                            navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
+                            navigation.navigate('PersonalChat', { framework: framework })
                         }
                     }
                 }

@@ -21,29 +21,6 @@ export const samplesArray = [
     "Getting exceptional results will take five years of hard work and dedication, but in one year you can already achieve more than most people achieve in 30 years of a 9-5 job. Set your one year goal, three year goals, and five year goals and get started now. You would be surprised how quickly time flies by and what you can achieve when you are not rushing to get results in two months. I'll leave this quote for everyone, a quote to live by. Most people overestimate what they can do in one year and underestimate what they can do in ten years.",
 ]
 
-export const buildInitMessage = (question) => [
-    {
-        _id: 1,
-        text: question.text,
-        // text: 'question.text',
-        user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: images.icon,
-        },
-        quickReplies: {
-            type: 'radio', // or 'checkbox',
-            // keepIt: true,
-            values: [
-                {
-                    title: 'More Info',
-                    value: 'more_info',
-                },
-            ],
-        },
-    },
-]
-
 export const processAudioMessage = (audioFile) => {
     return [
         {

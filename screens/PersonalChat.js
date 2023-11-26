@@ -16,11 +16,10 @@ import images from '../constants/images'
 import generateUUID from '../utils/StringUtils.js'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
 import { Slider } from '@react-native-assets/slider'
-import CountdownProgressBar from '../components/CountdownProgressBar/CountdownProgressBar'
-import { getFrameworkQuestions } from '../hooks/frameworkHooks'
+import { fixNewLines } from '../utils/StringUtils.js'
 
 const PersonalChat = ({ route, navigation }) => {
-    const { frameworkQuestions } = route.params ? route.params : { frameworkQuestions: []}
+    const { framework } = route.params ? route.params : {}
 
     const { showActionSheetWithOptions } = useActionSheet()
     const [showTextInputToolbar, setShowTextInputToolbar] = useState(false)
@@ -36,6 +35,28 @@ const PersonalChat = ({ route, navigation }) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState({})
     const [isLoading, setIsLoading] = useState(false)
+
+    const buildInitMessage = (question) => [
+        {
+            _id: 1,
+            text: fixNewLines(question.text),
+            user: {
+                _id: 2,
+                name: 'React Native',
+                avatar: images.icon,
+            },
+            quickReplies: {
+                type: 'radio', // or 'checkbox',
+                // keepIt: true,
+                values: [
+                    {
+                        title: 'More Info',
+                        value: 'more_info',
+                    },
+                ],
+            },
+        },
+    ]
     
     useEffect(() => {
         if (!isPopupVisible && popupContent.title !== undefined) {
@@ -48,25 +69,13 @@ const PersonalChat = ({ route, navigation }) => {
     }, [route])
 
     const fetchFrameworkQuestions = () => {
-        if (frameworkQuestions !== undefined && frameworkQuestions.length > 0) {
-            setQuestions(frameworkQuestions)
-            console.log("🚀 ~ file: PersonalChat.js:56 ~ fetchFrameworkQuestions ~ questions:", questions)
-            setMessages(buildInitMessage(frameworkQuestions[0]))
+        if (framework.questions !== undefined && framework.questions.length > 0) {
+            setQuestions(framework.questions)
+            setMessages(buildInitMessage(framework.questions[0]))
             setAnswers([])
             setCurrentQuestion(1)
         } else {
-            setIsLoading(true)
-            getFrameworkQuestions().then((loadFrameworks) => {
-                console.log("🚀 ~ file: PersonalChat.js:62 ~ getFrameworkQuestions ~ loadFrameworks:", loadFrameworks)
-                setIsLoading(false)
-                const currentFramework = loadFrameworks.reverse()[0]
-                setQuestions(currentFramework.questions)
-                setMessages(buildInitMessage(currentFramework.questions[0]))
-                setAnswers([])
-                setCurrentQuestion(1)
-            }).catch((error) => {
-                alert(error)
-            }) 
+            alert("We weren't able to load your questions. Please close the app & try again.")
         }
     }
 
@@ -92,7 +101,7 @@ const PersonalChat = ({ route, navigation }) => {
 
     const showOptions = useCallback(() => {
         const options = [
-            'Switch to keyboard mode for this session',
+            'Switch to keyboard mode for session',
             'Cancel',
         ]
         const cancelButtonIndex = 1
@@ -117,17 +126,8 @@ const PersonalChat = ({ route, navigation }) => {
         switch (quickReply[0].value) {
             case 'more_info':
                 setPopupContent({
-                    title: "More Info",
-                    content: questions[currentQuestionIndex - 1].info,
-                    cancelText: "",
-                    confirmText: "Done",
-                    confirmAction : () => { setIsPopupVisible(false) }
-                })
-                break
-            case 'examples':
-                setPopupContent({
-                    title: "Example Answer",
-                    content: questions[currentQuestionIndex].example,
+                    title: "Example",
+                    content: fixNewLines(questions[currentQuestionIndex - 1].example),
                     cancelText: "",
                     confirmText: "Done",
                     confirmAction : () => { setIsPopupVisible(false) }
@@ -195,7 +195,7 @@ const PersonalChat = ({ route, navigation }) => {
                 setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
-                            text: questions[currentQuestionIndex].text,
+                            text: fixNewLines(questions[currentQuestionIndex].text),
                             user: {
                                 _id: 2,
                                 name: 'React Native',
@@ -289,7 +289,6 @@ const PersonalChat = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, color: COLORS.secondaryWhite }}>
-            <StatusBar style="light" backgroundColor={COLORS.white} />
             <View
                 style={{
                     flexDirection: 'column',
@@ -326,7 +325,7 @@ const PersonalChat = ({ route, navigation }) => {
                             />
                         </TouchableOpacity>
                         <Text style={{ ...FONTS.h4, marginLeft: 8 }}>
-                            The Conception Buster
+                            { framework.title }
                         </Text>
                     </View>
 
