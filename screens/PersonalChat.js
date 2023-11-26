@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Modal } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS } from '../constants'
@@ -35,6 +35,7 @@ const PersonalChat = ({ route, navigation }) => {
     
     const [isPopupVisible, setIsPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
     
     useEffect(() => {
         if (!isPopupVisible && popupContent.title !== undefined) {
@@ -43,13 +44,19 @@ const PersonalChat = ({ route, navigation }) => {
     }, [popupContent])
 
     useEffect(() => {
-        if (route.params !== undefined) {
+        fetchFrameworkQuestions(route)
+    }, [route])
+
+    const fetchFrameworkQuestions = (route) => {
+        if (route !== undefined && route.params !== undefined && route.params.frameworkQuestions !== undefined) {
             setQuestions(frameworkQuestions)
             setMessages(buildInitMessage(questions[0]))
             setAnswers([])
             setCurrentQuestion(1)
         } else {
+            setIsLoading(true)
             getFrameworkQuestions().then((loadFrameworks) => {
+                setIsLoading(false)
                 const currentFramework = loadFrameworks.reverse()[0]
                 setQuestions(currentFramework.questions)
                 setMessages(buildInitMessage(currentFramework.questions[0]))
@@ -59,7 +66,19 @@ const PersonalChat = ({ route, navigation }) => {
                 alert(error)
             }) 
         }
-    }, [route])
+    }
+
+    const resetApp = () => {
+        setQuestions([])
+        setMessages([])
+        setAnswers([])
+        setCurrentQuestion(1)
+        setSliderValue(0)
+        setShowTextInputToolbar(false)
+        setTextInputToolbarHeight(0)
+        //getting the new data
+        fetchFrameworkQuestions()
+    }
 
     const audioRecordingApproved = useCallback((data) => {
         onSend(processAudioMessage(data))
@@ -71,7 +90,7 @@ const PersonalChat = ({ route, navigation }) => {
 
     const showOptions = useCallback(() => {
         const options = [
-            'Show text entry',
+            'Switch to keyboard mode for this session',
             'Cancel',
         ]
         const cancelButtonIndex = 1
@@ -85,7 +104,8 @@ const PersonalChat = ({ route, navigation }) => {
             (buttonIndex) => {
                 // Handle the selected option
                 if (buttonIndex === 0) {
-                    setShowTextInputToolbar(!setShowTextInputToolbar)
+                    setTextInputToolbarHeight(36)
+                    setShowTextInputToolbar(!showTextInputToolbar)
                 } 
             }
         )
@@ -156,7 +176,7 @@ const PersonalChat = ({ route, navigation }) => {
                                 // keepIt: true,
                                 values: [
                                     {
-                                        title: '❌ Make edits',
+                                        title: '❌ Record more',
                                         value: 'edit',
                                     },
                                     {
@@ -186,11 +206,7 @@ const PersonalChat = ({ route, navigation }) => {
                                 // keepIt: true,
                                 values: [
                                     {
-                                        title: 'Example',
-                                        value: 'examples',
-                                    },
-                                    {
-                                        title: 'Learn More',
+                                        title: 'More Info',
                                         value: 'more_info',
                                     },
                                 ],
@@ -324,12 +340,12 @@ const PersonalChat = ({ route, navigation }) => {
                                 marginRight: 8,
                             }}
                         >
-                            
-                            {/* <Feather
-                                name="more-vertical"
-                                size={24}
-                                color={COLORS.primary}
-                            /> */}
+                            <Text 
+                                style={{ ...FONTS.body4, color: COLORS.primary }}
+                                onPress={() => resetApp()}    
+                            >
+                                Reset
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -400,6 +416,16 @@ const PersonalChat = ({ route, navigation }) => {
                 cancelAction= { popupContent.cancelAction }
                 confirmAction= { popupContent.confirmAction }
             />
+
+            <Modal
+                transparent={true}
+                visible={isLoading}
+                onRequestClose={() => setIsLoading(false)}
+                >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                    <ActivityIndicator size="large" color="#ffffff" />
+                </View>
+            </Modal>
         </SafeAreaView>
     )
 }

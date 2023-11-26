@@ -36,11 +36,7 @@ export const buildInitMessage = (question) => [
             // keepIt: true,
             values: [
                 {
-                    title: 'Example',
-                    value: 'examples',
-                },
-                {
-                    title: 'Learn More',
+                    title: 'More Info',
                     value: 'more_info',
                 },
             ],
