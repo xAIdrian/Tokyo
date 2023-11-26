@@ -66,7 +66,7 @@ const TinderCards = ({
                         color: COLORS.white,
                         textAlign: 'center',
                     }}>
-                        Back to Home
+                        Refresh
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -81,15 +81,29 @@ const TinderCards = ({
                         <Image source ={mapping[item.image]} style={ styles.image }/>
                         <View style={styles.textContainer}>
                             <Text style={styles.title}>{ item.title }</Text>
-                            <Text style={styles.subtitle}>
-                                { item.subtitle }
-                            </Text>
                             <Text style={styles.description}>
                                 { item.description }
                             </Text>
                             <Text style={styles.subdescription}>
-                                Best for: { item.bestfor.join(', ') }
+                                Expected time: { item.time}
                             </Text>
+                            <Text style={styles.subdescription}>
+                                Expected pieces of content: { item.num_pieces}
+                            </Text>
+                        </View>
+                        <View style={{
+                            padding: SIZES.body3,
+                            width: '100%',
+                            justifyContent: 'center',
+                        }}>
+                            <TouchableOpacity style={ styles.selecter }>
+                                <Text style={{
+                                    color: COLORS.primary,
+                                    textAlign: 'center',
+                                }}>
+                                    More Info
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </TinderCard>

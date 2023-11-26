@@ -18,25 +18,25 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     width: '100%',
-    padding: SIZES.body5,
-    justifyContent: 'space-evenly',
+    padding: SIZES.body3,
     overflow: 'hidden',
   },
   title: {
-    ...FONTS.h1,
+    ...FONTS.h2,
+    marginTop: SIZES.body3,
   },
   subtitle: {
     ...FONTS.h3,
     width: '100%',
-    marginTop: SIZES.body3,
+    marginTop: SIZES.body1,
   },
   description: {
-    ...FONTS.body2,
-    marginTop: SIZES.body3,
+    ...FONTS.body3,
+    marginTop: SIZES.body1,
   },
   subdescription: {
-    ...FONTS.h4,
-    marginTop: SIZES.body1,
+    ...FONTS.body3,
+    marginTop: SIZES.body3,
   },
   image: {
     width: '100%',
@@ -45,7 +45,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: SIZES.body5,
     alignSelf: 'center',
     resizeMode: 'cover',
-  }
+  },
+  selecter: {
+    width: "100%",
+    justifyContent: "center",
+    color: COLORS.primary,
+    borderRadius: SIZES.body3,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    padding: 8,
+  },
 });
 
 export default styles;
