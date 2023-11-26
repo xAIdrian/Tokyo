@@ -68,7 +68,6 @@ const Home = ({ navigation }) => {
                         flex: 1,
                         flexDirection: 'column',
                         marginHorizontal: 22,
-                        marginBottom: 18,
                     }}
                 >
                     <Text
@@ -143,6 +142,9 @@ const Home = ({ navigation }) => {
                         renderItem={({ item }) => <TileCard item={ item } locked={ item.locked }/>}
                         keyExtractor={ item => item?.title }
                         horizontal
+                        style={{
+                            marginBottom: SIZES.body1,
+                        }}
                     />
                 </ScrollView>
             </PageContainer>

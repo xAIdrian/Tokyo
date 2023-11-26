@@ -35,16 +35,22 @@ const checkContentPolling = async (subscriber) => {
   }
   let isComplete = false
   const intervalaId = setInterval( async() => {
-    console.log("🚀 ~ file: contentHooks.js:35 ~ checkContentPolling ~ isComplete:", isComplete)
     if (isComplete) {
       console.log("🚀 ~ file: contentHooks.js:38 ~ intervalaId ~ isComplete:", isComplete)
       subscriber.complete()
       clearInterval(intervalaId)
+      return
     }
-    isComplete = await getContentStatus(
-      subscriber, 
-      options
-    )
+    try {
+      isComplete = await getContentStatus(
+        subscriber, 
+        options
+      ) 
+    } catch (error) {
+      console.log("🚀 ~ file: contentHooks.js:46 ~ intervalaId ~ error:", error)
+      subscriber.error(error)
+      clearInterval(intervalaId)
+    }
   }, POLLING_TIMER)
 }
 

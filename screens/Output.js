@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FlatList, ActivityIndicator, Text, View, ScrollView } from 'react-native'
+import { FlatList, ActivityIndicator, Text, View, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, SIZES, FONTS } from '../constants'
 import PageTitle from '../components/PageTitle'
@@ -36,7 +36,25 @@ const Output = ({ route, navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <PageTitle
-                onPress={() => navigation.navigate('BottomTabNavigation')}
+                onPress={() => {
+                    Alert.alert(
+                        'Are you sure?',
+                        'You will lose all your content and will have to start over.',
+                        [
+                            {
+                                text: 'Cancel',
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'Yes',
+                                onPress: () => {
+                                    setPosts([])
+                                    navigation.navigate('BottomTabNavigation')
+                                },
+                            },
+                        ],
+                    )
+                }}
                 style={{
                     shadowColor: COLORS.black,
                     shadowOffset: { width: 0, height: 2 },
@@ -79,6 +97,24 @@ const Output = ({ route, navigation }) => {
                                 We have created a bunch of content for you.
                             </Text>
                         }
+                        ListFooterComponent={
+                            isLoading && posts.length > 0 ? (
+                                <View style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    paddingVertical: SIZES.body5,
+                                }}>
+                                    <ActivityIndicator />
+                                    <Text style={{
+                                        textAlign: 'center',
+                                        marginHorizontal: SIZES.body1,
+                                    }}>
+                                        Please wait.  We are still creating more content.
+                                    </Text>
+                                </View>
+                            ) : null
+                        }
                         data={posts}
                         renderItem={(item) => <PostCard content={item.item} />}
                         style={{
@@ -88,11 +124,6 @@ const Output = ({ route, navigation }) => {
                     />
                 )}
             </>
-            {
-                isLoading && posts.length > 0 ? (
-                    <ActivityIndicator />
-                ) : null
-            }
         </SafeAreaView>
     )
 }
