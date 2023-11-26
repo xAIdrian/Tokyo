@@ -46,7 +46,7 @@ const WriterFinder = ({ navigation }) => {
                     <Text style={{
                         textAlign: 'center',
                     }}>
-                        Looks like you are out of frameworks to review.
+                        Opps! Looks like you're all out of frameworks in your area.
                     </Text>
                     <TouchableOpacity
                         style={{
@@ -61,7 +61,7 @@ const WriterFinder = ({ navigation }) => {
                             color: COLORS.white,
                             textAlign: 'center',
                         }}>
-                            Go back to home
+                            Refresh
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -80,6 +80,11 @@ const WriterFinder = ({ navigation }) => {
                             if (framework.questions !== undefined) {
                                 navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
                             }
+                        }
+                    }
+                    onMoreInfo={
+                        (framework) => {
+                            navigation.navigate('WriterDetails', { framework: framework })
                         }
                     }
                 />

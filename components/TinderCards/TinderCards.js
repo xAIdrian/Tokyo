@@ -10,7 +10,8 @@ import { COLORS, SIZES } from '../../constants/theme'
 
 const TinderCards = ({ 
     data, 
-    onCardAction
+    onCardAction,
+    onMoreInfo,
 }) => {
     console.log("🚀 ~ file: TinderCards.js:16 ~ data:", data)
 
@@ -67,7 +68,10 @@ const TinderCards = ({
                                 width: '100%',
                                 justifyContent: 'center',
                             }}>
-                                <TouchableOpacity style={ styles.selecter }>
+                                <TouchableOpacity 
+                                    style={ styles.selecter }
+                                    onPress={ () => onMoreInfo(item) }    
+                                >
                                     <Text style={{
                                         color: COLORS.primary,
                                         textAlign: 'center',

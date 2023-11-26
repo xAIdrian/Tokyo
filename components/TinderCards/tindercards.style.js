@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     width: '100%',
-    padding: SIZES.body3,
+    padding: SIZES.body2,
     overflow: 'hidden',
   },
   title: {

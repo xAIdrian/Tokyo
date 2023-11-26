@@ -8,7 +8,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import images from '../constants/images'
-import generateUUID from '../utils/StringUtils'
+import generateUUID from '../utils/StringUtils.js'
 import Constants from 'expo-constants';
 
 export const samplesArray = [
