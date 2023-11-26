@@ -32,38 +32,43 @@ const Home = ({ navigation }) => {
         {
             title: 'Writer Finder',
             icon: 'pen-tool',
+            locked: false
         },
         {
-            title: 'Pick From List',
-            icon: 'list'
+            title: 'Quick Start',
+            icon: 'list',
+            locked: false
         }
     ];
     const popularItems = [
         {
             title: 'The Challenger',
-            icon: 'shield'
+            icon: 'ice',
+            locked: true
         },
         {
             title: 'Soul Sync',
-            icon: 'lock',
+            icon: 'fire',
+            locked: true
         },
         {
             title: 'The Mythbuster',
-            icon: 'lock'
+            icon: 'question',
+            locked: true
         },
     ];
 
     return (
         <SafeAreaView style={{
             flex: 1,
-            marginBottom: 10
         }}>
             <PageContainer>
                 <ScrollView
                     style={{
                         flex: 1,
                         flexDirection: 'column',
-                        marginHorizontal: 22
+                        marginHorizontal: 22,
+                        marginBottom: 18,
                     }}
                 >
                     <Text
@@ -116,9 +121,7 @@ const Home = ({ navigation }) => {
                             onHandlePress={() => {
                                 if (item.title === 'Writer Finder') {
                                     navigation.jumpTo('WriterFinder')
-                                } else {
-                                    // navigation.jumpTo('Interviews')
-                                }
+                                } 
                             }}
                         />}
                         keyExtractor={ item => item?.title }
@@ -134,8 +137,8 @@ const Home = ({ navigation }) => {
                         Trending today
                     </Text>
                     <FlatList
-                        data={ popularItems}
-                        renderItem={({ item }) => <TileCard item={ item }/>}
+                        data={ popularItems }
+                        renderItem={({ item }) => <TileCard item={ item } locked={ item.locked }/>}
                         keyExtractor={ item => item?.title }
                         horizontal
                     />
