@@ -44,18 +44,20 @@ const PersonalChat = ({ route, navigation }) => {
     }, [popupContent])
 
     useEffect(() => {
-        fetchFrameworkQuestions(route)
+        fetchFrameworkQuestions()
     }, [route])
 
-    const fetchFrameworkQuestions = (route) => {
-        if (route !== undefined && route.params !== undefined && route.params.frameworkQuestions !== undefined) {
+    const fetchFrameworkQuestions = () => {
+        if (frameworkQuestions !== undefined && frameworkQuestions.length > 0) {
             setQuestions(frameworkQuestions)
-            setMessages(buildInitMessage(questions[0]))
+            console.log("🚀 ~ file: PersonalChat.js:56 ~ fetchFrameworkQuestions ~ questions:", questions)
+            setMessages(buildInitMessage(frameworkQuestions[0]))
             setAnswers([])
             setCurrentQuestion(1)
         } else {
             setIsLoading(true)
             getFrameworkQuestions().then((loadFrameworks) => {
+                console.log("🚀 ~ file: PersonalChat.js:62 ~ getFrameworkQuestions ~ loadFrameworks:", loadFrameworks)
                 setIsLoading(false)
                 const currentFramework = loadFrameworks.reverse()[0]
                 setQuestions(currentFramework.questions)
@@ -190,9 +192,7 @@ const PersonalChat = ({ route, navigation }) => {
                     return
                 }
 
-                //still questions to ask, let's make them wait a little bit though
-                setTimeout(() => {
-                    setMessages((previousMessages) =>
+                setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
                             text: questions[currentQuestionIndex].text,
@@ -215,7 +215,6 @@ const PersonalChat = ({ route, navigation }) => {
                     )
                     setCurrentQuestion(currentQuestionIndex + 1)
                     setSliderValue((100 / questions.length) * currentQuestionIndex)
-                }, 500)
             }
         },
         [currentQuestionIndex, messages]
