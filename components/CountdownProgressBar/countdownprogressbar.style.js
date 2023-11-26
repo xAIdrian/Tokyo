@@ -5,7 +5,7 @@ import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants/theme";
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    width: '100%',
+    width: '50%',
     padding: 0,
     margin: 0,
     flexDirection: 'row',

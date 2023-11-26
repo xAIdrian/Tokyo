@@ -10,32 +10,67 @@ import {Observable, from } from 'rxjs'
 import { samplesArray } from './chatHooks'
 import Constants from 'expo-constants';
 
-export const sendManyToServer = (questions, answers) => {
+const POLLING_TIMER = 10000  
+
+export const sendContentForPosts = (questions, answers) => {
+  contentPosts = []
+
   const allQuestions = questions.map((question) => question.text)
   const allAnswers = answers.length > 0 ? answers : samplesArray
 
   return new Observable(async (subscriber) => {
-    subscriber.next(await sendOneShotToServer(allQuestions, allAnswers))
-    const { 
-      questionsFirstHalf, 
-      questionsSecondHalf, 
-      questionsThirdHalf,
-      questionsFourthHalf,
-      answersFirstHalf, 
-      answersSecondHalf,
-      answersThirdHalf,
-      answersFourthHalf
-    } = getSubsetArrays(allQuestions, allAnswers);
-    subscriber.next(await sendOneShotToServer(questionsFirstHalf, answersFirstHalf))
-    subscriber.next(await sendOneShotToServer(questionsSecondHalf, answersSecondHalf))
-    subscriber.next(await sendOneShotToServer(questionsThirdHalf, answersThirdHalf))
-    subscriber.next(await sendOneShotToServer(questionsFourthHalf, answersFourthHalf))
-
-    subscriber.complete()
+    sendOneShotToServer(allQuestions, allAnswers)
+    return checkContentPolling(subscriber)
   })
 };
 
-export const sendOneShotToServer = async (questions, answers) => {
+const checkContentPolling = async (subscriber) => {
+  const polling_url = `${Constants.expoConfig.extra.aipiUrl}/api/v3/writer/oneshotpolling`
+  const options = {
+    method: 'GET', 
+    url: polling_url,
+    params: {
+      userUuid: '123',
+    },
+  }
+  let isComplete = false
+  const intervalaId = setInterval( async() => {
+    if (isComplete) {
+      console.log("🚀 ~ file: contentHooks.js:38 ~ intervalaId ~ isComplete:", isComplete)
+      subscriber.complete()
+      clearInterval(intervalaId)
+      return
+    }
+    try {
+      isComplete = await getContentStatus(
+        subscriber, 
+        options
+      ) 
+    } catch (error) {
+      console.log("🚀 ~ file: contentHooks.js:46 ~ intervalaId ~ error:", error)
+      subscriber.error(error)
+      clearInterval(intervalaId)
+    }
+  }, POLLING_TIMER)
+}
+
+const getContentStatus = async (subscriber, options) => {
+  try {
+    const pollResponse = await axios.request(options)
+    console.log("🚀 ~ file: contentHooks.js:53 ~ getContentStatus ~ pollResponse:", pollResponse.data)
+    if (pollResponse.data.message == 'success') {
+      const { isComplete, result } = pollResponse.data.result
+      subscriber.next(result)
+      return isComplete
+    } else {
+      throw new Error('Error getting content generation status from server')
+    }
+  } catch (error) {
+      throw error
+  }
+}
+
+export const sendOneShotToServer = (questions, answers) => {
     console.log("❓ ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ questions:", questions)
     console.log("📣 ~ file: chatHooks.js:124 ~ sendOneShotToServer ~ answers:", answers)
  
@@ -49,14 +84,14 @@ export const sendOneShotToServer = async (questions, answers) => {
             answers: answers
         },
     }
-
     try {
-        const response = await axios.request(options)
-        if (response.data.message == 'success') {
-          return response.data.result
-        } else {
-            return undefined
-        }
+        const response = axios.request(options)
+        // console.log("🚀 ~ file: contentHooks.js:83 ~ sendOneShotToServer ~ response:", response)
+        // if (response.data.message == 'success') {
+        //   return true;
+        // } else {
+        //     return false;
+        // }
     } catch (error) {
         throw error
     }

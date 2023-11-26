@@ -4,14 +4,8 @@ import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants/theme";
 
 const styles = StyleSheet.create({
   container: {
-    width: 320,
-    height: 200,
-    padding: SIZES.body5,
-    margin: SIZES.body5,
-    backgroundColor: COLORS.secondaryBackground,
-    borderRadius: SIZES.body3,
-    ...SHADOWS.medium,
-    shadowColor: COLORS.black,
+    width: '100%',
+    flex: 1,
   },
   title: {
     fontSize: SIZES.h2,

@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
   container: {
     width: 150,
     height: 100,
-    padding: SIZES.body5,
     margin: SIZES.body5,
     backgroundColor: COLORS.secondaryBackground,
     borderRadius: SIZES.body3,

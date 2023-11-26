@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Modal } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS } from '../constants'
 import { StatusBar } from 'expo-status-bar'
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons, FontAwesome, Feather } from '@expo/vector-icons'
 import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import {
     processAudioMessage,
@@ -11,7 +11,7 @@ import {
 } from '../hooks/chatHooks'
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import AudioRecorder from '../components/AudioRecorder/AudioRecorder'
-import AudioBubble from '../components/AudioBubble/AudioBubble'
+import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 import images from '../constants/images'
 import generateUUID from '../utils/StringUtils'
 import DetailDialog from '../components/DetailDialog/DetailDialog'
@@ -23,6 +23,8 @@ const PersonalChat = ({ route, navigation }) => {
     const { frameworkQuestions } = route.params ? route.params : { frameworkQuestions: []}
 
     const { showActionSheetWithOptions } = useActionSheet()
+    const [showTextInputToolbar, setShowTextInputToolbar] = useState(false)
+    const [textInputToolbarHeight, setTextInputToolbarHeight] = useState(0)
 
     const [messages, setMessages] = useState([])
     const [sliderValue, setSliderValue] = useState(0)
@@ -33,10 +35,8 @@ const PersonalChat = ({ route, navigation }) => {
     
     const [isPopupVisible, setIsPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState({})
-    
     const [isLoading, setIsLoading] = useState(false)
-    const [isCountingDown, setIsCountingDown] = useState(false)
-
+    
     useEffect(() => {
         if (!isPopupVisible && popupContent.title !== undefined) {
             setIsPopupVisible(true)
@@ -44,13 +44,21 @@ const PersonalChat = ({ route, navigation }) => {
     }, [popupContent])
 
     useEffect(() => {
-        if (route.params !== undefined) {
+        fetchFrameworkQuestions()
+    }, [route])
+
+    const fetchFrameworkQuestions = () => {
+        if (frameworkQuestions !== undefined && frameworkQuestions.length > 0) {
             setQuestions(frameworkQuestions)
-            setMessages(buildInitMessage(questions[0]))
+            console.log("🚀 ~ file: PersonalChat.js:56 ~ fetchFrameworkQuestions ~ questions:", questions)
+            setMessages(buildInitMessage(frameworkQuestions[0]))
             setAnswers([])
             setCurrentQuestion(1)
         } else {
+            setIsLoading(true)
             getFrameworkQuestions().then((loadFrameworks) => {
+                console.log("🚀 ~ file: PersonalChat.js:62 ~ getFrameworkQuestions ~ loadFrameworks:", loadFrameworks)
+                setIsLoading(false)
                 const currentFramework = loadFrameworks.reverse()[0]
                 setQuestions(currentFramework.questions)
                 setMessages(buildInitMessage(currentFramework.questions[0]))
@@ -60,68 +68,47 @@ const PersonalChat = ({ route, navigation }) => {
                 alert(error)
             }) 
         }
-    }, [route])
+    }
 
-    useEffect(() => {
-        
-    }, [])
+    const resetApp = () => {
+        setQuestions([])
+        setMessages([])
+        setAnswers([])
+        setCurrentQuestion(1)
+        setSliderValue(0)
+        setShowTextInputToolbar(false)
+        setTextInputToolbarHeight(0)
+        //getting the new data
+        fetchFrameworkQuestions()
+    }
 
-    /**
-     * Called after every time messages object is updated.
-     * This is where we need to put the request to the server for chat messages.
-     */
-    // const starter = useEffect(() => {
-    //     console.log("🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:", messages)
-    // }, [messages])
-
-    const handleTimerStart = useCallback(() => {
-
-    })
-
-    const audioRecordingComplete = useCallback((data) => {
-        setIsLoading(false)
-        setIsCountingDown(false)
+    const audioRecordingApproved = useCallback((data) => {
         onSend(processAudioMessage(data))
     })
 
-    const audioRecordingConfirmed = useCallback((data) => {
+    const transcriptionComplete = useCallback((data) => {
         answers.push(data.transcript)
     })
 
     const showOptions = useCallback(() => {
         const options = [
-            'Redo Last Recording',
-            'Skip This Question',
-            'Remind Me Later',
-            'Speaker Notes',
+            'Switch to keyboard mode for this session',
             'Cancel',
         ]
-        const cancelButtonIndex = 4
+        const cancelButtonIndex = 1
 
         showActionSheetWithOptions(
             {
                 options,
                 cancelButtonIndex,
-                title: 'What would you like to do?',
-                // message: 'Select an option from below:',
-                destructiveButtonIndex: 3, // Index of the destructive option (if needed)
-                tintColor: 'red', // Color of the Cancel button text
+                tintColor: 'red', 
             },
             (buttonIndex) => {
                 // Handle the selected option
                 if (buttonIndex === 0) {
-                    // Option 1 selected
-                    setPopupContent({
-                        title: "Are you sure?",
-                        content: "We'll get started writing your social media posts. This will take a little bit of time.\n\nAre you sure you want to continue?",
-                        cancelText: "Go Back",
-                        confirmText: "Get My Posts",
-                        cancelAction : () => { setIsPopupVisible(false) },
-                        confirmAction : () => { }
-                    })
-                } else if (buttonIndex === 1) {
-                    // Option 2 selected
-                }
+                    setTextInputToolbarHeight(36)
+                    setShowTextInputToolbar(!showTextInputToolbar)
+                } 
             }
         )
     }, [showActionSheetWithOptions])
@@ -149,10 +136,14 @@ const PersonalChat = ({ route, navigation }) => {
             case 'edit':
                 break
             case 'generate':
-                navigation.navigate('Output', {
-                    frameworkQuestions: questions,
-                    frameworkAnswers: answers
-                }) 
+                if (questions.length > answers.length) {
+                    alert("We're still loading your voice note. Please wait a few more seconds then try again.")
+                } else {
+                    navigation.navigate('Output', {
+                        frameworkQuestions: questions,
+                        frameworkAnswers: answers
+                    }) 
+                }
                 break
             default:
                 // Do something if the value doesn't match any of the cases
@@ -187,7 +178,7 @@ const PersonalChat = ({ route, navigation }) => {
                                 // keepIt: true,
                                 values: [
                                     {
-                                        title: '❌ Make edits',
+                                        title: '❌ Record more',
                                         value: 'edit',
                                     },
                                     {
@@ -201,9 +192,7 @@ const PersonalChat = ({ route, navigation }) => {
                     return
                 }
 
-                //still questions to ask, let's make them wait a little bit though
-                setTimeout(() => {
-                    setMessages((previousMessages) =>
+                setMessages((previousMessages) =>
                         GiftedChat.append(previousMessages, {
                             _id: generateUUID(),
                             text: questions[currentQuestionIndex].text,
@@ -217,11 +206,7 @@ const PersonalChat = ({ route, navigation }) => {
                                 // keepIt: true,
                                 values: [
                                     {
-                                        title: 'Example',
-                                        value: 'examples',
-                                    },
-                                    {
-                                        title: 'Learn More',
+                                        title: 'More Info',
                                         value: 'more_info',
                                     },
                                 ],
@@ -230,21 +215,20 @@ const PersonalChat = ({ route, navigation }) => {
                     )
                     setCurrentQuestion(currentQuestionIndex + 1)
                     setSliderValue((100 / questions.length) * currentQuestionIndex)
-                }, 500)
             }
         },
         [currentQuestionIndex, messages]
     )
 
     const renderInputToolbar = (props) => {
-        return !isCountingDown ? 
+        return showTextInputToolbar ? 
             <InputToolbar {...props} 
                 containerStyle={{ 
                     backgroundColor: COLORS.tertiaryWhite,
                     justifyContent: 'center',
-                    height: 50, 
                 }} /> 
-            : <CountdownProgressBar />
+            : null
+            
     }
 
     // change button of send
@@ -292,10 +276,11 @@ const PersonalChat = ({ route, navigation }) => {
                         }}
                     />
                 ) : (
-                    <AudioBubble
+                    <AudioPlayer 
                         playFileLocation={
                             props.currentMessage.audioFileLocation
                         }
+                        styleType="bubble"
                     />
                 )}
             </>
@@ -310,6 +295,9 @@ const PersonalChat = ({ route, navigation }) => {
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     backgroundColor: COLORS.tertiaryWhite,
+                    shadowColor: COLORS.black,
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.25,
                 }}
             >
                 <View
@@ -354,11 +342,12 @@ const PersonalChat = ({ route, navigation }) => {
                                 marginRight: 8,
                             }}
                         >
-                            <MaterialIcons
-                                name="menu"
-                                size={24}
-                                color={COLORS.black}
-                            />
+                            <Text 
+                                style={{ ...FONTS.body4, color: COLORS.primary }}
+                                onPress={() => resetApp()}    
+                            >
+                                Reset
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -404,20 +393,21 @@ const PersonalChat = ({ route, navigation }) => {
                 scrollToBottom
                 renderBubble={renderBubble}
                 renderSend={renderSend}
+                minInputToolbarHeight={textInputToolbarHeight}
                 renderInputToolbar={renderInputToolbar}
                 renderLoading={() => (
                     <ActivityIndicator size="large" color="#0000ff" />
                 )}
             />
-            
-            <AudioRecorder
-                isRecording={(isRecording) => setIsCountingDown(isRecording)}
-                recordingComplete={audioRecordingComplete}
-                recordingConfirmed={audioRecordingConfirmed}
-                moreOptionsClick={showOptions}
-                onUploadError={(error) => alert(error)}
-                isParentLoading={isLoading}
-            />
+            {
+                !showTextInputToolbar ?
+                    <AudioRecorder
+                        recordingApproved={audioRecordingApproved}
+                        transcriptionComplete={transcriptionComplete}
+                        moreOptionsClick={showOptions}
+                        onUploadError={(error) => alert(error)}
+                    /> : null
+            }
 
             <DetailDialog
                 isVisible={ isPopupVisible }
@@ -428,6 +418,16 @@ const PersonalChat = ({ route, navigation }) => {
                 cancelAction= { popupContent.cancelAction }
                 confirmAction= { popupContent.confirmAction }
             />
+
+            <Modal
+                transparent={true}
+                visible={isLoading}
+                onRequestClose={() => setIsLoading(false)}
+                >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                    <ActivityIndicator size="large" color="#ffffff" />
+                </View>
+            </Modal>
         </SafeAreaView>
     )
 }

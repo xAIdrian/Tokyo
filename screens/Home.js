@@ -32,43 +32,48 @@ const Home = ({ navigation }) => {
         {
             title: 'Writer Finder',
             icon: 'pen-tool',
+            locked: false
         },
         {
-            title: 'Pick From List',
-            icon: 'list'
+            title: 'Quick Start',
+            icon: 'list',
+            locked: false
         }
     ];
     const popularItems = [
         {
             title: 'The Challenger',
-            icon: 'shield'
+            icon: 'ice',
+            locked: true
         },
         {
             title: 'Soul Sync',
-            icon: 'lock',
+            icon: 'fire',
+            locked: true
         },
         {
             title: 'The Mythbuster',
-            icon: 'lock'
+            icon: 'question',
+            locked: true
         },
     ];
 
     return (
         <SafeAreaView style={{
             flex: 1,
-            marginBottom: 10
         }}>
             <PageContainer>
                 <ScrollView
                     style={{
                         flex: 1,
                         flexDirection: 'column',
-                        marginHorizontal: 22
+                        marginHorizontal: 22,
                     }}
                 >
                     <Text
                         style={{
                             ...FONTS.body3,
+                            color: COLORS.black,
                             marginVertical: 12,
                         }}
                     >
@@ -77,6 +82,7 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.body3,
+                            color: COLORS.black,
                             marginVertical: 12,
                         }}
                     >
@@ -85,7 +91,6 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.h2,
-                            color: COLORS.black,
                             marginTop: 12,
                         }}
                     >
@@ -103,7 +108,6 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             ...FONTS.h2,
-                            color: COLORS.black,
                             marginTop: 12,
                         }}
                     >
@@ -117,7 +121,7 @@ const Home = ({ navigation }) => {
                                 if (item.title === 'Writer Finder') {
                                     navigation.jumpTo('WriterFinder')
                                 } else {
-                                    // navigation.jumpTo('Interviews')
+                                    navigation.navigate('PersonalChat')
                                 }
                             }}
                         />}
@@ -134,10 +138,13 @@ const Home = ({ navigation }) => {
                         Trending today
                     </Text>
                     <FlatList
-                        data={ popularItems}
-                        renderItem={({ item }) => <TileCard item={ item }/>}
+                        data={ popularItems }
+                        renderItem={({ item }) => <TileCard item={ item } locked={ item.locked }/>}
                         keyExtractor={ item => item?.title }
                         horizontal
+                        style={{
+                            marginBottom: SIZES.body1,
+                        }}
                     />
                 </ScrollView>
             </PageContainer>

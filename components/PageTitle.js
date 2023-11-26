@@ -11,6 +11,8 @@ const PageTitle = (props) => {
                 onPress={props.onPress}
                 style={{
                     marginRight: 12,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                 }}
             >
                 <MaterialIcons
@@ -18,6 +20,9 @@ const PageTitle = (props) => {
                     size={SIZES.padding * 3}
                     color={COLORS.black}
                 />
+                <Text style={{ ...FONTS.h4, color: COLORS.black }}>
+                    Home
+                </Text>
             </TouchableOpacity>
             {props.title && (
                 <Text style={{ ...FONTS.h4, color: COLORS.black }}>
@@ -30,8 +35,7 @@ const PageTitle = (props) => {
 
 const styles = StyleSheet.create({
     pageTitleContainer: {
-        marginHorizontal: 22,
-        marginVertical: 22,
+        margin: 12,
         flexDirection: 'row',
         alignItems: 'center',
     },

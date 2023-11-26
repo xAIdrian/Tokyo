@@ -24,12 +24,11 @@ const FrameworkCard = ({
       <View style={ styles.infoContainer }>
         <Text 
           style={ styles.subtitle }
-          numberOfLines={ 1 }
         >
           I help you create engaging content that dissects,debunks and re-frames a common misconception your audience has.
 
         </Text>
-        <Text style={ styles.info }>
+        {/* <Text style={ styles.info }>
           14% complete
         </Text>
         <Slider
@@ -39,12 +38,12 @@ const FrameworkCard = ({
           enabled={false}
           value={14} 
           thumbTintColor={ COLORS.primary }
-        />
+        /> */}
         <TouchableOpacity
           onPress={ onContinueInterviewPress }
         >
           <Text style={ styles.selecter }>
-            Continue Interview
+            Start Interview
           </Text>
         </TouchableOpacity>
       </View>
