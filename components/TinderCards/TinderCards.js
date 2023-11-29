@@ -55,7 +55,7 @@ const TinderCards = ({
                                 <Text style={styles.title}>{ item.title }</Text>
                                 <Text 
                                     style={styles.description}
-                                    numberOfLines={6} 
+                                    numberOfLines={7} 
                                     ellipsizeMode='tail'
                                 >
                                     { item.description }

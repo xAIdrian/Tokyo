@@ -39,7 +39,7 @@ const PersonalChat = ({ route, navigation }) => {
     const buildInitMessage = (question) => [
         {
             _id: 1,
-            text: fixNewLines(question.text),
+            text: fixNewLines(question?.text ?? ''),
             user: {
                 _id: 2,
                 name: 'React Native',

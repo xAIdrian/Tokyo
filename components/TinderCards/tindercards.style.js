@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   description: {
     ...FONTS.body3,
-    marginTop: SIZES.body1,
+    marginTop: SIZES.body3,
   },
   subdescription: {
     ...FONTS.body3,

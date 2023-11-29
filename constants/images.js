@@ -17,6 +17,17 @@ const user8 = require('../assets/images/user8.jpg')
 const welcome = require('../assets/images/welcome.jpg')
 const icon = require('../assets/images/icon.png')
 const waveIcon = require('../assets/images/waveIcon.png')
+const conceptionBuster = require('../assets/images/conception_buster.jpg')
+const alternativeEliminator = require('../assets/images/alternative_eliminator.jpg')
+const audienceAlignmentQuest = require('../assets/images/audience_alignment_quest.jpg')
+const biggerPicture = require('../assets/images/bigger_picture.jpg')
+const conflictsAndProblems = require('../assets/images/conflicts_and_problems.jpg')
+const handlingConcernsObjections = require('../assets/images/handling_concerns_objections.jpg')
+const theTeachingFramework = require('../assets/images/the_teaching_framework.jpg')
+const heroic = require('../assets/images/heroic.jpg')
+// const advisor = require('../assets/images/advisor.png')
+// const manifestor = require('../assets/images/manifestor.jpg')
+// const objectionCracker = require('../assets/images/objection_cracker.jpg')
 
 export default {
     illustration,
@@ -37,7 +48,18 @@ export default {
     usFlag,
     welcome,
     icon,
-    waveIcon
+    waveIcon,
+    conceptionBuster,
+    alternativeEliminator,
+    audienceAlignmentQuest,
+    biggerPicture,
+    conflictsAndProblems,
+    handlingConcernsObjections,
+    theTeachingFramework,
+    heroic,
+    // advisor,
+    // manifestor,
+    // objectionCracker
 }
 
 export const mapping = {
@@ -49,4 +71,15 @@ export const mapping = {
     'user6': user6,
     'user7': user7,
     'user8': user8,
+    'conception buster': conceptionBuster,
+    'alternative eliminator': alternativeEliminator,
+    'audience alignment quest': audienceAlignmentQuest,
+    'bigger picture': biggerPicture,
+    'conflicts and problems': conflictsAndProblems,
+    'handling concerns objections': handlingConcernsObjections,
+    'the teaching framework': theTeachingFramework,
+    'heroic storycrafter': heroic,
+    // 'the advisor': advisor,
+    // 'the manifestor': manifestor,
+    // 'the objection cracker': objectionCracker,
 }

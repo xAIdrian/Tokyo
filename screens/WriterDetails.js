@@ -25,7 +25,7 @@ const WriterDetails = ({ route, navigation }) => {
         const contentHeight = event.nativeEvent.contentSize.height;
         const layoutHeight = event.nativeEvent.layoutMeasurement.height;
 
-        if (contentHeight - (offsetY + layoutHeight) < 100) { 
+        if (contentHeight - (offsetY + layoutHeight) < 50) { 
           setShowButtons(false);
         } else {
           setShowButtons(true);
@@ -46,7 +46,7 @@ const WriterDetails = ({ route, navigation }) => {
                 <View>
                     <Image source={mapping[framework.image]} style={{
                       ...styles.image,
-                      height: 300,
+                      height: 350,
                     }} />
                     <View style={styles.textContainer}>
                         <Text style={styles.title}>{framework.title}</Text>
@@ -60,13 +60,13 @@ const WriterDetails = ({ route, navigation }) => {
                             Expected pieces of content: {framework.num_pieces}
                         </Text>
                         <Text style={styles.subtitle}>
-                            Example
+                            Example Use Case
                         </Text>
                         <Text style={styles.description}>
                           { fixNewLines(framework.example) }
                         </Text>
                         <Text style={styles.subtitle}>
-                            Questions
+                            Preview of the Interview
                         </Text>
                         {
                           framework.questions.map((question) => (
@@ -93,13 +93,13 @@ const WriterDetails = ({ route, navigation }) => {
                 >
                   <View
                     style={{
-                        width: 64,
                         height: 64,
                         padding: 8,
+                        paddingHorizontal: 16,
                         borderRadius: 50,
                         position: 'absolute',
                         bottom: 0,
-                        right: 0,
+                        right: 20,
                         margin: 16,
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -111,11 +111,14 @@ const WriterDetails = ({ route, navigation }) => {
                         elevation: 6,
                     }}
                 >
-                    <Feather
-                      name={ 'check' }
-                      size={31}
-                      color={ COLORS.white }
-                    />
+                    <Text 
+                      style={{
+                        ...FONTS.h2,
+                        color: COLORS.white,
+                      }}
+                    >
+                      Start Interview
+                    </Text>
                   </View>
                 </TouchableOpacity>
               )
@@ -127,13 +130,13 @@ const WriterDetails = ({ route, navigation }) => {
                 >
                   <View
                     style={{
-                        width: 64,
                         height: 64,
                         padding: 8,
+                        paddingHorizontal: 16,
                         borderRadius: 50,
                         position: 'absolute',
                         bottom: 0,
-                        left: 0,
+                        left: 25,
                         margin: 16,
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -145,11 +148,14 @@ const WriterDetails = ({ route, navigation }) => {
                         elevation: 6,
                     }}
                 >
-                    <Feather
-                      name={ 'x' }
-                      size={31}
-                      color={ COLORS.primary }
-                    />
+                    <Text
+                      style={{
+                        ...FONTS.h2,
+                        color: COLORS.primary,
+                      }}
+                    >
+                      Back
+                    </Text>
                   </View>
                 </TouchableOpacity>
               )
