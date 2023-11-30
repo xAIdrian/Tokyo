@@ -103,7 +103,7 @@ const WriterDetails = ({ route, navigation }) => {
                         margin: 16,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: COLORS.primary,
+                        backgroundColor: COLORS.secondary,
                         shadowColor: COLORS.black,
                         shadowOffset: { width: 2, height: 2 },  
                         shadowOpacity: 0.25,
@@ -140,7 +140,7 @@ const WriterDetails = ({ route, navigation }) => {
                         margin: 16,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: COLORS.white,
+                        backgroundColor: COLORS.primary,
                         shadowColor: COLORS.black,
                         shadowOffset: { width: 2, height: 2 },  
                         shadowOpacity: 0.25,
@@ -151,7 +151,7 @@ const WriterDetails = ({ route, navigation }) => {
                     <Text
                       style={{
                         ...FONTS.h2,
-                        color: COLORS.primary,
+                        color: COLORS.white,
                       }}
                     >
                       Back

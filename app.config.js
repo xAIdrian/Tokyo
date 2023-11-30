@@ -26,6 +26,7 @@ export default {
                 "foregroundImage": "./assets/images/tent.png",
             },
             "package": "com.outpost.app",
+            "versionCode": appBuildNumbers.expo.android.versionCode,
         },
         "web": {
             "favicon": "./assets/images/tent.png"

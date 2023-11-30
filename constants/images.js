@@ -25,9 +25,9 @@ const conflictsAndProblems = require('../assets/images/conflicts_and_problems.jp
 const handlingConcernsObjections = require('../assets/images/handling_concerns_objections.jpg')
 const theTeachingFramework = require('../assets/images/the_teaching_framework.jpg')
 const heroic = require('../assets/images/heroic.jpg')
-// const advisor = require('../assets/images/advisor.png')
-// const manifestor = require('../assets/images/manifestor.jpg')
-// const objectionCracker = require('../assets/images/objection_cracker.jpg')
+const advisor = require('../assets/images/advisor.png')
+const manifestor = require('../assets/images/manifestor.png')
+const objectionCracker = require('../assets/images/objection_cracker.png')
 
 export default {
     illustration,
@@ -57,9 +57,9 @@ export default {
     handlingConcernsObjections,
     theTeachingFramework,
     heroic,
-    // advisor,
-    // manifestor,
-    // objectionCracker
+    advisor,
+    manifestor,
+    objectionCracker
 }
 
 export const mapping = {
@@ -79,7 +79,7 @@ export const mapping = {
     'handling concerns objections': handlingConcernsObjections,
     'the teaching framework': theTeachingFramework,
     'heroic storycrafter': heroic,
-    // 'the advisor': advisor,
-    // 'the manifestor': manifestor,
-    // 'the objection cracker': objectionCracker,
+    'the advisor': advisor,
+    'the manifestor': manifestor,
+    'the objection cracker': objectionCracker,
 }
