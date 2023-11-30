@@ -9,7 +9,8 @@ import {
     ProfileAccount,
     Login,
     PersonalChat,
-    Output
+    Output,
+    WriterDetails
 } from './screens'
 import { useCallback } from 'react'
 import BottomTabNavigation from './navigation/BottomTabNavigation'
@@ -78,6 +79,10 @@ export default function App() {
                         <Stack.Screen
                             name="Output"
                             component={Output}
+                        />
+                        <Stack.Screen
+                            name="WriterDetails"
+                            component={WriterDetails}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

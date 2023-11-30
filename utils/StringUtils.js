@@ -1,5 +1,9 @@
 import React from 'react';
 
+export function fixNewLines(string) {
+  return string.replace(/\\n /g, '\n').replace(/\\n/g, '\n');
+}
+
 function generateUUID() {
   let uuid = '';
   const chars = '0123456789abcdef';

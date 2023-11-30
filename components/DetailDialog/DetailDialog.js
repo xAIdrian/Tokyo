@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { Dialog, DialogTitle, DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 import styles from './detaildialog.style';
 
@@ -24,7 +24,9 @@ const DetailDialog = ({
       />
 
       <DialogContent style={styles.dialogContentContainer}>
-        <Text style={styles.dialogContentText}>{ content }</Text>
+        <ScrollView>
+          <Text style={styles.dialogContentText}>{ content }</Text>
+        </ScrollView>
       </DialogContent>
 
       <DialogFooter style={styles.dialogFooterContainer}>

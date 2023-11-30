@@ -210,7 +210,7 @@ const AudioRecorder = ({
                         isCountingDown ? (
                             <CountdownProgressBar />
                         ) : audioReviewData === null ? (
-                                <View
+                            <View
                                 style={{
                                     flex: 1,
                                     padding: 8,

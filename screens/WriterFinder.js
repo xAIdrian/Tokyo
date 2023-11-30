@@ -1,24 +1,7 @@
-/*
- * Content Machine Complete
- * Version: 1.0.0
- * Author: Adrian Mohnacs
- * Copyright (c) 2023 Adrian Mohnacs
- * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
- *
- * For inquiries, contact: [Your Contact Email]
- */
-/*
- * Content Machine Complete
- * Version: 1.0.0
- * Author: Adrian Mohnacs
- * Copyright (c) 2023 Adrian Mohnacs
- * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
- *
- * For inquiries, contact: [Your Contact Email]
- */
-
 import {
     Text,
+    View,
+    TouchableOpacity,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -30,6 +13,7 @@ import { getFrameworkQuestions } from '../hooks/frameworkHooks'
 const WriterFinder = ({ navigation }) => {
 
     const [frameworks, setFrameworks] = useState([])
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
         loadFrameworks()
@@ -49,11 +33,41 @@ const WriterFinder = ({ navigation }) => {
                 flex: 1,
             }}
         >
-            <PageContainer>
+            <PageContainer
+                key={reload}
+            >
+                <View style={{
+                    position: 'absolute',
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 100
+                }}>
+                    <Text style={{
+                        textAlign: 'center',
+                    }}>
+                        Opps! Looks like you're all out of frameworks in your area.
+                    </Text>
+                    <TouchableOpacity
+                        style={{
+                            backgroundColor: COLORS.primary,
+                            padding: 8,
+                            borderRadius: 8,
+                            marginTop: 16,
+                        }}
+                        onPress={ () => setReload(!reload) }
+                    >
+                        <Text style={{
+                            color: COLORS.white,
+                            textAlign: 'center',
+                        }}>
+                            Refresh
+                        </Text>
+                    </TouchableOpacity>
+                </View>
                 <Text
                     style={{
                         ...FONTS.h2,
-                        color: COLORS.black,
                         padding: 12,
                     }}
                 >
@@ -64,11 +78,15 @@ const WriterFinder = ({ navigation }) => {
                     onCardAction={
                         (framework) => {
                             if (framework.questions !== undefined) {
-                                navigation.navigate('PersonalChat', { frameworkQuestions: framework.questions })
+                                navigation.navigate('PersonalChat', { framework: framework })
                             }
                         }
                     }
-                    onCardRefresh={ loadFrameworks } 
+                    onMoreInfo={
+                        (framework) => {
+                            navigation.navigate('WriterDetails', { framework: framework })
+                        }
+                    }
                 />
             </PageContainer>
         </SafeAreaView>
