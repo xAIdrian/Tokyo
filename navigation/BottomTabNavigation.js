@@ -27,106 +27,6 @@ const BottomTabNavigation = () => {
             }}
         >
             <Tab.Screen
-                name="WriterFinder"
-                component={WriterFinder}
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <View
-                                style={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {focused ? (
-                                    <>
-                                        <Feather
-                                            name="pen-tool"
-                                            size={24}
-                                            color={COLORS.secondary}
-                                        />
-                                        <Text
-                                            style={{
-                                                ...FONTS.body3,
-                                                color: COLORS.secondary,
-                                            }}
-                                        >
-                                            Writers
-                                        </Text>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Feather
-                                            name="pen-tool"
-                                            size={24}
-                                            color={COLORS.primary}
-                                        />
-                                        <Text
-                                            style={{
-                                                ...FONTS.body3,
-                                                color: COLORS.primary,
-                                            }}
-                                        >
-                                            Writers
-                                        </Text>
-                                    </>
-                                )}
-                            </View>
-                        )
-                    },
-                }}
-            />
-            <Tab.Screen
-                name="Home"
-                component={ Home }
-                options={{
-                    tabBarIcon: ({ focused }) => {
-                        return (
-                            <View
-                                style={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {focused ? (
-                                    <>
-                                        <Feather
-                                            name="home"
-                                            size={24}
-                                            color={COLORS.secondary}
-                                        />
-                                        <Text
-                                            style={{
-                                                ...FONTS.body3,
-                                                color: COLORS.secondary,
-                                            }}
-                                        >
-                                            Home
-                                        </Text>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Feather
-                                            name="home"
-                                            size={24}
-                                            color={COLORS.primary}
-                                        />
-                                        <Text
-                                            style={{
-                                                ...FONTS.body3,
-                                                color: COLORS.primary,
-                                            }}
-                                        >
-                                            Home
-                                        </Text>
-                                    </>
-                                )}
-                            </View>
-                        )
-                    },
-                }}
-            />
-            <Tab.Screen
                 name="Zoom"
                 component={ Home }
                 options={{
@@ -176,7 +76,106 @@ const BottomTabNavigation = () => {
                     },
                 }}
             />
-
+            <Tab.Screen
+                name="WriterFinder"
+                component={WriterFinder}
+                options={{
+                    tabBarIcon: ({ focused }) => {
+                        return (
+                            <View
+                                style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                {focused ? (
+                                    <>
+                                        <Feather
+                                            name="pen-tool"
+                                            size={24}
+                                            color={COLORS.secondary}
+                                        />
+                                        <Text
+                                            style={{
+                                                ...FONTS.body3,
+                                                color: COLORS.secondary,
+                                            }}
+                                        >
+                                            Writers
+                                        </Text>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Feather
+                                            name="pen-tool"
+                                            size={24}
+                                            color={COLORS.primary}
+                                        />
+                                        <Text
+                                            style={{
+                                                ...FONTS.body3,
+                                                color: COLORS.primary,
+                                            }}
+                                        >
+                                            Writers
+                                        </Text>
+                                    </>
+                                )}
+                            </View>
+                        )
+                    },
+                }}
+            />
+            {/* <Tab.Screen
+                name="Home"
+                component={ Home }
+                options={{
+                    tabBarIcon: ({ focused }) => {
+                        return (
+                            <View
+                                style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                {focused ? (
+                                    <>
+                                        <Feather
+                                            name="home"
+                                            size={24}
+                                            color={COLORS.secondary}
+                                        />
+                                        <Text
+                                            style={{
+                                                ...FONTS.body3,
+                                                color: COLORS.secondary,
+                                            }}
+                                        >
+                                            Home
+                                        </Text>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Feather
+                                            name="home"
+                                            size={24}
+                                            color={COLORS.primary}
+                                        />
+                                        <Text
+                                            style={{
+                                                ...FONTS.body3,
+                                                color: COLORS.primary,
+                                            }}
+                                        >
+                                            Home
+                                        </Text>
+                                    </>
+                                )}
+                            </View>
+                        )
+                    },
+                }}
+            /> */}
             <Tab.Screen
                 name="More"
                 component={More}
