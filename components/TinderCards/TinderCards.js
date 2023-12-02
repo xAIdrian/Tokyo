@@ -1,11 +1,15 @@
 import { React, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    Image, 
+    Dimensions 
+} from 'react-native'
 import styles from './tindercards.style.js'
 import TinderCard from 'react-tinder-card'
-import images from '../../constants/images'
 import { mapping } from '../../constants/images'
-import { Feather } from '@expo/vector-icons'
-import { COLORS, SIZES } from '../../constants/theme'
+import { COLORS, SIZES, SHADOWS } from '../../constants/theme'
 
 
 const TinderCards = ({ 
@@ -13,8 +17,7 @@ const TinderCards = ({
     onCardAction,
     onMoreInfo,
 }) => {
-    console.log("🚀 ~ file: TinderCards.js:16 ~ data:", data)
-
+    const { height } = Dimensions.get('window');
     const [lastDirection, setLastDirection] = useState()
 
     const swiped = (direction, nameToDelete) => {
@@ -49,7 +52,20 @@ const TinderCards = ({
                         // onCardLeftScreen={ () => onCardAction(item) }
                         preventSwipe={['up', 'down']}
                     >
-                        <View style={styles.container}>
+                        <View 
+                            style={{
+                                alignSelf: 'center',
+                                alignItems: 'center',
+                                width: "90%",
+                                height: height * 0.75,
+                                margin: SIZES.body5,
+                                backgroundColor: COLORS.tertiaryWhite,
+                                borderRadius: SIZES.body5,
+                                ...SHADOWS.medium,
+                                shadowColor: COLORS.black,
+                                position: 'absolute',
+                              }}
+                        >
                             <Image source ={mapping[item.image]} style={ styles.image }/>
                             <View style={styles.textContainer}>
                                 <Text style={styles.title}>{ item.title }</Text>
