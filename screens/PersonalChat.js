@@ -92,6 +92,9 @@ const PersonalChat = ({ route, navigation }) => {
     }
 
     const audioRecordingApproved = useCallback((data) => {
+        console.log("AUDIO RECORDING APPROVED")
+        console.log(questions)
+        console.log(answers)
         if (currentQuestionIndex >= questions.length) {
             setIsLoading(true)
         }
@@ -99,6 +102,9 @@ const PersonalChat = ({ route, navigation }) => {
     })
 
     const transcriptionComplete = useCallback((data) => {
+        console.log("AUDIO RECORDING APPROVED")
+        console.log(questions)
+        console.log(answers)
         if (currentQuestionIndex >= questions.length) {
             setIsLoading(false)
         }
@@ -159,10 +165,6 @@ const PersonalChat = ({ route, navigation }) => {
 
     const onSend = useCallback(
         async (newMessage = []) => {
-            console.log(
-                '🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:',
-                newMessage
-            )
 
             setMessages((previousMessages) =>
                 GiftedChat.append(previousMessages, newMessage)
