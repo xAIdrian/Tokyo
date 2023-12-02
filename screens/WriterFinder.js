@@ -86,11 +86,11 @@ const WriterFinder = ({ navigation }) => {
                         </View>
                         <Text
                             style={{
-                                ...FONTS.h2,
+                                ...FONTS.body3,
                                 padding: 12,
                             }}
                         >
-                            Swipe right to start your interview
+                            Swipe right to start interview or left to skip
                         </Text>
                         <TinderCards
                             data={frameworks}
