@@ -152,11 +152,6 @@ const AudioRecorder = ({
 
                     if (response.message === 'success') {
                         const transcript = response.result
-                        console.log(
-                            '🚀 ~ file: AudioRecorder.js:107 ~ ).then ~ transcript:',
-                            transcript
-                        )
-
                         transcriptionComplete({
                             transcript: transcript,
                         })

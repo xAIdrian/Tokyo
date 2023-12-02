@@ -39,8 +39,7 @@ const WriterDetails = ({ route, navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <ScrollView
-                // onScroll={handleScroll}
-                contentContainerStyle={{ paddingBottom: 64 }}
+                onScroll={handleScroll}
             >
                 <View>
                     <Image

@@ -92,10 +92,16 @@ const PersonalChat = ({ route, navigation }) => {
     }
 
     const audioRecordingApproved = useCallback((data) => {
+        if (currentQuestionIndex >= questions.length) {
+            setIsLoading(true)
+        }
         onSend(processAudioMessage(data))
     })
 
     const transcriptionComplete = useCallback((data) => {
+        if (currentQuestionIndex >= questions.length) {
+            setIsLoading(false)
+        }
         answers.push(data.transcript)
     })
 
