@@ -6,6 +6,7 @@ import { More, Home, WriterFinder } from '../screens'
 import { Feather } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator()
+const ICON_SIZE = 16
 
 const BottomTabNavigation = () => {
     return (
@@ -20,9 +21,9 @@ const BottomTabNavigation = () => {
                     bottom: 0,
                     right: 0,
                     left: 0,
+                    padding: 0,
+                    margin: 0,
                     elevation: 6,
-                    height: 80,
-                    paddingBottom: 10
                 },
             }}
         >
@@ -42,12 +43,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="pen-tool"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.secondary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.secondary,
                                             }}
                                         >
@@ -58,12 +58,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="pen-tool"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.primary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.primary,
                                             }}
                                         >
@@ -92,12 +91,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="home"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.secondary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.secondary,
                                             }}
                                         >
@@ -108,12 +106,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="home"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.primary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.primary,
                                             }}
                                         >
@@ -142,12 +139,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="message-circle"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.secondary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.secondary,
                                             }}
                                         >
@@ -158,12 +154,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="message-circle"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.primary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.primary,
                                             }}
                                         >
@@ -193,12 +188,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="user"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.secondary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.secondary,
                                             }}
                                         >
@@ -209,12 +203,11 @@ const BottomTabNavigation = () => {
                                     <>
                                         <Feather
                                             name="user"
-                                            size={24}
+                                            size={ICON_SIZE}
                                             color={COLORS.primary}
                                         />
                                         <Text
                                             style={{
-                                                ...FONTS.body3,
                                                 color: COLORS.primary,
                                             }}
                                         >

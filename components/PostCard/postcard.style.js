@@ -3,10 +3,15 @@ import { StyleSheet } from "react-native";
 import { COLORS, FONTS, SHADOWS, SIZES } from "../../constants/theme";
 
 const styles = StyleSheet.create({
+  editBar: {
+    width: '100%',
+    backgroundColor: COLORS.secondary,
+    borderTopLeftRadius: SIZES.body3,
+    borderTopRightRadius: SIZES.body3,
+  },
   container: {
     width: '90%',
     alignSelf: 'center',
-    padding: SIZES.body5,
     backgroundColor: COLORS.tertiaryWhite,
     borderRadius: SIZES.body3,
     ...SHADOWS.medium,
@@ -16,11 +21,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.h4,
     fontWeight: "bold",
-    marginTop: SIZES.body5 / 1.5,
-    paddingStart: SIZES.body5 / 1.5,
+    textAlign: "center",
+    color: COLORS.white,
+    padding: 4,
   },
   infoContainer: {
-    paddingTop: SIZES.body3,
+    padding: SIZES.body4,
   },
   subtitle: {
     fontSize: SIZES.body2 - 4,
@@ -31,7 +37,20 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     marginTop: SIZES.body3
   },
-  selecter: {
+  primarySelector: {
+    width: "100%",
+    flexDirection: "row",
+    textAlign: "center",
+    color: COLORS.white,
+    backgroundColor: COLORS.primary,
+    paddingVertical: 8,
+    marginTop: SIZES.body3,
+    borderRadius: SIZES.body3,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    fontSize: SIZES.body2,
+  },
+  secondarySelector: {
     width: "100%",
     flexDirection: "row",
     textAlign: "center",

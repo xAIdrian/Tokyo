@@ -1,8 +1,4 @@
-import {
-    Text,
-    View,
-    TouchableOpacity,
-} from 'react-native'
+import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
@@ -11,7 +7,7 @@ import TinderCards from '../components/TinderCards/TinderCards'
 import { getFrameworkQuestions } from '../hooks/frameworkHooks'
 
 const WriterFinder = ({ navigation }) => {
-
+    const [isLoading, setIsLoading] = useState(true)
     const [frameworks, setFrameworks] = useState([])
     const [reload, setReload] = useState(false)
 
@@ -20,11 +16,16 @@ const WriterFinder = ({ navigation }) => {
     }, [])
 
     const loadFrameworks = () => {
-        getFrameworkQuestions().then((loadFrameworks) => {
-            setFrameworks(loadFrameworks.reverse())
-        }).catch((error) => {
-            alert(error)
-        }) 
+        setIsLoading(true)
+        getFrameworkQuestions()
+            .then((loadFrameworks) => {
+                setIsLoading(false)
+                setFrameworks(loadFrameworks.reverse())
+            })
+            .catch((error) => {
+                setIsLoading(false)
+                alert(error)
+            })
     }
 
     return (
@@ -33,61 +34,81 @@ const WriterFinder = ({ navigation }) => {
                 flex: 1,
             }}
         >
-            <PageContainer
-                key={reload}
-            >
-                <View style={{
-                    position: 'absolute',
-                    textAlign: 'center',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 100
-                }}>
-                    <Text style={{
-                        textAlign: 'center',
-                    }}>
-                        Opps! Looks like you're all out of frameworks in your area.
-                    </Text>
-                    <TouchableOpacity
+            <PageContainer key={reload}>
+                {isLoading ? (
+                    <View
                         style={{
-                            backgroundColor: COLORS.primary,
-                            padding: 8,
-                            borderRadius: 8,
-                            marginTop: 16,
+                            alignContent: 'center',
+                            width: '100%',
+                            height: '100%',
+                            paddingTop: 120,
                         }}
-                        onPress={ () => setReload(!reload) }
                     >
-                        <Text style={{
-                            color: COLORS.white,
-                            textAlign: 'center',
-                        }}>
-                            Refresh
+                        <ActivityIndicator />
+                    </View>
+                ) : (
+                    <>
+                        <View
+                            style={{
+                                position: 'absolute',
+                                textAlign: 'center',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: 120,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Opps! Looks like you're all out of frameworks in
+                                your area.
+                            </Text>
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: COLORS.primary,
+                                    padding: 8,
+                                    borderRadius: 8,
+                                    marginTop: 16,
+                                }}
+                                onPress={() => setReload(!reload)}
+                            >
+                                <Text
+                                    style={{
+                                        color: COLORS.white,
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    Refresh
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <Text
+                            style={{
+                                ...FONTS.body3,
+                                padding: 12,
+                            }}
+                        >
+                            Swipe right to start interview or left to skip
                         </Text>
-                    </TouchableOpacity>
-                </View>
-                <Text
-                    style={{
-                        ...FONTS.h2,
-                        padding: 12,
-                    }}
-                >
-                  Swipe right to start your interview
-                </Text>
-                <TinderCards 
-                    data={frameworks}
-                    onCardAction={
-                        (framework) => {
-                            if (framework.questions !== undefined) {
-                                navigation.navigate('PersonalChat', { framework: framework })
-                            }
-                        }
-                    }
-                    onMoreInfo={
-                        (framework) => {
-                            navigation.navigate('WriterDetails', { framework: framework })
-                        }
-                    }
-                />
+                        <TinderCards
+                            data={frameworks}
+                            onCardAction={(framework) => {
+                                if (framework.questions !== undefined) {
+                                    navigation.navigate('PersonalChat', {
+                                        framework: framework,
+                                    })
+                                }
+                            }}
+                            onMoreInfo={(framework) => {
+                                navigation.navigate('WriterDetails', {
+                                    framework: framework,
+                                })
+                            }}
+                        />
+                    </>
+                )}
             </PageContainer>
         </SafeAreaView>
     )

@@ -152,11 +152,6 @@ const AudioRecorder = ({
 
                     if (response.message === 'success') {
                         const transcript = response.result
-                        console.log(
-                            '🚀 ~ file: AudioRecorder.js:107 ~ ).then ~ transcript:',
-                            transcript
-                        )
-
                         transcriptionComplete({
                             transcript: transcript,
                         })
@@ -166,7 +161,7 @@ const AudioRecorder = ({
                     }
                 })
                 .catch((error) => {
-                    setIsLoading(false)
+                    console.log("🚀 ~ file: AudioRecorder.js:164 ~ handleRecordPressIn ~ error:", error)
                     // onUploadError(error)
                 })
             recordingApproved(audioReviewData)
@@ -182,11 +177,13 @@ const AudioRecorder = ({
             return
         } else {
             setButtonBackgroundColor(COLORS.primary)
-            const recordingUri = await stopRecording(recording)
-            await recordingCompleteCleanup(recordingUri)
-            if (recordingUri) {
-                console.log('Saved audio file to', recordingUri)
+            const earlyStatus = await recording.getStatusAsync()
+            if (earlyStatus.durationMillis < 2000) {
+                await stopRecording()
+                return
             }
+            const recordingUri = await stopRecording()
+            await recordingCompleteCleanup(recordingUri)
         }
     }
 

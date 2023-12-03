@@ -92,10 +92,22 @@ const PersonalChat = ({ route, navigation }) => {
     }
 
     const audioRecordingApproved = useCallback((data) => {
+        console.log("AUDIO RECORDING APPROVED")
+        console.log(questions)
+        console.log(answers)
+        if (currentQuestionIndex >= questions.length) {
+            setIsLoading(true)
+        }
         onSend(processAudioMessage(data))
     })
 
     const transcriptionComplete = useCallback((data) => {
+        console.log("AUDIO RECORDING APPROVED")
+        console.log(questions)
+        console.log(answers)
+        if (currentQuestionIndex >= questions.length) {
+            setIsLoading(false)
+        }
         answers.push(data.transcript)
     })
 
@@ -136,14 +148,10 @@ const PersonalChat = ({ route, navigation }) => {
             case 'edit':
                 break
             case 'generate':
-                if (questions.length > answers.length) {
-                    alert("We're still loading your voice note. Please wait a few more seconds then try again.")
-                } else {
-                    navigation.navigate('Output', {
-                        frameworkQuestions: questions,
-                        frameworkAnswers: answers
-                    }) 
-                }
+                navigation.navigate('Output', {
+                    frameworkQuestions: questions,
+                    frameworkAnswers: answers
+                })
                 break
             default:
                 // Do something if the value doesn't match any of the cases
@@ -153,10 +161,6 @@ const PersonalChat = ({ route, navigation }) => {
 
     const onSend = useCallback(
         async (newMessage = []) => {
-            console.log(
-                '🚀 ~ file: PersonalChat.js:59 ~ onSend ~ newMessage:',
-                newMessage
-            )
 
             setMessages((previousMessages) =>
                 GiftedChat.append(previousMessages, newMessage)

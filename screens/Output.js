@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FlatList, ActivityIndicator, Text, View, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, SIZES, FONTS } from '../constants'
+import { COLORS, SIZES, FONTS } from '../constants/theme'
 import PageTitle from '../components/PageTitle'
 import PostCard from '../components/PostCard/PostCard'
 import { sendContentForPosts } from '../hooks/contentHooks'
@@ -88,6 +88,9 @@ const Output = ({ route, navigation }) => {
                     </View>
                 ) : (
                     <FlatList
+                        contentContainerStyle={{
+                            paddingBottom: SIZES.body3,
+                        }}
                         ListHeaderComponent={
                             <Text style={{
                                 ...FONTS.body3,
