@@ -86,7 +86,7 @@ const PostCard = (content) => {
                         marginLeft: 4
                       }}
                     >
-                        <Text style={styles.primarySelector}>Post to Social</Text>
+                        <Text style={styles.secondarySelector}>Post to Social</Text>
                     </TouchableOpacity>
                 </View>
             </View>
