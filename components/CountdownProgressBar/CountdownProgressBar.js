@@ -1,3 +1,10 @@
+/*
+ * Oligarch Ventures, LLC.
+ * Version: 1.0.0
+ * Author: Adrian Mohnacs
+ * Copyright (c) 2023 
+ * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
+ */
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';

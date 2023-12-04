@@ -1,3 +1,10 @@
+/*
+ * Oligarch Ventures, LLC.
+ * Version: 1.0.0
+ * Author: Adrian Mohnacs
+ * Copyright (c) 2023 
+ * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
+ */
 import Walkthrough from './Walkthrough'
 import Login from './Login'
 import ProfileAccount from './ProfileAccount'

@@ -1,3 +1,10 @@
+/*
+ * Oligarch Ventures, LLC.
+ * Version: 1.0.0
+ * Author: Adrian Mohnacs
+ * Copyright (c) 2023 
+ * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
+ */
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'

@@ -1,3 +1,10 @@
+/*
+ * Oligarch Ventures, LLC.
+ * Version: 1.0.0
+ * Author: Adrian Mohnacs
+ * Copyright (c) 2023 
+ * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
+ */
 import { View, Text, TouchableOpacity, ActivityIndicator, Modal } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -92,7 +99,6 @@ const PersonalChat = ({ route, navigation }) => {
     }
 
     const audioRecordingApproved = useCallback((data) => {
-        console.log("AUDIO RECORDING APPROVED")
         console.log(questions)
         console.log(answers)
         if (currentQuestionIndex >= questions.length) {
@@ -159,8 +165,11 @@ const PersonalChat = ({ route, navigation }) => {
         }
     })
 
-    const onSend = useCallback(
-        async (newMessage = []) => {
+    const onSend = useCallback(async (newMessage = []) => {
+            console.log("🚀 ~ file: PersonalChat.js:163 ~ onSend ~ newMessage:", newMessage[0])
+            if (newMessage.length > 0 && newMessage[0].text !== undefined) {
+                answers.push(newMessage[0].text)
+            }
 
             setMessages((previousMessages) =>
                 GiftedChat.append(previousMessages, newMessage)

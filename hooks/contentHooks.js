@@ -2,12 +2,11 @@
  * Oligarch Ventures, LLC.
  * Version: 1.0.0
  * Author: Adrian Mohnacs
- * Copyright (c) 2023 Adrian Mohnacs
+ * Copyright (c) 2023 
  * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
 */
 import axios from 'axios'
 import {Observable, from } from 'rxjs'
-import { samplesArray } from './chatHooks'
 import Constants from 'expo-constants';
 
 const POLLING_TIMER = 10000  
@@ -16,10 +15,9 @@ export const sendContentForPosts = (questions, answers) => {
   contentPosts = []
 
   const allQuestions = questions.map((question) => question.text)
-  const allAnswers = answers.length > 0 ? answers : samplesArray
 
   return new Observable(async (subscriber) => {
-    sendOneShotToServer(allQuestions, allAnswers)
+    sendOneShotToServer(allQuestions, answers)
     return checkContentPolling(subscriber)
   })
 };

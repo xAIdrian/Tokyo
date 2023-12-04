@@ -1,3 +1,10 @@
+/*
+ * Oligarch Ventures, LLC.
+ * Version: 1.0.0
+ * Author: Adrian Mohnacs
+ * Copyright (c) 2023 
+ * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
+ */
 import React from 'react'
 import { View, Text, Image } from 'react-native'
 import images from '../../constants/images'

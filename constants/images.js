@@ -1,3 +1,10 @@
+/*
+ * Oligarch Ventures, LLC.
+ * Version: 1.0.0
+ * Author: Adrian Mohnacs
+ * Copyright (c) 2023 
+ * All rights reserved. Unauthorized copying or reproduction of this file is prohibited.
+ */
 const illustration = require('../assets/images/illustration.png')
 const cat = require('../assets/images/cat.png')
 const down = require('../assets/images/down.png')
