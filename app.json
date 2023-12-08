@@ -5,6 +5,9 @@
     },
     "android": {
       "versionCode": 5
+    },
+    "web": {
+      "buildNumber": "1"
     }
   }
 }

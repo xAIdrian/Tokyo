@@ -17,16 +17,23 @@ yarn install
 Start the development server: 
 
 ```
-expo start or yarn start
+yarn start
+```
+for a more efficient way to start the development server, use the direct command, for example: 
+``` 
+yarn web
 ```
 
 Use the Expo Go app on your Android or iOS device to scan the QR code displayed in the Expo developer tools to launch Chateo on your device.
 Note: Make sure you have the latest version of Node.js, Expo CLI, and Expo Go app installed on your local machine and device, respectively.
 
 ###
-Connecting to our localhost for testing purposes:
+Connecting mobile devices to local host.
+
+### Deployment
+We follow ease
 ```
-~/.android-sdk-macosx/platform-tools/adb reverse tcp:3000 tcp:3000
+ease build --platform ios
 ```
 
 ## License
