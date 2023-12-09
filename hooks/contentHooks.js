@@ -27,6 +27,10 @@ const checkContentPolling = async (subscriber) => {
   const options = {
     method: 'GET', 
     url: polling_url,
+    headers: {
+      'Content-Type': 'application/json',
+      'x-db-env': Constants.expoConfig.extra.aipiEnv,
+    },
     params: {
       userUuid: '123',
     },
@@ -76,6 +80,10 @@ export const sendOneShotToServer = (questions, answers) => {
     const options = {
         method: 'POST', 
         url: url,
+        headers: {
+            'Content-Type': 'application/json',
+            'x-db-env': Constants.expoConfig.extra.aipiEnv,
+        },
         data: {
             userUuid: '123',
             questions: questions,

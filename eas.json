@@ -4,6 +4,7 @@
             "env": {
                 "APP_ICON": "./assets/images/icon.png",
                 "APP_NAME": "Outbrand",
+                "EXPO_PUBLIC_AIPI_ENV": "prod",
                 "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             },
             "android": {
@@ -17,6 +18,7 @@
             "env": {
                 "APP_ICON": "./assets/images/icon.png",
                 "APP_NAME": "Outbrand",
+                "EXPO_PUBLIC_AIPI_ENV": "prod",
                 "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             },
             "android": {
@@ -35,6 +37,7 @@
         },
         "production": {
             "env": {
+                "EXPO_PUBLIC_AIPI_ENV": "prod",
                 "EXPO_PUBLIC_AIPI_URL": "https://legion-ai-content-machine.uc.r.appspot.com"
             }
         }

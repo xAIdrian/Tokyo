@@ -43,6 +43,7 @@ export default {
             messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
             appId: process.env.EXPO_PUBLIC_APP_ID,
             aipiUrl: process.env.EXPO_PUBLIC_AIPI_URL,
+            aipiEnv: process.env.EXPO_PUBLIC_AIPI_ENV,
           }
     }
 }

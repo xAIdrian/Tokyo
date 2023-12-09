@@ -22,7 +22,8 @@ export const sendAudioForTranscript = async (audioUri) => {
     url: url,
     formData, 
     headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        'x-db-env': Constants.expoConfig.extra.aipiEnv,
     }
   }
 

@@ -8,7 +8,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { View, TouchableOpacity, Image } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
-import { COLORS } from '../../constants/theme.js'
+import { COLORS } from '../../constants/theme.tsx'
 import styles from './audioplayer.style.js'
 import { Audio } from 'expo-av'
 import images from '../../constants/images.js'

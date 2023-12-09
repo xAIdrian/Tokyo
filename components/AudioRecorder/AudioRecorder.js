@@ -148,6 +148,7 @@ const AudioRecorder = ({
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
+                        'x-db-env': Constants.expoConfig.extra.aipiEnv,
                     },
                     fieldName: 'audio',
                     httpMethod: 'POST',

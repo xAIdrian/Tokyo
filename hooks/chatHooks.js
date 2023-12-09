@@ -33,6 +33,10 @@ export const sendBackAndForth = async (messages, framework) => {
     const options = {
         method: 'POST',
         url: url,
+        headers: {
+            'Content-Type': 'application/json',
+            'x-db-env': Constants.expoConfig.extra.aipiEnv,
+        },
         data: {
             messages: messages
                 .map((message) => ({

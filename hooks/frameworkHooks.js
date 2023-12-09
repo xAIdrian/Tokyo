@@ -13,6 +13,10 @@ export const getFrameworkQuestions = async () => {
   const options = {
       method: 'GET',
       url: url,
+        headers: {
+            'Content-Type': 'application/json',
+            'x-db-env': Constants.expoConfig.extra.aipiEnv,
+        },
       params: {
           framework: 'framework',
       },
