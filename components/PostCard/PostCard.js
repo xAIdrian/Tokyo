@@ -63,6 +63,7 @@ const PostCard = (content) => {
                       onChangeText={ newVal=>{
                         setCurrentContent(newVal)
                       }}
+                      scrollEnabled={false}
                     >
                         <Text style={styles.subtitle}>{content.content}</Text>
                     </TextInput>
