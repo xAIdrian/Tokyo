@@ -31,7 +31,7 @@ const PostCard = (content) => {
     const onShare = async () => {
         try {
             const result = await Share.share({
-                message: content.content,
+                message: currentContent,
             })
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -65,10 +65,10 @@ const PostCard = (content) => {
                       }}
                       scrollEnabled={false}
                     >
-                        <Text style={styles.subtitle}>{content.content}</Text>
+                        <Text style={styles.subtitle}>{currentContent}</Text>
                     </TextInput>
                 ) : (
-                    <Text style={styles.subtitle}>{content.content}</Text>
+                    <Text style={styles.subtitle}>{currentContent}</Text>
                 )}
                 <View
                     style={{
