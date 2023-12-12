@@ -44,6 +44,7 @@ export default {
             appId: process.env.EXPO_PUBLIC_APP_ID,
             aipiUrl: process.env.EXPO_PUBLIC_AIPI_URL,
             aipiEnv: process.env.EXPO_PUBLIC_AIPI_ENV,
+            version: process.env.EXPO_PUBLIC_PROJECT_VERSION,
           }
     }
 }

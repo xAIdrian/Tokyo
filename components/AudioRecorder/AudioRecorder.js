@@ -224,14 +224,23 @@ const AudioRecorder = ({
                                     alignContent: 'center',
                                 }}
                             >
-                                <TouchableOpacity>
-                                    <Feather
-                                        name="more-vertical"
-                                        size={24}
-                                        color={COLORS.primary}
-                                        onPress={moreOptionsClick}
-                                    />
-                                </TouchableOpacity>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignContent: 'center',
+                                }}>
+                                    <Text style={{ size: 16, color: COLORS.primary }}>
+                                        v{Constants.expoConfig.extra.version}
+                                    </Text>
+                                    <TouchableOpacity>
+                                        <Feather
+                                            name="more-vertical"
+                                            size={24}
+                                            color={COLORS.primary}
+                                            onPress={moreOptionsClick}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                                 <Text
                                     style={{
                                         color: COLORS.primary,
