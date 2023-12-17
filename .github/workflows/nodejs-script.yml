@@ -1,0 +1,25 @@
+name: Node.js Script Execution
+
+on: push
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14' # You can change this to your Node.js version
+
+    - name: Install axios
+      run: npm install axios
+  
+    - name: Get the commit message
+      id: get_commit_message
+      run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+    - name: Update telegram group with commit message script
+      run: node actions/telegram-script.js "${{ env.COMMIT_MESSAGE }}" "${{ github.actor }}"
