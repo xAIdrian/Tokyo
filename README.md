@@ -5,6 +5,28 @@
 - React Native Gifted Chat: A UI library for building chat interfaces in React Native, providing pre-designed UI components for chat functionalities.
 - Expo: An open-source platform for building React Native applications, providing tools and services to streamline the development process.
 
+<table>
+<tr>
+<td>
+
+**Download App from the iOS store**
+
+
+
+https://github.com/xAIdrian/Tokyo/assets/7444521/d495dd51-c2e2-4fe0-af47-390aa1a61bcf
+
+
+</td>
+<td>
+
+**Completing an interview**
+
+https://github.com/xAIdrian/Tokyo/assets/7444521/6d6e306d-5c3b-4609-ae7b-b0cb6bffc74d
+
+</td>
+</tr>
+</table>
+
 ## Getting Started
 To run Tokyo on your local machine, follow these steps:
 
@@ -41,3 +63,7 @@ Sharing as learning but this is secret shit and we will sue you if you use it.
 
 ## Contact
 Don't contact us
+
+
+
+
